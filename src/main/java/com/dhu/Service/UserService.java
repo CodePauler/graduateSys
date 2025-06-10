@@ -1,8 +1,6 @@
 package com.dhu.Service;
 
-import com.dhu.Pojo.LoginInfo;
-import com.dhu.Pojo.Result;
-import com.dhu.Pojo.User;
+import com.dhu.Pojo.*;
 
 public interface UserService {
 
@@ -11,4 +9,9 @@ public interface UserService {
 
 //    用户登录
     LoginInfo login(User user);
+
+    /**
+     * 分页查询
+     */
+    PageResult<User> page(UserQueryParam userQueryParam);
 }

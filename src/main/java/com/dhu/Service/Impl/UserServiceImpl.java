@@ -1,15 +1,16 @@
 package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.UserMapper;
-import com.dhu.Pojo.LoginInfo;
-import com.dhu.Pojo.Result;
-import com.dhu.Pojo.User;
+import com.dhu.Pojo.*;
 import com.dhu.Service.UserService;
 import com.dhu.Utils.JwtUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -44,5 +45,13 @@ public class UserServiceImpl implements UserService {
         else {
             return null; // 登录失败，返回null
         }
+    }
+
+    @Override
+    public PageResult<User> page(UserQueryParam userQueryParam) {
+        PageHelper.startPage(userQueryParam.getPage(), userQueryParam.getPageSize());
+        List<User> userList = userMapper.list(userQueryParam);
+        Page<User> p = (Page<User>) userList;
+        return new PageResult<>(p.getTotal(), p.getResult());
     }
 }
