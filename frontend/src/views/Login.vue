@@ -1,0 +1,73 @@
+<template>
+  <div class="login-container">
+    <el-card class="box-card">
+      <h2>登录</h2>
+      <el-form :model="form" :rules="rules" ref="loginForm">
+        <el-form-item label="用户名" prop="username" :label-width="'80px'">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password" :label-width="'80px'">
+          <el-input v-model="form.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">登录</el-button>
+          <el-button @click="$router.push('/register')">注册</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
+</template>
+
+<script setup>
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
+import { loginApi } from '@/api';
+
+const router = useRouter();
+const form = reactive({
+  username: '',
+  password: ''
+});
+const rules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+};
+const loginForm = ref(null);
+
+const onSubmit = () => {
+  loginForm.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        const res = await loginApi(form);
+        if (res.data.code === 1) {
+          // 登录成功，保存 token
+          localStorage.setItem('token', res.data.data.token);
+          localStorage.setItem('role', res.data.data.role);
+          ElMessage.success('登录成功');
+          // 你可以根据角色跳转不同页面
+          router.push('/');
+        } else {
+          ElMessage.error(res.data.msg);
+        }
+      } catch (e) {
+        ElMessage.error('网络错误');
+      }
+    }
+  });
+};
+</script>
+
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box-card {
+  width: 500px;
+  height: 300px;
+}
+</style>

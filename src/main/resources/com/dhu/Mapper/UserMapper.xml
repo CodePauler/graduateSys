@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dhu.Mapper.UserMapper">
+
+    <insert id="insert" parameterType="com.dhu.Pojo.User">
+        INSERT INTO user (username, password, role, name, gender, email, phone)
+        VALUES (#{username}, #{password}, #{role}, #{name}, #{gender}, #{email}, #{phone})
+    </insert>
+
+    <select id="findByUsernameAndPassword" resultType="com.dhu.Pojo.User">
+        SELECT * FROM user WHERE username = #{username} AND password = #{password}
+    </select>
+
+</mapper>
