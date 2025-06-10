@@ -51,7 +51,7 @@ const onSubmit = () => {
           ElMessage.error(res.data.msg);
         }
       } catch (e) {
-        ElMessage.error('网络错误');
+        ElMessage.error('登录失败，请稍后再试');
       }
     }
   });

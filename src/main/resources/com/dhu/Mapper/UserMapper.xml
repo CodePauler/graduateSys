@@ -14,4 +14,16 @@
         SELECT * FROM user WHERE username = #{username} AND password = #{password}
     </select>
 
+    <select id="list" resultType="com.dhu.Pojo.User">
+        SELECT * FROM user WHERE ROLE != 'admin'
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="role != null and role != ''">
+                AND role = #{role}
+            </if>
+    </select>
 </mapper>

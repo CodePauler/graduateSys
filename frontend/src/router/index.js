@@ -2,11 +2,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
+import Users from '@/views/Users.vue';
 
 const routes = [
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
   { path: '/' }, // 默认重定向到登录页面
+  { path:'/users', name: 'Users', component: Users},
 ];
 
 const router = createRouter({

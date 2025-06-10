@@ -1,7 +1,10 @@
 package com.dhu.Mapper;
 
 import com.dhu.Pojo.User;
+import com.dhu.Pojo.UserQueryParam;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -11,4 +14,7 @@ public interface UserMapper {
 
 //    根据用户名查询用户
     User findByUsernameAndPassword(User user);
+
+//  查询所有用户
+    List<User> list(UserQueryParam userQueryParam);
 }
