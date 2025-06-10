@@ -125,7 +125,7 @@ import { HomeFilled, User, Briefcase, Check, Setting } from '@element-plus/icons
 const route = useRoute();
 const router = useRouter();
 
-const activeMenu = ref('/');
+const activeMenu = ref(route.path);
 const role = ref(localStorage.getItem('role'));
 
 const isAuthPage = ref(['login', 'register'].includes(route.name));
@@ -133,6 +133,10 @@ const isAuthPage = ref(['login', 'register'].includes(route.name));
 // 监听路由变化，更新是否是登录/注册页
 watch(() => route.name, (newVal) => {
   isAuthPage.value = ['login', 'register'].includes(newVal);
+});
+
+watch(() => route.path, (newPath) => {
+  activeMenu.value = newPath;
 });
 
 const logout = () => {
