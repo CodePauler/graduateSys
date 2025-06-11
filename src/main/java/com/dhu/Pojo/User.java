@@ -14,5 +14,4 @@ public class User {
 //    选填
     private String email;
     private String phone;
-
 }

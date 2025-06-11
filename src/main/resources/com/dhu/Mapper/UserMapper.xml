@@ -5,7 +5,7 @@
 
 <mapper namespace="com.dhu.Mapper.UserMapper">
 
-    <insert id="insert" parameterType="com.dhu.Pojo.User">
+    <insert id="insert" parameterType="com.dhu.Pojo.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (username, password, role, name, gender, email, phone)
         VALUES (#{username}, #{password}, #{role}, #{name}, #{gender}, #{email}, #{phone})
     </insert>

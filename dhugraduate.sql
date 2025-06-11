@@ -11,11 +11,31 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 10/06/2025 13:16:50
+ Date: 11/06/2025 15:15:42
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for company
+-- ----------------------------
+DROP TABLE IF EXISTS `company`;
+CREATE TABLE `company`  (
+  `company_id` int NOT NULL AUTO_INCREMENT COMMENT '公司（HR）id',
+  `user_id` int NOT NULL COMMENT '外键，关联到用户ID',
+  `company_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '公司名称',
+  `company_intro` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '公司简介',
+  PRIMARY KEY (`company_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of company
+-- ----------------------------
+INSERT INTO `company` VALUES (1, 19, '哈哈哈哈', '水水水水水');
+INSERT INTO `company` VALUES (2, 20, '哈哈哈哈', '水水水水水');
+INSERT INTO `company` VALUES (3, 21, '哈哈哈哈', '水水水水水');
+INSERT INTO `company` VALUES (4, 22, '秒杀上大', '暴打华理');
 
 -- ----------------------------
 -- Table structure for department
@@ -26,7 +46,12 @@ CREATE TABLE `department`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '院系名称',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of department
+-- ----------------------------
+INSERT INTO `department` VALUES (1, '计算机科学与技术学院');
 
 -- ----------------------------
 -- Table structure for employment
@@ -43,7 +68,11 @@ CREATE TABLE `employment`  (
   INDEX `job_id`(`job_id` ASC) USING BTREE,
   CONSTRAINT `employment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `employment_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `job` (`job_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of employment
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for job
@@ -63,7 +92,11 @@ CREATE TABLE `job`  (
   INDEX `company_id`(`company_id` ASC) USING BTREE,
   CONSTRAINT `job_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `job_type` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT,
   CONSTRAINT `job_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of job
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for job_type
@@ -74,7 +107,11 @@ CREATE TABLE `job_type`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '职业类型名称',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业类型表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of job_type
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for major
@@ -87,7 +124,14 @@ CREATE TABLE `major`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `department_id`(`department_id` ASC) USING BTREE,
   CONSTRAINT `major_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of major
+-- ----------------------------
+INSERT INTO `major` VALUES (1, '计算机科学', 1);
+INSERT INTO `major` VALUES (2, '软件工程', 1);
+INSERT INTO `major` VALUES (3, '电子信息', 1);
 
 -- ----------------------------
 -- Table structure for student
@@ -104,7 +148,12 @@ CREATE TABLE `student`  (
   INDEX `major_id`(`major_id` ASC) USING BTREE,
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 123133 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of student
+-- ----------------------------
+INSERT INTO `student` VALUES (123132, 16, 2, 2025, '待业');
 
 -- ----------------------------
 -- Table structure for user
@@ -119,9 +168,31 @@ CREATE TABLE `user`  (
   `gender` enum('男','女') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '性别',
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '电话',
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE,
   CONSTRAINT `user_chk_1` CHECK (`gender` in (_utf8mb4'男',_utf8mb4'女'))
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, 'alice123', 'password123', 'student', 'Alice', '女', 'alice@example.com', '13812345678', NULL);
+INSERT INTO `user` VALUES (2, '小www', '123456', 'student', '吴济楠', '男', '231370127@mail.dhu.edu.cn', '', NULL);
+INSERT INTO `user` VALUES (3, 'lil', '123456', 'admin', '马应龙', '男', '123@qq.com', '123456', NULL);
+INSERT INTO `user` VALUES (4, 'w', '1', 'student', '管理员', '男', '1@qq.com', '123', NULL);
+INSERT INTO `user` VALUES (5, 'xiaowu', '123', 'student', '吴', '男', '1', '1', NULL);
+INSERT INTO `user` VALUES (11, '时代少年团', '123', 'student', '马嘉祺', '男', '123', '123', NULL);
+INSERT INTO `user` VALUES (12, '123312', '312132', 'student', '312', '男', '132312', '132132', NULL);
+INSERT INTO `user` VALUES (13, '马嘉祺qqqq', '312132', 'student', '312', '男', '132312', '132132', NULL);
+INSERT INTO `user` VALUES (14, '马嘉祺2', '312132', 'student', '312', '男', '132312', '132132', NULL);
+INSERT INTO `user` VALUES (15, '马嘉祺3', '312132', 'student', '312', '男', '132312', '132132', NULL);
+INSERT INTO `user` VALUES (16, '马嘉祺4', '312132', 'student', '312', '男', '132312', '132132', NULL);
+INSERT INTO `user` VALUES (17, '时代少年团1', '123', 'company', '喜欢你', '男', '2222', '3333', NULL);
+INSERT INTO `user` VALUES (18, '时代少年团3333', '123', 'company', '喜欢你', '男', '2222', '3333', NULL);
+INSERT INTO `user` VALUES (19, '偶像练习生', 'cxz', 'company', '车型库', '男', '213', '213', NULL);
+INSERT INTO `user` VALUES (20, '偶像练习生22', 'cxz', 'company', '车型库', '男', '213', '213', NULL);
+INSERT INTO `user` VALUES (21, '偶像练习生4', 'cxz', 'company', '车型库', '男', '213', '213', NULL);
+INSERT INTO `user` VALUES (22, '东华大学', '123', 'company', '洞花', '男', '123', '123', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
