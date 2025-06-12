@@ -4,6 +4,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Users from '@/views/Users/Users.vue';
 import Layout from '@/views/Layout/Layout.vue';
+import jobs from '@/views/student/jobs.vue';
 
 const routes = [
   { path: '/',
@@ -23,6 +24,7 @@ const routes = [
   },
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
+  { path: '/jobs', name: 'jobs', component: jobs }
 ];
 
 const router = createRouter({
