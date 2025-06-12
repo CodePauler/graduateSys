@@ -1,6 +1,6 @@
 import request from "@/utils/request";
-// 获取用户信息
 
+// 条件查询用户 
 export const queryUsersApi = (params) => {
   return request.get('/users', { params });
 }
