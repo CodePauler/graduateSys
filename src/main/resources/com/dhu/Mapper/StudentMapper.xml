@@ -7,5 +7,45 @@
         INSERT INTO student (student_id, user_id, major_id, graduation_year, employment_status)
         VALUES (#{studentId}, #{userId}, #{majorId}, #{graduationYear}, #{employmentStatus})
     </insert>
+    <update id="updateStudent"></update>
+    <delete id="deleteByIds"></delete>
+    <select id="list" resultType="com.dhu.Pojo.StudentInfo">
+        SELECT s.student_id         AS studentId,
+               u.name               AS name,
+               m.name               AS major,
+               d.`name`             AS department,
+               s.graduation_year    AS graduationYear,
+               s.employment_status  AS employmentStatus,
+               j.title              AS job_title,
+               jt.`name`            AS job_type
+        FROM student s
+        LEFT JOIN user u ON s.user_id = u.id
+        LEFT JOIN major m ON s.major_id = m.id
+        LEFT JOIN department d ON m.department_id = d.id
+        LEFT JOIN employment e ON s.student_id = e.student_id
+        LEFT JOIN job j  ON e.job_id = j.job_id
+        LEFT JOIN job_type jt ON j.type_id = jt.id
+        <where>
+            <if test="studentId != null and studentId != ''">
+                AND s.student_id = #{studentId}
+            </if>
+            <if test="name != null and name != ''">
+                AND u.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="majorId != null and majorId != ''">
+                AND s.major_id = #{majorId}
+            </if>
+            <if test="departmentId != null and departmentId !=''">
+                AND d.id = #{departmentId}
+            </if>
+            <if test="graduationYear != null and graduationYear != ''">
+                AND s.graduation_year = #{graduationYear}
+            </if>
+            <if test="employmentStatus != null and employmentStatus != ''">
+                AND s.employment_status = #{employmentStatus}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

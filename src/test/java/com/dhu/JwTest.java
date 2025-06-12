@@ -1,10 +1,12 @@
 package com.dhu;
 
+import com.dhu.Mapper.StudentMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,4 +36,6 @@ public class JwTest {
                 .getBody();
         System.out.println(claims);
     }
+
+
 }
