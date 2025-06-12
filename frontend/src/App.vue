@@ -7,4 +7,5 @@ import Layout from './views/Layout/Layout.vue';
   <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

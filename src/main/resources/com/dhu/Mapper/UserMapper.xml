@@ -46,4 +46,12 @@
     </set>
         WHERE id = #{id}
     </update>
+
+<!--    根据Ids批量删除用户信息-->
+    <delete id="deleteByIds">
+        delete from user where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("users")
@@ -40,6 +42,14 @@ public class UserController {
     public Result insertUser(@RequestBody User user){
         log.info("修改用户信息: {}", user);
         userService.updateUser(user);
-        return Result.success();
+        return Result.success("修改成功");
+    }
+
+//    删除用户（支持批量删除）
+    @DeleteMapping
+    public Result deleteUser(@RequestParam List<Integer> ids){
+        log.info("删除用户ID列表: {}", ids);
+        userService.deleteUser(ids);
+        return Result.success("删除成功");
     }
 }

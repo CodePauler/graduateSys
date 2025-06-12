@@ -2,6 +2,7 @@ package com.dhu.Service;
 
 import com.dhu.Pojo.*;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -23,4 +24,6 @@ public interface UserService {
 
 //   修改用户信息
     void updateUser(User user);
+
+    void deleteUser(List<Integer> ids);
 }

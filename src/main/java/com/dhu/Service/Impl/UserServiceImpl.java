@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -83,6 +84,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userMapper.updateById(user);
+    }
+
+    @Override
+    public void deleteUser(List<Integer> ids) {
+        userMapper.deleteByIds(ids);
     }
 
     @Override

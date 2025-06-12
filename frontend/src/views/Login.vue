@@ -22,7 +22,8 @@
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { loginApi } from '@/api';
+import { loginApi } from '@/api/login';
+import { ElMessageBox } from "element-plus";
 
 const router = useRouter();
 const form = reactive({

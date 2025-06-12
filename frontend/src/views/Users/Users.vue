@@ -40,8 +40,8 @@
             <el-table-column prop="phone" label="电话" />
             <el-table-column label="操作" width="180">
                 <template #default="scope">
-                    <el-button size="small" @click="edit(scope.row.id)">编辑</el-button>
-                    <el-button size="small" type="danger" @click="remove(scope.row.id)">删除</el-button>
+                    <el-button type="primary" round @click="edit(scope.row.id)">编辑</el-button>
+                    <el-button type="danger" round @click="remove(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,10 +49,13 @@
 
 
     <!-- 用户编辑模态框 -->
-    <el-dialog v-model="dialogFormVisible" title="用户编辑" width="500">
-        <el-form :model="user">
+    <el-dialog v-model="dialogFormVisible" title="用户编辑" width="500" :lock-scroll="false">
+        <el-form :model="user" ref="userFormRef">
             <el-form-item label="用户名" :label-width="formLabelWidth">
-                <el-input v-model="user.userName" autocomplete="off" />
+                <el-input v-model="user.username" autocomplete="off" />
+            </el-form-item>
+            <el-form-item label="密码" :label-width="formLabelWidth">
+                <el-input v-model="user.password" autocomplete="off" />
             </el-form-item>
             <el-form-item label="姓名" :label-width="formLabelWidth">
                 <el-input v-model="user.name" autocomplete="off" />
@@ -80,7 +83,7 @@
         <template #footer>
             <div class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">
+                <el-button type="primary" @click="saveUser">
                     确认修改
                 </el-button>
             </div>
@@ -90,7 +93,8 @@
 
 <script setup>
 import { reactive, onMounted, ref } from 'vue'
-import { queryUsersApi } from '@/api/user'
+import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/user'
+import { ElMessage, ElMessageBox } from "element-plus";
 const searchUser = reactive({
     username: '',
     name: '',
@@ -123,8 +127,9 @@ const clear = () => {
 
 
 // 编辑用户 对话框
-const user = reactive({
+const user = ref({
     userName: '',
+    password: '',
     name: '',
     role: '',
     gender: '',
@@ -135,9 +140,67 @@ const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
 const edit = async (id) => {
     dialogFormVisible.value = true;
-    const result = await queryUsersApi({ id });
-    console.log("编辑用户：", result);
+    const result = await queryUserByIdApi(id);
+    if (result.code === 1) {
+        console.log("查询用户信息成功", result.data);
+        user.value = result.data;
+    }
 }
+
+// 编辑用户：确认修改（更新信息）
+const saveUser = async () => {
+    let result;
+    dialogFormVisible.value = false;
+    result = await updateUserApi(user.value);
+    if (result.code === 1) {
+        console.log("用户信息更新成功", result.data);
+        ElMessage.success('用户信息更新成功');
+    } else {
+        console.error("用户信息更新失败", result.msg);
+        ElMessage.error(result.msg);
+        return;
+    }
+    search(); // 刷新用户列表
+}
+
+
+
+// 删除用户
+const remove = (ids) => {
+    ElMessageBox.confirm(
+        '是否确认删除用户？',
+        '警告',
+        {
+            confirmButtonText: '确认删除',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            const result = await deleteUserApi(ids);
+            console.log("删除用户请求结果", result);
+            if (result.code === 1) {
+                ElMessage({
+                    type: 'success',
+                    message: '成功删除',
+                })
+            }
+            else {
+                ElMessage({
+                    type: 'error',
+                    message: result.data,
+                })
+            }
+            search();
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '取消删除',
+            })
+        })
+}
+
 
 onMounted(() => {
     search()
