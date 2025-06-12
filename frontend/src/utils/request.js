@@ -3,7 +3,7 @@
 import axios from 'axios'
 //创建axios实例对象
 const request = axios.create({
-  baseURL: 'http://localhost:8080/', //设置请求的基础URL
+  baseURL: '/api', //设置请求的基础URL
   timeout: 600000, //设置请求的超时时间，开发环境下设置为600000ms，生产环境下可以设置为30000ms
   headers: {
     'Content-Type': 'application/json', //设置请求头的Content-Type

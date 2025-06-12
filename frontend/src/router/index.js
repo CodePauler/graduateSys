@@ -8,18 +8,15 @@ import jobs from '@/views/student/jobs.vue';
 
 const routes = [
   { path: '/',
-    name: '',
+    name: 'index',
     component:Layout, // 默认重定向到登录页面
     children: [
-      { path:'/users', 
-        name: 'users', 
-        component: Users,
-    },
+      { path:'/users', name: 'users', component: Users,},
+      { path: '/jobs', name: 'jobs', component: jobs }
     ]
   },
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
-  { path: '/jobs', name: 'jobs', component: jobs }
 ];
 
 const router = createRouter({
