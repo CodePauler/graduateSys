@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Slf4j
@@ -21,6 +22,7 @@ public class LoginController {
     /**
      * 用户注册
      * 把通用属性封装到User对象，其他属性传递给Service层根据role决定封装到Student/Company
+     * 
      * @param params
      * @return
      */
@@ -40,10 +42,12 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody User user, HttpServletRequest request) {
         log.info("登录请求参数：{}", user);
         LoginInfo loginInfo = userService.login(user);
         if (loginInfo != null) {
+            // 登录成功，将用户信息写入session
+            request.getSession().setAttribute("user", loginInfo);
             return Result.success(loginInfo);
         } else {
             return Result.error("用户名或密码错误");

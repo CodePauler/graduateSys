@@ -30,4 +30,18 @@ const router = createRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  // 允许直接访问登录和注册
+  if (to.path === '/login' || to.path === '/register') {
+    return next();
+  }
+  // 判断本地有无 token
+  const token = localStorage.getItem('token');
+  if (!token) {
+    // 没有token，强制跳转登录
+    return next('/login');
+  }
+  next();
+});
+
 export default router;
