@@ -12,13 +12,8 @@ const routes = [
     component:Layout, // 默认重定向到登录页面
     children: [
       { path:'/users', 
-        name: 'userss', 
+        name: 'users', 
         component: Users,
-      // children:[
-      //   {path: 'students',
-      //     na
-      //   }
-      // ]
     },
     ]
   },

@@ -42,15 +42,20 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpServletRequest request) {
+    public Result login(@RequestBody User user) {
         log.info("登录请求参数：{}", user);
         LoginInfo loginInfo = userService.login(user);
         if (loginInfo != null) {
-            // 登录成功，将用户信息写入session
-            request.getSession().setAttribute("user", loginInfo);
             return Result.success(loginInfo);
         } else {
             return Result.error("用户名或密码错误");
         }
+    }
+
+    @GetMapping("/testurl")
+    public String testUrl(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        System.out.println("请求URL：" + url);
+        return url;
     }
 }

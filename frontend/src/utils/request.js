@@ -10,7 +10,23 @@ const request = axios.create({
   },
 })
 
-//axios的响应 response 拦截器
+// axios的请求 request 拦截器 发送请求前执行
+request.interceptors.request.use(
+  (config) => { //成功回调
+    // 在发送请求之前添加token
+    const token = localStorage.getItem('token') //从本地存储中获取token
+    if (token) {
+      console.log('请求头中添加token:', token) //打印token到控制台
+      config.headers['token'] = token //如果存在token，则将其添加到请求头中
+    }
+    return config //返回配置对象
+  },
+  (error) => { //失败回调
+    return Promise.reject(error) //返回错误信息
+  }
+)
+
+//axios的响应 response 拦截器 收到后端请求后执行
 request.interceptors.response.use(
   (response) => { //成功回调
     return response.data

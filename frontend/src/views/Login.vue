@@ -10,7 +10,7 @@
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">登录</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
           <el-button @click="$router.push('/register')">注册</el-button>
         </el-form-item>
       </el-form>
@@ -25,7 +25,7 @@ import { ElMessage } from 'element-plus';
 import { loginApi } from '@/api/login';
 
 const router = useRouter();
-const form = reactive({
+const form = ref({
   username: '',
   password: ''
 });
@@ -35,13 +35,15 @@ const rules = {
 };
 const loginForm = ref(null);
 
-const onSubmit = () => {
+const login = async () => {
   loginForm.value.validate(async (valid) => {
     if (valid) {
       try {
-        const res = await loginApi(form);
+        const res = await loginApi(form.value);
+        console.log('登录请求结果:', res);
         if (res.code === 1) {
           // 登录成功，保存 token
+          console.log('登录成功:', res.data);
           ElMessage.success('登录成功');
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('role', res.data.role);
@@ -51,7 +53,6 @@ const onSubmit = () => {
           ElMessage.error(res.msg);
         }
       } catch (e) {
-        console.error('登录失败:', e);
         ElMessage.error('登录失败，请稍后再试');
       }
     }
