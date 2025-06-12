@@ -23,7 +23,6 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { loginApi } from '@/api/login';
-import { ElMessageBox } from "element-plus";
 
 const router = useRouter();
 const form = reactive({
@@ -41,17 +40,18 @@ const onSubmit = () => {
     if (valid) {
       try {
         const res = await loginApi(form);
-        if (res.data.code === 1) {
+        if (res.code === 1) {
           // 登录成功，保存 token
-          localStorage.setItem('token', res.data.data.token);
-          localStorage.setItem('role', res.data.data.role);
           ElMessage.success('登录成功');
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('role', res.data.role);
           // 你可以根据角色跳转不同页面
           router.push('/');
         } else {
-          ElMessage.error(res.data.msg);
+          ElMessage.error(res.msg);
         }
       } catch (e) {
+        console.error('登录失败:', e);
         ElMessage.error('登录失败，请稍后再试');
       }
     }
