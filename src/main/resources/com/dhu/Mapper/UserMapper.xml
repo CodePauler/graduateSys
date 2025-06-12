@@ -26,4 +26,24 @@
                 AND role = #{role}
             </if>
     </select>
+
+<!--    根据ID查询单个用户-->
+    <select id="getById" resultType="com.dhu.Pojo.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+<!--    根据ID修改用户信息-->
+    <update id="updateById">
+        UPDATE user
+    <set>
+        <if test="username != null and username != ''">username = #{username},</if>
+        <if test="password != null and password != ''">password = #{password},</if>
+        <if test="role != null and role != ''">role = #{role},</if>
+        <if test="name != null and name != ''">name = #{name},</if>
+        <if test="gender != null and gender != ''">gender = #{gender},</if>
+        <if test="email != null and email != ''">email = #{email},</if>
+        <if test="phone != null and phone != ''">phone = #{phone},</if>
+    </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

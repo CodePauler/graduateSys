@@ -7,9 +7,7 @@ import com.dhu.Pojo.UserQueryParam;
 import com.dhu.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -24,5 +22,24 @@ public class UserController {
         log.info("请求查询参数:",userQueryParam);
         PageResult<User> page = userService.page(userQueryParam);
         return Result.success(page);
+    }
+
+    @GetMapping("/{id}")
+    public Result getUserById(@PathVariable Integer id) {
+        log.info("查询用户ID: {}", id);
+        User user = userService.getUserById(id);
+        if (user != null) {
+            return Result.success(user);
+        } else {
+            return Result.error("用户不存在");
+        }
+    }
+
+//    修改用户
+    @PutMapping
+    public Result insertUser(@RequestBody User user){
+        log.info("修改用户信息: {}", user);
+        userService.updateUser(user);
+        return Result.success();
     }
 }

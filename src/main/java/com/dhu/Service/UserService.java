@@ -16,4 +16,11 @@ public interface UserService {
      * 分页查询
      */
     PageResult<User> page(UserQueryParam userQueryParam);
+
+
+//    根据ID查询用户
+    User getUserById(Integer id);
+
+//   修改用户信息
+    void updateUser(User user);
 }

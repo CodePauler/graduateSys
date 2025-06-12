@@ -17,4 +17,8 @@ public interface UserMapper {
 
 //  查询所有用户
     List<User> list(UserQueryParam userQueryParam);
+
+    User getById(Integer id);
+
+    void updateById(User user);
 }

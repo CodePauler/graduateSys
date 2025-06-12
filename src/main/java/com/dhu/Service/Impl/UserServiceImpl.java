@@ -81,6 +81,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(User user) {
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        return userMapper.getById(id);
+    }
+
+    @Override
     public PageResult<User> page(UserQueryParam userQueryParam) {
         PageHelper.startPage(userQueryParam.getPage(), userQueryParam.getPageSize());
         Page<User> p = (Page<User>) userMapper.list(userQueryParam);
