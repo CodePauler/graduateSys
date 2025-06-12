@@ -120,7 +120,7 @@ const onSubmit = () => {
     if (valid) {
       try {
         const res = await registerApi(form);
-        if (res.data.code === 1) {
+        if (res.code === 1) {
           ElMessage.success('注册成功');
           router.push('/login');
         } else {

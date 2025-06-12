@@ -46,7 +46,13 @@
             </el-table-column>
         </el-table>
     </div>
-
+    <!-- 分页条 -->
+    <div class="container">
+        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize"
+            :page-sizes="[5, 10, 20, 30, 40, 50, 75, 100]" :background="background"
+            layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
+    </div>
 
     <!-- 用户编辑模态框 -->
     <el-dialog v-model="dialogFormVisible" title="用户编辑" width="500" :lock-scroll="false">
@@ -95,6 +101,7 @@
 import { reactive, onMounted, ref } from 'vue'
 import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/user'
 import { ElMessage, ElMessageBox } from "element-plus";
+
 const searchUser = reactive({
     username: '',
     name: '',
@@ -206,3 +213,8 @@ onMounted(() => {
     search()
 });
 </script>
+<style scoped>
+.container {
+    margin: 20px;
+}
+</style>
