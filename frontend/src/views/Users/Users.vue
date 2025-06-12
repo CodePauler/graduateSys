@@ -110,18 +110,36 @@ const searchUser = reactive({
     page: 1,
     pageSize: 10
 })
-const userInfo = ref([])
-const total = ref(0)
+const userInfo = ref([
+
+])
+
+// 分页相关数据
+const currentPage = ref(1) // 当前页码
+const pageSize = ref(10) // 每页条数
+const background = ref(true) // 是否显示背景色
+const total = ref(0) // 总条数
+//页码变化时触发
 const search = async () => {
     const res = await queryUsersApi(searchUser)
     console.log(res)
     if (res.code === 1) {
-        userInfo.value = res.data.rows
         total.value = res.data.total
-        console.log(userInfo.value);
-
+        userInfo.value = res.data.rows
+        console.log("查询到用户列表", userInfo.value);
     }
 };
+const handleCurrentChange = (val) => {
+    searchUser.page = val; // 更新当前页码
+    search(); // 重新查询数据
+    console.log(`当前页码: ${val}`)
+}
+
+const handleSizeChange = (val) => {
+    searchUser.pageSize = val; // 更新每页条数
+    search();
+    console.log(`每页条数: ${val}`)
+}
 const clear = () => {
     searchUser.username = ''
     searchUser.name = ''
