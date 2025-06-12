@@ -22,3 +22,4 @@ export const deleteUserApi = (ids) =>{
   console.log("删除用户：ids=", ids);
   return request.delete(`/users?ids=${ids}`);
 }
+

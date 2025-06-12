@@ -30,6 +30,7 @@
             </el-form-item>
         </el-form>
     </div>
+    <!-- 表格 -->
     <div class="container">
         <el-table :data="userInfo" style="width: 100%">
             <el-table-column prop="username" label="用户名" width="180" />
@@ -99,7 +100,7 @@
 
 <script setup>
 import { reactive, onMounted, ref } from 'vue'
-import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/user'
+import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/admin/user'
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const searchUser = reactive({
