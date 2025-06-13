@@ -15,6 +15,9 @@ public interface StudentMapper {
 //   分页查询学生
     List<StudentInfo> list(StudentQueryParam studentQueryParam);
 
+//    根据ID查询学生信息
+    StudentInfo getById(Integer studentId);
+
 //    更新学生信息
     void updateStudent(Student student);
 

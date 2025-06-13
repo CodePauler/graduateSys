@@ -3,8 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Users from '@/views/Admin/Users.vue';
+import Students from '@/views/Admin/Students.vue';
 import Layout from '@/views/Layout/Layout.vue';
-import jobs from '@/views/student/jobs.vue';
+import jobs from '@/views/Student/jobs.vue';
 
 const routes = [
   { path: '/',
@@ -12,7 +13,8 @@ const routes = [
     component:Layout, // 默认重定向到登录页面
     children: [
       { path:'/users', name: 'users', component: Users,},
-      { path: '/jobs', name: 'jobs', component: jobs }
+      { path: '/jobs', name: 'jobs', component: jobs },
+      {path:'/students',name:'students',component:Students,},
     ]
   },
   { path: '/login', name: 'login', component: Login },

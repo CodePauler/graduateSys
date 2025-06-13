@@ -2,6 +2,7 @@ package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.StudentMapper;
 import com.dhu.Pojo.PageResult;
+import com.dhu.Pojo.Student;
 import com.dhu.Pojo.StudentInfo;
 import com.dhu.Pojo.StudentQueryParam;
 import com.dhu.Service.StudentService;
@@ -22,4 +23,15 @@ public class StudentServiceImpl implements StudentService {
         Page<StudentInfo> p = (Page<StudentInfo>) studentMapper.list(studentQueryParam);
         return new PageResult<>(p.getTotal(),p.getResult());
     }
+
+    @Override
+    public StudentInfo getStudentById(Integer studentId) {
+        return studentMapper.getById(studentId);
+    }
+
+    @Override
+    public void updateStudent(Student student) {
+
+    }
+
 }

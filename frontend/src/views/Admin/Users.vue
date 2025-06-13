@@ -19,7 +19,7 @@ import SearchBar from '@/components/SearchBar.vue';
 import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/user';
+import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/users';
 // 搜索栏字段配置
 const searchFields = [
     { label: '用户名', prop: 'username', component: 'el-input', props: { placeholder: '请输入用户名', clearable: true } },
@@ -41,17 +41,30 @@ const searchFields = [
     }
 ]
 const pagination = reactive({
-    page: ref(1),
-    pageSize: ref(10),
-    total: ref(0)
+    page: 1,
+    pageSize: 10,
+    total: 0
 })
+// 分页处理
+const handleCurrentChange = (page) => {
+    pagination.page = page;
+    searchUser.page = page;
+    search();
+    console.log(`当前页码: ${page}`)
+}
+const handleSizeChange = (size) => {
+    pagination.pageSize = size;
+    searchUser.pageSize = size;
+    search();
+    console.log(`每条页数: ${size}`)
+}
 const searchUser = reactive({
     username: '',
     name: '',
     gender: '',
     role: '',
-    page: pagination.page,
-    pageSize: pagination.pageSize
+    page: 1,
+    pageSize: 10
 })
 // 搜索用户列表
 const search = async () => {
@@ -157,19 +170,6 @@ const saveUser = async () => {
     }
 }
 
-// 分页处理
-const handleCurrentChange = (page) => {
-    pagination.page = page;
-    searchUser.page = page;
-    search();
-    console.log(`当前页码: ${page}`)
-}
-const handleSizeChange = (size) => {
-    pagination.pageSize = size;
-    searchUser.pageSize = size;
-    search();
-    console.log(`每条页数: ${size}`)
-}
 onMounted(() => {
     search();
 });
