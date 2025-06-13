@@ -7,7 +7,7 @@
     <div class="container">
         <!-- 数据表格 -->
         <DataTable :data="userInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" />"
+            @page-change="handleCurrentChange" @size-change="handleSizeChange" />
     </div>
 
     <!-- 编辑弹窗 -->

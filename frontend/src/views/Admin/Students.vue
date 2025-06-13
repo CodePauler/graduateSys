@@ -12,10 +12,12 @@
     </div>
 
     <!-- 编辑弹窗 -->
-    <EditDialog v-model="dialogFormVisible" :title="'学生信息'" :model="student" :fields="editFields"
-        @submit="saveStudent" />
+    <div class="container">
+        <EditDialog v-model="dialogFormVisible" :title="'学生信息'" :model="student" :fields="editFields"
+            @submit="saveStudent" />
+    </div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { onMounted, reactive, ref } from 'vue';
 import SearchBar from '@/components/SearchBar.vue';
 import DataTable from '@/components/DataTable.vue';
@@ -35,7 +37,7 @@ const searchFields = [
         ]
     },
     {
-        label: '专业', prop: 'majorId', component: 'el-input', props: { placeholder: '请选择专业', clearable: true },
+        label: '专业', prop: 'majorId', component: 'el-select', props: { placeholder: '请选择专业', clearable: true },
         options: [
             { label: '计算机科学', value: '1' },
             { label: '软件工程', value: '2' },
@@ -43,7 +45,7 @@ const searchFields = [
         ]
     },
     {
-        label: '学院', prop: 'departmentId', component: 'el-input', props: { placeholder: '请选择学院', clearable: true },
+        label: '学院', prop: 'departmentId', component: 'el-select', props: { placeholder: '请选择学院', clearable: true },
         options: [
             { label: '计算机科学与技术学院', value: '1' },
             { label: '信息科学与技术学院', value: '2' },
@@ -104,7 +106,9 @@ const tableActions = [
             // 查询回显
             const result = await queryStudentByIdApi(row.studentId);
             if (result.code === 1) {
+                console.log("查询学生信息成功", result.data);
                 student.value = result.data;
+                student.value.majorId = majorOptions.find(option => option[result.data.major])?.[result.data.major] || '';
                 dialogFormVisible.value = true;
             } else {
                 ElMessage.error(result.msg);
@@ -120,7 +124,7 @@ const tableActions = [
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(async () => {
-                const result = await deleteStudentApi(row.id)
+                const result = await deleteStudentApi(row.studentId)
                 if (result.code === 1) {
                     ElMessage.success('成功删除')
                     search()
@@ -132,6 +136,11 @@ const tableActions = [
             })
         }
     }
+]
+const majorOptions = [
+    { '计算机科学': '1' },
+    { '软件工程': '2' },
+    { '电子信息': '3' }
 ]
 // 编辑弹窗
 const dialogFormVisible = ref(false);
@@ -147,8 +156,10 @@ const editFields = [
             { label: '电子信息', value: '3' }
         ]
     },
+    { label: '职业名称', prop: 'jobTitle', component: 'el-input', props: { disabled: true } },
+    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { disabled: true } },
     {
-        label: '毕业年份', prop: 'graduationYear', component: 'el-input', props: { placeholder: '请选择毕业年份', clearable: true },
+        label: '毕业年份', prop: 'graduationYear', component: 'el-select', props: { placeholder: '请选择毕业年份', clearable: true },
         options: [
             { label: '2025', value: '2025' },
             { label: '2026', value: '2026' },
@@ -164,7 +175,7 @@ const editFields = [
     }
 ]
 const saveStudent = async () => {
-    dialogFormVisible.value = true;
+    dialogFormVisible.value = false;
     const result = await updateStudentApi(student.value);
     if (result.code === 1) {
         ElMessage.success('用户信息更新成功')
@@ -199,18 +210,23 @@ const search = async () => {
     }
 }
 const clear = () => {
-    searchStudent.studentId = '',
-        searchStudent.name = '',
-        searchStudent.gender = '',
-        searchStudent.majorId = '',
-        searchStudent.departmentId = '',
-        searchStudent.graduationYear = '',
-        searchStudent.employmentStatus = '',
-        searchStudent.page = 1,
-        searchStudent.pageSize = 10,
+    searchStudent.studentId = '';
+    searchStudent.name = '';
+    searchStudent.gender = '';
+    searchStudent.majorId = '';
+    searchStudent.departmentId = '';
+    searchStudent.graduationYear = '';
+    searchStudent.employmentStatus = '';
+    searchStudent.page = 1;
+    searchStudent.pageSize = 10;
     search();
 }
 onMounted(() => {
     search();
 });
 </script>
+<style>
+.container {
+    margin: 20px;
+}
+</style>

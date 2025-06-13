@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping
     public Result page(UserQueryParam userQueryParam){
-        log.info("请求查询参数:",userQueryParam);
+        log.info("请求查询参数:{}",userQueryParam);
         PageResult<User> page = userService.page(userQueryParam);
         return Result.success(page);
     }
@@ -39,7 +39,7 @@ public class UserController {
 
 //    修改用户
     @PutMapping
-    public Result insertUser(@RequestBody User user){
+    public Result updateUser(@RequestBody User user){
         log.info("修改用户信息: {}", user);
         userService.updateUser(user);
         return Result.success("修改成功");

@@ -19,7 +19,7 @@ public interface StudentMapper {
     StudentInfo getById(Integer studentId);
 
 //    更新学生信息
-    void updateStudent(Student student);
+    void updateByStudentId(Student student);
 
 //    根据id批量删除学生
     void deleteByIds(List<Integer> ids);

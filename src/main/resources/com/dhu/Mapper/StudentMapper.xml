@@ -9,7 +9,18 @@
         VALUES (#{studentId}, #{userId}, #{majorId}, #{graduationYear}, #{employmentStatus})
     </insert>
 
-    <update id="updateStudent"></update>
+    <update id="updateByStudentId">
+        UPDATE student
+        <set>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="majorId != null and majorId != ''">major_id = #{majorId},</if>
+            <if test="graduationYear != null and graduationYear != ''">graduation_year = #{graduationYear},</if>
+            <if test="employmentStatus != null and employmentStatus != ''">employment_status = #{employmentStatus},</if>
+        </set>
+        <where>
+            student_id = #{studentId}
+        </where>
+    </update>
 
     <select id="getById" resultType="com.dhu.Pojo.StudentInfo">
         SELECT s.student_id         AS studentId,
@@ -31,7 +42,12 @@
         where s.student_id = #{studentId}
     </select>
 
-    <delete id="deleteByIds"></delete>
+    <delete id="deleteByIds">
+        DELETE FROM student where student_id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <select id="list" resultType="com.dhu.Pojo.StudentInfo">
         SELECT s.student_id         AS studentId,

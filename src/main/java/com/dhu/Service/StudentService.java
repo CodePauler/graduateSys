@@ -6,6 +6,8 @@ import com.dhu.Pojo.Student;
 import com.dhu.Pojo.StudentInfo;
 import com.dhu.Pojo.StudentQueryParam;
 
+import java.util.List;
+
 public interface StudentService {
 
     /**
@@ -22,7 +24,11 @@ public interface StudentService {
     /**
      * 更新学生基本信息
      */
-    void updateStudent(Student student);
+    void updateByStudentId(Student student);
 
 
+    /**
+     * 批量删除学生
+     */
+    void deleteStudent(List<Integer> ids);
 }

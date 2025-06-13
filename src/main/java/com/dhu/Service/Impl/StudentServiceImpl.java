@@ -11,6 +11,8 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -30,8 +32,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void updateStudent(Student student) {
+    public void deleteStudent(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            throw new IllegalArgumentException("删除学生ID列表不能为空");
+        }
+        studentMapper.deleteByIds(ids);
+    }
 
+    @Override
+    public void updateByStudentId(Student student) {
+        studentMapper.updateByStudentId(student);
     }
 
 }
