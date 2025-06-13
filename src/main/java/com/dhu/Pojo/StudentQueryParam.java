@@ -13,6 +13,7 @@ public class StudentQueryParam {
 
     private Long studentId;
     private String name;
+    private String gender;
     private Long majorId;
     private Long departmentId;
     private Integer graduationYear;

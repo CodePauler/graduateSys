@@ -9,13 +9,7 @@
         <DataTable :data="userInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
             @page-change="handleCurrentChange" @size-change="handleSizeChange" />"
     </div>
-    <!-- 分页 -->
-    <div class="container">
-        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize"
-            :page-sizes="[5, 10, 20, 30, 40, 50, 75, 100]" :background="background"
-            layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" />
-    </div>
+
     <!-- 编辑弹窗 -->
     <EditDialog v-model="dialogFormVisible" :title="'用户编辑'" :model="user" :fields="editFields" @submit="saveUser" />
 </template>
@@ -25,12 +19,13 @@ import SearchBar from '@/components/SearchBar.vue';
 import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/user';
+import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/users';
 // 搜索栏字段配置
 const searchFields = [
     { label: '用户名', prop: 'username', component: 'el-input', props: { placeholder: '请输入用户名', clearable: true } },
     { label: '姓名', prop: 'name', component: 'el-input', props: { placeholder: '请输入姓名', clearable: true } },
-    {label: '身份', prop: 'role', component: 'el-select', props: { placeholder: '请选择身份', clearable: true },
+    {
+        label: '身份', prop: 'role', component: 'el-select', props: { placeholder: '请选择身份', clearable: true },
         options: [
             { label: '管理员', value: 'admin' },
             { label: '学生', value: 'student' },
@@ -45,6 +40,24 @@ const searchFields = [
         ]
     }
 ]
+const pagination = reactive({
+    page: 1,
+    pageSize: 10,
+    total: 0
+})
+// 分页处理
+const handleCurrentChange = (page) => {
+    pagination.page = page;
+    searchUser.page = page;
+    search();
+    console.log(`当前页码: ${page}`)
+}
+const handleSizeChange = (size) => {
+    pagination.pageSize = size;
+    searchUser.pageSize = size;
+    search();
+    console.log(`每条页数: ${size}`)
+}
 const searchUser = reactive({
     username: '',
     name: '',
@@ -86,11 +99,7 @@ const tableColumns = [
     { prop: 'email', label: '邮箱' },
     { prop: 'phone', label: '电话' }
 ]
-const pagination = reactive({
-    page: 1,
-    pageSize: 10,
-    total: 0
-})
+
 // 表格操作按钮
 const tableActions = [
     {
@@ -161,21 +170,12 @@ const saveUser = async () => {
     }
 }
 
-// 分页处理
-const handleCurrentChange = (page) => {
-    searchUser.page = page;
-    search();
-}
-const handleSizeChange = (size) => {
-    searchUser.pageSize = size;
-    search();
-}
 onMounted(() => {
     search();
 });
 </script>
 <style scoped>
 .container {
-    margin: 10px;
+    margin: 20px;
 }
 </style>

@@ -100,7 +100,7 @@
 
 <script setup>
 import { reactive, onMounted, ref } from 'vue'
-import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/admin/user'
+import { deleteUserApi, queryUserByIdApi, queryUsersApi, updateUserApi } from '@/api/admin/users'
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const searchUser = reactive({

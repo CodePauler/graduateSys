@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class StudentInfo {  //封装用于展示的所有学生信息
     private Long studentId;
     private String name;
+    private String gender;
     private String major;
     private String department;
     private Integer graduationYear;
