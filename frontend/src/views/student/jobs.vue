@@ -1,5 +1,5 @@
 <template>
-    <h1>岗位管理</h1>
+    <h1>岗位列表</h1>
     <!-- 搜索栏 -->
     <div class="container">
         <SearchBar :fields="searchFields" :model="searchUser" @search="search" @clear="clear" />
@@ -17,7 +17,7 @@
             @current-change="handleCurrentChange" />
     </div>
     <!-- 编辑弹窗 -->
-    <EditDialog v-model="dialogFormVisible" :title="'用户编辑'" :model="user" :fields="editFields" @submit="saveUser" />
+    <EditDialog v-model="dialogFormVisible" :title="'岗位编辑'" :model="job" :fields="editFields" @submit="saveJob" />
 </template>
 <script setup>
 import DataTable from '@/components/DataTable.vue';
@@ -77,9 +77,8 @@ const clear = () => {
 const userInfo = ref([])
 const tableColumns = [
     { prop: 'title', label: '岗位名称' },
-    { prop: 'demandNumber', label: '姓名' },
-    { prop: 'hiredNumber', label: '身份' },
-    { prop: 'status', label: '性别' },
+    { prop: 'demandNumber', label: '需求人数' },
+    { prop: 'hiredNumber', label: '已聘人数' },
     { prop: 'companyName', label: '发布公司名称' },
     { prop: 'status', label: '审核状态' }//可以做成下拉框进行审核操作
 ]
@@ -88,16 +87,17 @@ const pagination = reactive({
     pageSize: 10,
     total: 0
 })
-// 表格操作按钮*
+// 表格操作按钮
 const tableActions = [
     {
         label: '编辑',
         type: 'primary',
         onClick: async (row) => {
-            const result = await queryUserByIdApi(row.id)
+            //const result = await queryJobByIdApi(row.id)//queryJobByIdApi待定义
+            dialogFormVisible.value = true//临时移动
             if (result.code === 1) {
                 user.value = result.data
-                dialogFormVisible.value = true
+                //dialogFormVisible.value = true
             }
         }
     },
@@ -105,12 +105,12 @@ const tableActions = [
         label: '删除',
         type: 'danger',
         onClick: (row) => {
-            ElMessageBox.confirm('是否确认删除用户？', '警告', {
+            ElMessageBox.confirm('是否确认删除该岗位？', '警告', {
                 confirmButtonText: '确认删除',
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(async () => {
-                const result = await deleteUserApi(row.id)
+                const result = await deleteJobApi(row.id)//deleteJobApi待定义
                 if (result.code === 1) {
                     ElMessage.success('成功删除')
                     search()
@@ -123,42 +123,37 @@ const tableActions = [
         }
     }
 ]
-// 编辑用户信息（查询回显） 以及弹窗*
+// 编辑用户信息（查询回显） 以及弹窗
 const dialogFormVisible = ref(false)
-const user = ref({})
+const job = ref({})
 const editFields = [
-    { label: '用户名', prop: 'username', component: 'el-input', props: { autocomplete: 'off' } },
-    { label: '密码', prop: 'password', component: 'el-input', props: { autocomplete: 'off' } },
-    { label: '姓名', prop: 'name', component: 'el-input', props: { autocomplete: 'off' } },
-    {
-        label: '身份', prop: 'role', component: 'el-select', props: { placeholder: '请选择身份' }, options: [
-            { label: '管理员', value: 'admin' },
-            { label: '学生', value: 'teacher' },
-            { label: '企业', value: 'company' }
+    { label: '岗位名称', prop: 'title', component: 'el-input', props: { autocomplete: 'off' } },
+    { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { autocomplete: 'off' } },
+    { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { autocomplete: 'off' } },
+    { label: '发布公司', prop: 'companyName', component: 'el-input', props: { autocomplete: 'off' } },
+    {label: '审核状态', prop: 'status', component: 'el-select', props: { autocomplete: 'off' },
+        options: [
+            { label: '待审核', value: '待审核' },
+            { label: '已通过', value: '已通过' },
+            { label: '不通过', value: '不通过' }
         ]
     },
-    {
-        label: '性别', prop: 'gender', component: 'el-select', props: { placeholder: '请选择性别' }, options: [
-            { label: '男', value: '男' },
-            { label: '女', value: '女' }
-        ]
-    },
-    { label: '邮箱', prop: 'email', component: 'el-input', props: { autocomplete: 'off' } },
-    { label: '电话', prop: 'phone', component: 'el-input', props: { autocomplete: 'off' } }
+    { label: '描述', prop: 'discription', component: 'el-input', props: { autocomplete: 'off' } }
+    
 ]
-// 保存修改*
-const saveUser = async () => {
+// 保存修改
+const saveJob = async () => {
     dialogFormVisible.value = false;
-    const result = await updateUserApi(user.value);
+    const result = await updateJobApi(job.value);
     if (result.code === 1) {
-        ElMessage.success('用户信息更新成功')
+        ElMessage.success('岗位信息更新成功')
         search()
     } else {
         ElMessage.error(result.msg)
     }
 }
 
-// 分页处理*
+// 分页处理
 const handleCurrentChange = (page) => {
     searchUser.page = page;
     search();
