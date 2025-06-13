@@ -15,7 +15,8 @@
     </select>
 
     <select id="list" resultType="com.dhu.Pojo.User">
-        SELECT * FROM user WHERE ROLE != 'admin'
+        SELECT * FROM user
+        <where>
             <if test="username != null and username != ''">
                 AND username LIKE CONCAT('%', #{username}, '%')
             </if>
@@ -25,6 +26,7 @@
             <if test="role != null and role != ''">
                 AND role = #{role}
             </if>
+        </where>
     </select>
 
 <!--    根据ID查询单个用户-->
