@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public PageResult<StudentInfo> page(StudentQueryParam studentQueryParam) {
-        PageHelper.startPage(studentQueryParam.getPageNum(),studentQueryParam.getPageSize());
+        PageHelper.startPage(studentQueryParam.getPage(),studentQueryParam.getPageSize());
         Page<StudentInfo> p = (Page<StudentInfo>) studentMapper.list(studentQueryParam);
         return new PageResult<>(p.getTotal(),p.getResult());
     }

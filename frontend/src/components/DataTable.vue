@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data" table-layout="auto" style="width: 100%">
+  <el-table :data="data" table-layout="auto" style="height: 550px;">
     <el-table-column v-for="col in columns" :key="col.prop" v-bind="col" />
     <el-table-column v-if="actions.length" label="操作" width="180">
       <template #default="scope">

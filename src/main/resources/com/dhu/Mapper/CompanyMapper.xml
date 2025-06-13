@@ -8,4 +8,73 @@
         VALUES (#{userId}, #{companyName}, #{companyIntro})
     </insert>
 
+<!--    更新公司信息-->
+    <update id="updateByCompanyId">
+        UPDATE company
+        <set>
+#             待后续完善是否多表修改
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyIntro != null and companyIntro != ''">company_intro = #{companyIntro},</if>
+        </set>
+        WHERE company_id = #{companyId};
+    </update>
+
+
+<!--批量删除-->
+    <delete id="deleteByIds">
+        DELETE FROM company
+        WHERE company_id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    查询所有公司及HR相关信息-->
+    <select id="list" resultType="com.dhu.Pojo.CompanyInfo">
+        SELECT
+            c.company_id,
+            c.company_name,
+            c.company_intro,
+            u.name hr_name,
+            u.gender,
+            u.email,
+            u.phone
+        FROM company c
+        left join user u on c.user_id = u.id
+        <where>
+            <if test="companyId != null and companyId !=''">
+                AND c.company_id = #{companyId}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND c.company_name LIKE CONCAT('%', #{companyName}, '%')
+            </if>
+            <if test="hrName != null and hrName != ''">
+                AND u.name LIKE CONCAT('%', #{hrName}, '%')
+            </if>
+            <if test="gender != null and gender != ''">
+                AND u.gender = #{gender}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND u.phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                AND u.email = #{email}
+            </if>
+
+        </where>
+    </select>
+    <select id="getById" resultType="com.dhu.Pojo.CompanyInfo">
+        SELECT c.company_id,
+               c.company_name,
+               c.company_intro,
+               u.name hr_name,
+               u.gender,
+               u.email,
+               u.phone
+        FROM company c
+        LEFT JOIN user u
+        ON c.user_id = u.id
+        WHERE c.company_id = #{companyId}
+    </select>
+
 </mapper>

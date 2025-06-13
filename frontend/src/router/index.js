@@ -6,6 +6,7 @@ import Users from '@/views/Admin/Users.vue';
 import Students from '@/views/Admin/Students.vue';
 import Layout from '@/views/Layout/Layout.vue';
 import jobs from '@/views/Student/jobs.vue';
+import Companies from '@/views/Admin/Companies.vue';
 
 const routes = [
   { path: '/',
@@ -15,7 +16,7 @@ const routes = [
       { path: '/home', name:'home',component:Users, },                      //*all-   未完成-首页，展示公告和毕业生统计情况(/graduates似乎没有什么必要)
       { path:'/users', name: 'users', component: Users,},                     //admin-  用户管理
       { path:'/students',name:'students',component:Students,},                //*admin- 学生管理
-      { path:'/companies',name:'companies',component:Users},                 //*admin- 未完成-企业管理
+      { path:'/companies',name:'companies',component:Companies},                 //*admin- 未完成-企业管理
       { path: '/jobs', name: 'jobs', component: jobs },                       //*all-   未完成-岗位展示 学生可查看、申请；企业可发布、修改
       { path: '/applications', name: 'applications', component: Users },     //*all-   未完成-投递管理 学生可管理自己的申请；企业可查看、审核申请
       { path: '/resume',  name: 'resume', component: Users },                //student-未完成-简历管理

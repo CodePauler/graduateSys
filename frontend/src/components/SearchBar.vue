@@ -23,8 +23,11 @@ defineProps({
 defineEmits(['search', 'clear'])
 </script>
 <style scoped>
-
 .demo-form-inline .el-select {
   --el-select-width: 120px;
+}
+
+.demo-form-inline .el-input {
+  width: 150px;
 }
 </style>

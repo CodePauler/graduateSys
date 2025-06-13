@@ -47,7 +47,7 @@ public class StudentsController {
 
 //    删除学生
     @DeleteMapping
-    public Result deleteStudent(@RequestParam List<Integer>ids) {
+    public Result deleteStudents(@RequestParam List<Integer>ids) {
         log.info("删除学生ID列表: {}", ids);
         studentService.deleteStudent(ids);
         return Result.success("删除成功");

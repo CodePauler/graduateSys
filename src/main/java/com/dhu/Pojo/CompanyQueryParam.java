@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentQueryParam {
+public class CompanyQueryParam {
     private Integer page = 1;
     private Integer pageSize = 10;
 
-    private Long studentId;
-    private String name;
+    private Integer companyId;
+    private String companyName;
+    private String hrName;
     private String gender;
-    private Long majorId;
-    private Long departmentId;
-    private Integer graduationYear;
-    private String employmentStatus;
+    private String email;
+    private String phone;
 }
