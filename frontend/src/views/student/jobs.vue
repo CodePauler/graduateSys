@@ -25,7 +25,7 @@ import SearchBar from '@/components/SearchBar.vue';
 import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/user';
+import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/users';
 // 搜索栏字段配置
 const searchFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
