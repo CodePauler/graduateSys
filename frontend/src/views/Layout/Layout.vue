@@ -34,7 +34,7 @@
               </el-menu-item>
               <el-menu-item index="/applications">
                 <el-icon>
-                  <Briefcase />
+                  <Document />
                 </el-icon>
                 <span>投递管理</span>
               </el-menu-item>
@@ -42,7 +42,7 @@
               <template v-if="role === 'student'">
                 <el-menu-item index="/resume">
                   <el-icon>
-                    <Briefcase />
+                    <List />
                   </el-icon>
                   <span>我的简历</span>
                 </el-menu-item>
@@ -51,19 +51,19 @@
               <template v-if="role === 'admin'">
                 <el-menu-item index="/users">
                   <el-icon>
-                    <Briefcase />
+                    <User />
                   </el-icon>
                   <span>用户管理</span>
                 </el-menu-item>
                 <el-menu-item index="/students">
                   <el-icon>
-                    <Briefcase />
+                    <User />
                   </el-icon>
                   <span>学生管理</span>
                 </el-menu-item>
                 <el-menu-item index="/companies">
                   <el-icon>
-                    <Briefcase />
+                    <User />
                   </el-icon>
                   <span>企业管理</span>
                 </el-menu-item>
@@ -81,7 +81,7 @@
                 </el-menu-item>
                 <el-menu-item index="/departments">
                   <el-icon>
-                    <Briefcase />
+                    <HelpFilled />
                   </el-icon>
                   <span>院系管理</span>
                 </el-menu-item>
@@ -104,12 +104,10 @@
     </el-container>
   </div>
 </template>
-
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { HomeFilled, User, Briefcase, Check, Setting } from '@element-plus/icons-vue';
 
 const route = useRoute();
 const router = useRouter();
