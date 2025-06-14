@@ -5,13 +5,48 @@
 <mapper namespace="com.dhu.Mapper.JobMapper">
 
 <!--    company-发布岗位-->
-    <insert id="addJob"></insert>
+    <insert id="addJob" useGeneratedKeys="true" keyProperty="jobId">
+        INSERT INTO job (title, type_id, description, demand_number, hired_number, company_id, status)
+        VALUES (#{title}, #{typeId}, #{description}, #{demandNumber}, #{hiredNumber}, #{companyId}, #{status})
+    </insert>
+
+
 
 <!--    company-更新岗位-->
-    <update id="updateJobById"></update>
+    <update id="updateJobById">
+        update job
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="typeId != null and typeId != ''">
+                type_id = #{typeId},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="demandNumber != null and demandNumber != ''">
+                demand_number = #{demandNumber},
+            </if>
+            <if test="hiredNumber != null and hiredNumber != ''">
+                hired_number = #{hiredNumber},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+        </set>
+        WHERE job_id = #{jobId}
+    </update>
 
 <!--    admin-批量删除岗位-->
-    <delete id="deleteJobs"></delete>
+    <delete id="deleteJobs">
+        delete from job
+        where job_id in(
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            )
+    </delete>
 
 
     <!--    all-分页查询-->
@@ -52,5 +87,22 @@
     </select>
 
 <!--    all-ID查询-->
-    <select id="getJobById" resultType="com.dhu.Pojo.JobInfo"></select>
+    <select id="getJobById" resultType="com.dhu.Pojo.JobInfo">
+        SELECT j.job_id,
+               j.title,
+               jt.name jobType,
+               j.description,
+               j.demand_number,
+               j.hired_number,
+               j.company_id,
+               c.company_name,
+               c.company_intro,
+               j.status
+        FROM job j
+        LEFT JOIN job_type jt ON j.type_id=jt.type_id
+        LEFT JOIN company c ON j.company_id=c.company_id
+        WHERE j.job_id = #{jobId}
+    </select>
+
+
 </mapper>

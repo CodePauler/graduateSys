@@ -11,6 +11,7 @@ public class JobInfo {
     private Integer jobId; // 岗位ID
     private String title; // 岗位名称
     private String jobType; // 岗位类型名称
+    private Integer typeId; // 岗位类型ID
     private String description; // 岗位描述
     private Integer demandNumber; // 招聘人数
     private String hiredNumber; // 已录用人数

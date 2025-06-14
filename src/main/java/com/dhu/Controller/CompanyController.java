@@ -54,4 +54,16 @@ public class CompanyController {
         return Result.success("删除成功");
     }
 
+//    根据HR用户ID获取公司信息
+    @GetMapping("/getCompanyByHrId/{hrId}")
+    public Result getCompanyByHrId(@PathVariable Integer hrId) {
+        log.info("根据HR用户ID查询公司信息: {}", hrId);
+        CompanyInfo companyInfo = companyService.getCompanyByHrId(hrId);
+        if (companyInfo != null) {
+            return Result.success(companyInfo);
+        } else {
+            return Result.error("公司不存在或未分配");
+        }
+    }
+
 }

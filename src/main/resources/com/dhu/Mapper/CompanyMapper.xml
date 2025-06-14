@@ -76,5 +76,9 @@
         ON c.user_id = u.id
         WHERE c.company_id = #{companyId}
     </select>
+    <select id="getByHrId" resultType="com.dhu.Pojo.CompanyInfo">
+        select * from company
+        where user_id = #{hrId}
+    </select>
 
 </mapper>

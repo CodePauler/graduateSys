@@ -51,4 +51,10 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompany(List<Integer> ids) {
         companyMapper.deleteByIds(ids);
     }
+
+    @Override
+    public CompanyInfo getCompanyByHrId(Integer hrId) {
+        // 通过HR ID查询公司信息
+        return companyMapper.getByHrId(hrId);
+    }
 }

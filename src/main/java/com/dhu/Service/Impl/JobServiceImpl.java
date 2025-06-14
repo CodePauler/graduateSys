@@ -10,6 +10,8 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobServiceImpl implements JobService {
     @Autowired
@@ -20,5 +22,25 @@ public class JobServiceImpl implements JobService {
         PageHelper.startPage(jobQueryParam.getPage(), jobQueryParam.getPageSize());
         Page<JobInfo> page = (Page<JobInfo>)jobMapper.getAllJobs(jobQueryParam);
         return new PageResult<>(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public JobInfo getJobById(Integer jobId) {
+        return jobMapper.getJobById(jobId);
+    }
+
+    @Override
+    public void updateByJobId(JobInfo jobInfo) {
+        jobMapper.updateJobById(jobInfo);
+    }
+
+    @Override
+    public void deleteJob(List<Integer> ids) {
+        jobMapper.deleteJobs(ids);
+    }
+
+    @Override
+    public void addJob(JobInfo jobInfo) {
+        jobMapper.addJob(jobInfo);
     }
 }

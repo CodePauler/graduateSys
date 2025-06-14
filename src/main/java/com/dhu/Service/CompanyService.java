@@ -26,4 +26,9 @@ public interface CompanyService {
      * 批量删除公司
      */
     void deleteCompany(List<Integer> ids);
+
+    /**
+     * 根据HR用户ID获取公司信息
+     */
+    CompanyInfo getCompanyByHrId(Integer hrId);
 }

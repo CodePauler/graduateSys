@@ -11,3 +11,9 @@ export const updateJobApi = (job) => {
     console.log("更新岗位：job=", job);
     return request.put(`/jobs`, job);
 }
+
+// 删除岗位
+export const deleteJobApi = (ids) => {
+    console.log("删除岗位：ids=", ids);
+    return request.delete(`/jobs?ids=${ids}`);
+}

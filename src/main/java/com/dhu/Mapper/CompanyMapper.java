@@ -22,4 +22,6 @@ public interface CompanyMapper {
 
     //    根据id批量删除企业
     void deleteByIds(List<Integer> ids);
+
+    CompanyInfo getByHrId(Integer hrId);
 }
