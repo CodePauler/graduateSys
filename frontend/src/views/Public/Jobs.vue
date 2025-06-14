@@ -4,6 +4,17 @@
     <div class="container">
         <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear" />
     </div>
+
+    <!-- admin-发布岗位 -->
+    <div class="container">
+        <el-button type="primary" @click="openAddDialog()">发布岗位</el-button>
+    </div>
+    <!-- admin-新增岗位弹窗 -->
+    <div class="container">
+        <EditDialog v-model="addDialogVisible" :title="'发布岗位'" :model="addJob" :fields="addFields"
+            @submit="addJobSubmit" />
+    </div>
+
     <div class="container">
         <!-- 数据表格 -->
         <DataTable :data="jobInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
@@ -26,12 +37,60 @@ import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { queryJobsApi, queryJobByIdApi } from '@/api/public/jobs';
-// 搜索栏字段配置
-const searchFields = [
+import { updateJobApi, deleteJobApi, insertJobApi } from '@/api/company/jobs';
+import { queryCompanyByHrIdApi } from '@/api/public/company';
+// company-发布岗位
+const addDialogVisible = ref(false);
+const addJob = ref({});
+const addFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
+    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
     { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { placeholder: '请输入已聘人数', clearable: true } },
-    { label: '发布公司', prop: 'companyName', component: 'el-input', props: { placeholder: '请输入发布公司', clearable: true } },
+    { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
+    { label: '公司简介', prop: 'companyIntro', component: 'el-input', props: { disabled: true } },
+    { label: '岗位描述', prop: 'description', component: 'el-input', props: { type: 'textarea', placeholder: '请输入岗位描述', clearable: true } }
+]
+const openAddDialog = async () => {
+    const company = await queryCompanyByHrIdApi(localStorage.getItem('userId'));
+    if (company.code === 1) {
+        addJob.value = {
+            title: '',
+            jobType: '',
+            typeId: 1, //测试
+            demandNumber: '',
+            hiredNumber: '',
+            companyId: company.data.companyId,
+            companyName: company.data.companyName,
+            companyIntro: company.data.companyIntro,
+            description: '',
+            status: '待审核'
+        };
+    } else {
+        ElMessage.error('获取公司信息失败，请先创建公司');
+        return;
+    }
+    addDialogVisible.value = true;
+}
+const addJobSubmit = async () => {
+    const result = await insertJobApi(addJob.value);
+    if (result.code === 1) {
+        ElMessage.success('岗位发布成功');
+        addDialogVisible.value = false;
+        search();
+    } else {
+        ElMessage.error(result.msg);
+    }
+}
+
+
+// 搜索栏字段配置
+const searchFields = [
+    { label: '岗位ID', prop: 'jobId', component: 'el-input', props: { placeholder: '请输入岗位ID', clearable: true } },
+    { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
+    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
+    { label: '公司名称', prop: 'companyName', component: 'el-input', props: { placeholder: '请输入公司名称', clearable: true } },
+    { label: '岗位描述', prop: 'description', component: 'el-input', props: { placeholder: '请输入岗位描述', clearable: true } },
     {
         label: '审核状态', prop: 'status', component: 'el-select', props: { placeholder: '请选择审核状态', clearable: true },
         options: [
@@ -50,7 +109,7 @@ const searchJob = reactive({
     page: 1,
     pageSize: 10
 })
-// 搜索用户列表*
+// 查询岗位列表
 const search = async () => {
     const res = await queryJobsApi(searchJob);
     if (res.code === 1) {
@@ -63,11 +122,12 @@ const search = async () => {
 }
 // 清空搜索条件
 const clear = () => {
+    searchJob.jobId = '';
     searchJob.title = '';
-    searchJob.demandNumber = '';
-    searchJob.hiredNumber = '';
-    searchJob.status = '';
+    searchJob.jobType = '';
     searchJob.companyName = '';
+    searchJob.description = '';
+    searchJob.status = '';
     searchJob.page = 1;
     searchJob.pageSize = 10;
     search();
@@ -79,10 +139,11 @@ const jobInfo = ref([])
 const tableColumns = [
     { prop: 'jobId', label: '岗位ID' },
     { prop: 'title', label: '岗位名称' },
-    { prop: 'description', label: '岗位描述' },
+    { prop: 'jobType', label: '职业类型' },
     { prop: 'demandNumber', label: '需求人数' },
     { prop: 'hiredNumber', label: '已聘人数' },
-    { prop: 'companyName', label: '发布公司名称' },
+    { prop: 'description', label: '岗位描述' },
+    { prop: 'companyName', label: '公司名称' },
     { prop: 'companyIntro', label: '公司简介' },
     { prop: 'status', label: '审核状态' }//可以做成下拉框进行审核操作
 ]
@@ -92,16 +153,20 @@ const pagination = reactive({
     total: 0
 })
 // 表格操作按钮
+const dialogFormVisible = ref(false)
 const tableActions = [
     {
         label: '编辑',
         type: 'primary',
         onClick: async (row) => {
-            //const result = await queryJobByIdApi(row.id)//queryJobByIdApi待定义
             dialogFormVisible.value = true//临时移动
+            const result = await queryJobByIdApi(row.jobId)
             if (result.code === 1) {
-                user.value = result.data
-                //dialogFormVisible.value = true
+                console.log("查询岗位信息成功", result.data);
+                job.value = result.data
+            }
+            else {
+                ElMessage.error(result.msg)
             }
         }
     },
@@ -114,7 +179,7 @@ const tableActions = [
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(async () => {
-                const result = await deleteJobApi(row.id)//deleteJobApi待定义
+                const result = await deleteJobApi(row.jobId)
                 if (result.code === 1) {
                     ElMessage.success('成功删除')
                     search()
@@ -128,13 +193,12 @@ const tableActions = [
     }
 ]
 // 编辑用户信息（查询回显） 以及弹窗
-const dialogFormVisible = ref(false)
 const job = ref({})
 const editFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { autocomplete: 'off' } },
-    { label: '发布公司', prop: 'companyName', component: 'el-input', props: { autocomplete: 'off' } },
+    { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
     {
         label: '审核状态', prop: 'status', component: 'el-select', props: { autocomplete: 'off' },
         options: [
@@ -143,7 +207,7 @@ const editFields = [
             { label: '不通过', value: '不通过' }
         ]
     },
-    { label: '描述', prop: 'discription', component: 'el-input', props: { autocomplete: 'off' } }
+    { label: '描述', prop: 'description', component: 'el-input', props: { autocomplete: 'off' } }
 
 ]
 // 保存修改

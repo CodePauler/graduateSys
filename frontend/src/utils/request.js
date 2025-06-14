@@ -1,6 +1,7 @@
 // uitls包下的文件用于封装axios请求
 // 该文件用于创建axios实例对象，设置请求的基本配置，添加请求拦截器和响应拦截器
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 //创建axios实例对象
 const request = axios.create({
   baseURL: '/api', //设置请求的基础URL
@@ -22,6 +23,7 @@ request.interceptors.request.use(
     return config //返回配置对象
   },
   (error) => { //失败回调
+    ElMessage.error(error.message || '网络错误')
     return Promise.reject(error) //返回错误信息
   }
 )
@@ -32,6 +34,7 @@ request.interceptors.response.use(
     return response.data
   },
   (error) => { //失败回调
+    ElMessage.error(error.message || '网络错误')
     return Promise.reject(error)
   }
 )

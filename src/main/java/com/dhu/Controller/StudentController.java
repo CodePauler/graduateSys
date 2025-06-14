@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.*;
 import com.dhu.Service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ public class StudentController {
     private StudentService studentService;
 
 //    分页查询
+    @RoleCheck({"admin"})
     @GetMapping
     public Result page(StudentQueryParam studentQueryParam){
         log.info("请求查询参数:{}",studentQueryParam);

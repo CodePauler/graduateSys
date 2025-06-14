@@ -1,10 +1,9 @@
 package com.dhu.Utils;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,7 +25,9 @@ public class TokenInterceptor implements HandlerInterceptor {   //Jwt鉴权
         }
 //      解析token
         try{
-            JwtUtils.parseToken(jwt);
+            Claims claims = JwtUtils.parseToken(jwt); // 解析 JWT 得到 claims
+            String role = (String) claims.get("role"); // 获取用户角色
+            request.setAttribute("role", role);
         }
         catch (Exception e){
             e.printStackTrace();

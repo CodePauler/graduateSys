@@ -32,7 +32,7 @@ public class JwTest {
     public void testParseJwt(){
         Claims claims = Jwts.parser()
                 .setSigningKey("wsZm8D45l")
-                .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE3NDk1MTAyNTB9.dG_8jN5FAoXaIV28hbngttrNZedKL9CiSm0dM64xwOc")
+                .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE3NDk5NjY3MDd9.MLf_pOdrvR-rbb_JBF_iJD_c5PXo8G-geHeruo7RZ4c")
                 .getBody();
         System.out.println(claims);
     }
