@@ -7,6 +7,7 @@ import Students from '@/views/Admin/Students.vue';
 import Layout from '@/views/Layout/Layout.vue';
 import jobs from '@/views/Student/jobs.vue';
 import Companies from '@/views/Admin/Companies.vue';
+import Announcements from '@/views/Admin/Announcements.vue';
 
 const routes = [
   { path: '/',
@@ -20,7 +21,7 @@ const routes = [
       { path: '/jobs', name: 'jobs', component: jobs },                       //*all-   未完成-岗位展示 学生可查看、申请；企业可发布、修改
       { path: '/applications', name: 'applications', component: Users },     //*all-   未完成-投递管理 学生可管理自己的申请；企业可查看、审核申请
       { path: '/resume',  name: 'resume', component: Users },                //student-未完成-简历管理
-      { path: '/announcements', name: 'announcements', component: Users },   //admin-  未完成-公告管理
+      { path: '/announcements', name: 'announcements', component: Announcements },   //admin-  未完成-公告管理
       { path: '/approvals', name: 'approval', component: Users },             //admin-  未完成-岗位审批
       { path: '/departments', name: 'departments', component: Users },       //admin-  未完成-院系管理
       { path: '/majors', name: 'majors', component: Users },                 //admin-  #未完成-专业管理 不确定是否合并到院系管理

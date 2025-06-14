@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/students")
-public class StudentsController {
+public class StudentController {
 
     @Autowired
     private StudentService studentService;

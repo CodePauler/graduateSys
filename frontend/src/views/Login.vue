@@ -45,10 +45,12 @@ const login = async () => {
           // 登录成功，保存 token
           console.log('登录成功:', res.data);
           ElMessage.success('登录成功');
+          localStorage.setItem('userId', res.data.id);
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('role', res.data.role);
+          localStorage.setItem('name', res.data.name);
           // 你可以根据角色跳转不同页面
-          router.push('/');
+          router.push('/home');
         } else {
           ElMessage.error(res.msg);
         }

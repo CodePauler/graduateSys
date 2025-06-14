@@ -101,6 +101,7 @@ const tableColumns = [
 const tableActions = [
     {
         label: '编辑',
+        icon: 'el-icon-edit',
         type: 'primary',
         onClick: async (row) => {
             // 查询回显

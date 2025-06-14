@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.Mapper.AnnouncementMapper">
+
+<!--    发布公告-->
+    <insert id="addAnnouncement" parameterType="com.dhu.Pojo.Announcement" useGeneratedKeys="true" keyProperty="announcementId">
+        insert into announcement
+            (title, content, creator_id,attachment_name, attachment_url,create_time, update_time, is_pinned)
+        values
+            (#{title}, #{content}, #{creatorId},#{attachmentName}, #{attachmentUrl}, #{createTime}, #{updateTime}, #{isPinned})
+    </insert>
+
+    <!--    编辑公告-->
+    <update id="updateByAnnouncementId">
+        update announcement
+        <set>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="attachmentName != null and attachmentName !=''">attachment_name = #{attachmentName},</if>
+            <if test="attachmentUrl != null and attachmentUrl != ''">attachment_url = #{attachmentUrl},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="isPinned != null">is_pinned = #{isPinned},</if>
+        </set>
+        where announcement_id = #{announcementId}
+    </update>
+    <delete id="deleteAnnouncements">
+        delete from announcement where announcement_id in (
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            )
+        </delete>
+
+
+    <!--    分页查询-->
+    <select id="getAllAnnouncements" resultType="com.dhu.Pojo.Announcement">
+        SELECT announcement.*, user.name creator_name
+        FROM announcement
+        LEFT JOIN user on announcement.creator_id = user.id
+        <where>
+            <if test="announcementId != null and announcementId != ''">
+                AND announcement.announcement_id = #{announcementId}
+            </if>
+            <if test="title != null and title != ''">
+                AND announcement.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="creatorName != null and creatorName != ''">
+                AND user.name LIKE CONCAT('%', #{creatorName}, '%')
+            </if>
+            <if test="beginDate != null and endDate != null">
+                AND announcement.create_time BETWEEN #{beginDate} AND #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+<!--    公告ID查询公告-->
+    <select id="getAnnouncementById" resultType="com.dhu.Pojo.Announcement">
+        SELECT announcement.*, user.name creator_name
+        FROM announcement
+        LEFT JOIN user on announcement.creator_id = user.id
+        WHERE announcement.announcement_id = #{announcementId}
+    </select>
+</mapper>

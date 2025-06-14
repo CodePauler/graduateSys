@@ -12,7 +12,7 @@
         </el-form>
         <template #footer>
             <el-button @click="visible = false">取消</el-button>
-            <el-button type="primary" @click="$emit('submit')">确认修改</el-button>
+            <el-button type="primary" @click="$emit('submit')">确认</el-button>
         </template>
     </el-dialog>
 </template>

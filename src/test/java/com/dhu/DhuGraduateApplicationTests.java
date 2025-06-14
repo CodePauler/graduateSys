@@ -1,9 +1,8 @@
 package com.dhu;
 
+import com.dhu.Mapper.AnnouncementMapper;
 import com.dhu.Mapper.StudentMapper;
-import com.dhu.Pojo.Student;
-import com.dhu.Pojo.StudentInfo;
-import com.dhu.Pojo.StudentQueryParam;
+import com.dhu.Pojo.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +21,9 @@ class DhuGraduateApplicationTests {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private AnnouncementMapper announcementMapper;
+
     @Test
     public void testStudentMapper(){
         StudentQueryParam studentQueryParam;
@@ -31,6 +33,15 @@ class DhuGraduateApplicationTests {
         for (StudentInfo studentInfo : list) {
             System.out.println(studentInfo);
         }
+    }
 
+    @Test
+    public void testAnnouncementMapper(){
+        // 测试获取所有公告
+        AnnouncementQueryParam announcementQueryParam = new AnnouncementQueryParam();
+        List<Announcement> announcements = announcementMapper.getAllAnnouncements(announcementQueryParam);
+        for (Announcement announcement : announcements) {
+            System.out.println(announcement);
+        }
     }
 }
