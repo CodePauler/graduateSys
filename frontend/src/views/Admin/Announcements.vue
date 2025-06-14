@@ -1,5 +1,5 @@
 <template>
-
+    <h1>公告管理</h1>
     <!-- 搜索栏 -->
     <div class="container">
         <SearchBar :fields="searchFields" :model="searchAnnouncement" @search="search" @clear="clear" />
@@ -33,8 +33,8 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import SearchBar from '@/components/SearchBar.vue';
 import DataTable from '@/components/DataTable.vue';
 import EditDialog from '@/components/EditDialog.vue';
-import { queryAnnouncementsApi, queryAnnouncementByIdApi, updateAnnouncementApi, deleteAnnouncementApi } from '@/api/public/announcements';
-import { insertAnnouncementApi } from '@/api/admin/announcements';
+import { queryAnnouncementsApi, queryAnnouncementByIdApi } from '@/api/public/announcements';
+import { insertAnnouncementApi, updateAnnouncementApi, deleteAnnouncementApi } from '@/api/admin/announcements';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 // 发布公告

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.Mapper.JobMapper">
+
+<!--    company-发布岗位-->
+    <insert id="addJob"></insert>
+
+<!--    company-更新岗位-->
+    <update id="updateJobById"></update>
+
+<!--    admin-批量删除岗位-->
+    <delete id="deleteJobs"></delete>
+
+
+    <!--    all-分页查询-->
+    <select id="getAllJobs" resultType="com.dhu.Pojo.JobInfo">
+        SELECT j.job_id,
+               j.title,
+               jt.name jobType,
+               j.description,
+               j.demand_number,
+               j.hired_number,
+               j.company_id,
+               c.company_name,
+               c.company_intro,
+               j.status
+        FROM job j
+        LEFT JOIN job_type jt ON j.type_id=jt.type_id
+        LEFT JOIN company c ON j.company_id=c.company_id
+        <where>
+            <if test="jobId != null and jobId != ''">
+                AND j.job_id = #{jobId}
+            </if>
+            <if test="title != null and title != ''">
+                AND j.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND c.company_name LIKE CONCAT('%', #{companyName}, '%')
+            </if>
+            <if test="jobType != null and jobType != ''">
+                AND jt.name LIKE CONCAT('%', #{jobType}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND j.description LIKE CONCAT('%', #{description}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                AND j.status = #{status}
+            </if>
+        </where>
+    </select>
+
+<!--    all-ID查询-->
+    <select id="getJobById" resultType="com.dhu.Pojo.JobInfo"></select>
+</mapper>

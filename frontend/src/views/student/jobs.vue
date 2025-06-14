@@ -2,11 +2,11 @@
     <h1>岗位列表</h1>
     <!-- 搜索栏 -->
     <div class="container">
-        <SearchBar :fields="searchFields" :model="searchUser" @search="search" @clear="clear" />
+        <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear" />
     </div>
     <div class="container">
         <!-- 数据表格 -->
-        <DataTable :data="userInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
+        <DataTable :data="jobInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
             @page-change="handleCurrentChange" @size-change="handleSizeChange" />"
     </div>
     <!-- 分页 -->
@@ -25,14 +25,15 @@ import SearchBar from '@/components/SearchBar.vue';
 import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { queryUsersApi, queryUserByIdApi, updateUserApi, deleteUserApi } from '@/api/admin/users';
+import { queryJobsApi, queryJobByIdApi } from '@/api/public/jobs';
 // 搜索栏字段配置
 const searchFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
     { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { placeholder: '请输入已聘人数', clearable: true } },
     { label: '发布公司', prop: 'companyName', component: 'el-input', props: { placeholder: '请输入发布公司', clearable: true } },
-    {label: '审核状态', prop: 'status', component: 'el-select', props: { placeholder: '请选择审核状态', clearable: true },
+    {
+        label: '审核状态', prop: 'status', component: 'el-select', props: { placeholder: '请选择审核状态', clearable: true },
         options: [
             { label: '待审核', value: '待审核' },
             { label: '已通过', value: '已通过' },
@@ -40,7 +41,7 @@ const searchFields = [
         ]
     },
 ]
-const searchUser = reactive({
+const searchJob = reactive({
     title: '',
     demandNumber: '',
     hiredNumber: '',
@@ -51,10 +52,10 @@ const searchUser = reactive({
 })
 // 搜索用户列表*
 const search = async () => {
-    const res = await queryUsersApi(searchUser);
+    const res = await queryJobsApi(searchJob);
     if (res.code === 1) {
         console.log("查询用户列表成功", res.data);
-        userInfo.value = res.data.rows;
+        jobInfo.value = res.data.rows;
         pagination.total = res.data.total;
     } else {
         console.error("查询用户列表失败", res.data);
@@ -62,19 +63,19 @@ const search = async () => {
 }
 // 清空搜索条件
 const clear = () => {
-    searchUser.title = '';
-    searchUser.demandNumber = '';
-    searchUser.hiredNumber = '';
-    searchUser.status = '';
-    searchUser.companyName = '';
-    searchUser.page = 1;
-    searchUser.pageSize = 10;
+    searchJob.title = '';
+    searchJob.demandNumber = '';
+    searchJob.hiredNumber = '';
+    searchJob.status = '';
+    searchJob.companyName = '';
+    searchJob.page = 1;
+    searchJob.pageSize = 10;
     search();
 }
 
 
 // 表格列配置
-const userInfo = ref([])
+const jobInfo = ref([])
 const tableColumns = [
     { prop: 'title', label: '岗位名称' },
     { prop: 'demandNumber', label: '需求人数' },
@@ -131,7 +132,8 @@ const editFields = [
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '发布公司', prop: 'companyName', component: 'el-input', props: { autocomplete: 'off' } },
-    {label: '审核状态', prop: 'status', component: 'el-select', props: { autocomplete: 'off' },
+    {
+        label: '审核状态', prop: 'status', component: 'el-select', props: { autocomplete: 'off' },
         options: [
             { label: '待审核', value: '待审核' },
             { label: '已通过', value: '已通过' },
@@ -139,7 +141,7 @@ const editFields = [
         ]
     },
     { label: '描述', prop: 'discription', component: 'el-input', props: { autocomplete: 'off' } }
-    
+
 ]
 // 保存修改
 const saveJob = async () => {
@@ -155,11 +157,11 @@ const saveJob = async () => {
 
 // 分页处理
 const handleCurrentChange = (page) => {
-    searchUser.page = page;
+    searchJob.page = page;
     search();
 }
 const handleSizeChange = (size) => {
-    searchUser.pageSize = size;
+    searchJob.pageSize = size;
     search();
 }
 onMounted(() => {
