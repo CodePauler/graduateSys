@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 14/06/2025 21:52:15
+ Date: 15/06/2025 02:22:10
 */
 
 SET NAMES utf8mb4;
@@ -221,10 +221,10 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (2, '小www22', '123456', 'student', '吴济楠', '男', '231370127@mail.dhu.edu.cn', '', NULL);
+INSERT INTO `user` VALUES (2, 'stu', '123456', 'student', '你好', '男', '22222@qq.com', '', NULL);
 INSERT INTO `user` VALUES (3, 'lil', '123456', 'admin', '小马呀', '男', '123@qq.com', '123456', NULL);
-INSERT INTO `user` VALUES (5, 'xiaowu', '123', 'student', 'wwwwwwww', '男', '1', '1', NULL);
-INSERT INTO `user` VALUES (22, '东华大学', '123', 'company', '圣代', '男', '123', '123', NULL);
+INSERT INTO `user` VALUES (5, '啊啊啊啊', '123456', 'company', '相思', '男', '1', '1', NULL);
+INSERT INTO `user` VALUES (22, '泥花', '123', 'company', '圣代', '男', '123', '123', NULL);
 INSERT INTO `user` VALUES (23, '学生1', '123', 'student', '学生11', '男', '123@qq.com', '123', NULL);
 INSERT INTO `user` VALUES (26, '达拉崩吧', '1234', 'company', '五', '男', '213', '123', NULL);
 INSERT INTO `user` VALUES (28, '企业家', '123', 'company', '华尔街之狼', '男', '111', '222', NULL);
