@@ -77,10 +77,13 @@ const clear = () => {
 // 表格列配置
 const jobInfo = ref([])
 const tableColumns = [
+    { prop: 'jobId', label: '岗位ID' },
     { prop: 'title', label: '岗位名称' },
+    { prop: 'description', label: '岗位描述' },
     { prop: 'demandNumber', label: '需求人数' },
     { prop: 'hiredNumber', label: '已聘人数' },
     { prop: 'companyName', label: '发布公司名称' },
+    { prop: 'companyIntro', label: '公司简介' },
     { prop: 'status', label: '审核状态' }//可以做成下拉框进行审核操作
 ]
 const pagination = reactive({
