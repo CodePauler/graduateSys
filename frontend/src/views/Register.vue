@@ -68,6 +68,7 @@
       </el-form>
     </el-card>
   </div>
+  <SuccessResult v-if="showSuccess" title="注册成功" subTitle="请登录您的账户" buttonText="返回登录" @back="$router.push('/login')" />
 </template>
 
 <script setup>
@@ -75,6 +76,7 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { registerApi } from '@/api/login';
+import SuccessResult from '@/components/SuccessResult.vue';
 
 const router = useRouter();
 const form = reactive({
@@ -114,7 +116,7 @@ const rules = {
   ]
 };
 const registerForm = ref(null);
-
+const showSuccess = ref(false);
 const onSubmit = () => {
   registerForm.value.validate(async (valid) => {
     if (valid) {
@@ -122,6 +124,7 @@ const onSubmit = () => {
         const res = await registerApi(form);
         if (res.code === 1) {
           ElMessage.success('注册成功');
+          showSuccess.value = true;
           router.push('/login');
         } else {
           ElMessage.error(res.data.msg);

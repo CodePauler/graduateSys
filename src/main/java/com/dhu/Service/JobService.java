@@ -12,7 +12,7 @@ public interface JobService {
     PageResult<JobInfo> page(JobQueryParam jobQueryParam);
 
 //    all-ID查询
-    JobInfo getJobById(Integer jobId);
+    JobInfo getJobByJobId(Integer jobId);
 
 //    company-更新岗位信息
     void updateByJobId(JobInfo jobInfo);
@@ -22,4 +22,7 @@ public interface JobService {
 
 //    company-发布岗位
     void addJob(JobInfo jobInfo);
+
+//    company-查询自己发布的岗位
+    List<JobInfo> getJobsByCompanyId(Integer companyId);
 }

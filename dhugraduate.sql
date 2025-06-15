@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 16/06/2025 02:36:06
+ Date: 16/06/2025 03:31:39
 */
 
 SET NAMES utf8mb4;
@@ -103,13 +103,14 @@ CREATE TABLE `employment`  (
   INDEX `job_id`(`job_id` ASC) USING BTREE,
   CONSTRAINT `employment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `employment_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `job` (`job_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of employment
 -- ----------------------------
-INSERT INTO `employment` VALUES (7, 70127, 2, '已录用', '2025-06-15 17:20:17');
-INSERT INTO `employment` VALUES (8, 70127, 1, '已录用', '2025-06-19 17:20:17');
+INSERT INTO `employment` VALUES (7, 70127, 2, '待审核', '2025-06-15 17:20:17');
+INSERT INTO `employment` VALUES (8, 70127, 1, '待审核', '2025-06-19 17:20:17');
+INSERT INTO `employment` VALUES (9, 10101, 1, '待审核', '2025-06-16 03:27:06');
 
 -- ----------------------------
 -- Table structure for job
@@ -274,6 +275,6 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_employment_summa
 -- View structure for student_info
 -- ----------------------------
 DROP VIEW IF EXISTS `student_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from `student` `s`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from `student` `s`;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -25,8 +25,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobInfo getJobById(Integer jobId) {
-        return jobMapper.getJobById(jobId);
+    public JobInfo getJobByJobId(Integer jobId) {
+        return jobMapper.getJobByJobId(jobId);
     }
 
     @Override
@@ -42,5 +42,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public void addJob(JobInfo jobInfo) {
         jobMapper.addJob(jobInfo);
+    }
+
+    @Override
+    public List<JobInfo> getJobsByCompanyId(Integer companyId) {
+        return jobMapper.getJobsByCompanyId(companyId);
     }
 }

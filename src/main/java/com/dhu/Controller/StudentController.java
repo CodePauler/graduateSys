@@ -27,8 +27,7 @@ public class StudentController {
 
     @Autowired
     private AliyunOSSOperator aliyunOSSOperator;
-    @Autowired
-    private StudentMapper studentMapper;
+
 
     //    分页查询
     @RoleCheck({"admin"})

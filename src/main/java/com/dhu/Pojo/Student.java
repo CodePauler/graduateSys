@@ -13,4 +13,5 @@ public class Student {
     Integer majorId;            // 外键，关联专业id
     String graduationYear;      // 毕业年份
     String employmentStatus;   //待业（默认）/就业
+    String resumeUrl;          // 简历地址
 }

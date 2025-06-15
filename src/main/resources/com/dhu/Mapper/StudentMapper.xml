@@ -66,6 +66,7 @@
                m.name               AS major,
                d.`name`             AS department,
                s.graduation_year    AS graduationYear,
+               s.resume_url         AS resumeUrl,
                s.employment_status  AS employmentStatus
         FROM student_info s
         LEFT JOIN user u ON s.user_id = u.id
@@ -104,6 +105,15 @@
 
     <select id="getResumeById" resultType="java.lang.String">
         select resume_url from student where student_id = #{studentId}
+    </select>
+
+
+<!--    根据岗位ID查找申请该岗位的学生 -->
+    <select id="getApplicationStudentsByJobId" resultType="com.dhu.Pojo.StudentInfo">
+        select student_info.*
+        from student_info
+        join employment on student_info.student_id = employment.student_id
+        where employment.job_id = #{jobId}
     </select>
 
 

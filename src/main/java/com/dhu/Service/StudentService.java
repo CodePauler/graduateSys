@@ -39,4 +39,8 @@ public interface StudentService {
      */
     void updateResumeById(Integer studentId, String resumeUrl);
 
+    /**
+     * 根据岗位ID查询申请该岗位的学生信息
+     */
+    List<StudentInfo> getApplicationStudentsByJobId(Integer jobId);
 }

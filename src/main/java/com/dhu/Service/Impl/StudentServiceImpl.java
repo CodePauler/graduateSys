@@ -47,6 +47,11 @@ public class StudentServiceImpl implements StudentService {
         studentMapper.updateResumeById(studentId, resumeUrl);
     }
 
+    @Override
+    public List<StudentInfo> getApplicationStudentsByJobId(Integer jobId) {
+        return studentMapper.getApplicationStudentsByJobId(jobId);
+    }
+
 
     @Override
     public void updateByStudentId(Student student) {

@@ -17,4 +17,5 @@ public class StudentInfo {  //封装用于展示的所有学生信息
     private String employmentStatus;
     private String jobTitle;    //职位名称
     private String jobType;     //工作类型名
+    private String resumeUrl;  //简历地址
 }

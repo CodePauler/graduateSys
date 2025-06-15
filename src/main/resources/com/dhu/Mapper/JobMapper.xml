@@ -89,7 +89,7 @@
     </select>
 
 <!--    all-ID查询-->
-    <select id="getJobById" resultType="com.dhu.Pojo.JobInfo">
+    <select id="getJobByJobId" resultType="com.dhu.Pojo.JobInfo">
         SELECT j.job_id,
                j.title,
                jt.name jobType,
@@ -104,6 +104,13 @@
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
         LEFT JOIN company c ON j.company_id=c.company_id
         WHERE j.job_id = #{jobId}
+    </select>
+
+<!--    company-查询自己发布的岗位-->
+    <select id="getJobsByCompanyId" resultType="com.dhu.Pojo.JobInfo">
+        select ji.*
+        from job_info ji
+        where ji.company_id = #{companyId}
     </select>
 
 

@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.JobInfo;
 import com.dhu.Pojo.JobQueryParam;
 import com.dhu.Pojo.PageResult;
@@ -35,9 +36,9 @@ public class JobController {
      * all-ID查询
      */
     @GetMapping("/{id}")
-    public Result page(@PathVariable Integer id){
+    public Result getPageByJobId(@PathVariable Integer id){
         log.info("查询岗位ID: {}", id);
-        JobInfo jobInfo = jobService.getJobById(id);
+        JobInfo jobInfo = jobService.getJobByJobId(id);
         if (jobInfo != null) {
             return Result.success(jobInfo);
         } else {
@@ -74,4 +75,5 @@ public class JobController {
         jobService.addJob(jobInfo);
         return Result.success("岗位发布成功");
     }
+
 }
