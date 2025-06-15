@@ -9,6 +9,7 @@ import Jobs from '@/views/Public/Jobs.vue';
 import Companies from '@/views/Admin/Companies.vue';
 import Announcements from '@/views/Admin/Announcements.vue';
 import Applications from '@/views/Public/Applications.vue';
+import Approvals from '@/views/Admin/Approvals.vue';
 const routes = [
   { path: '/',
     name: 'index',
@@ -23,7 +24,7 @@ const routes = [
       {path: '/hires', name: 'hires', component: Users},                     //*company-  未完成-发布、修改、删除招聘，审核应聘简历
       { path: '/resume',  name: 'resume', component: Users },                //student-未完成-简历管理
       { path: '/announcements', name: 'announcements', component: Announcements },   //admin- 公告管理
-      // { path: '/approvals', name: 'approval', component: Users },             //admin-  未完成-岗位审批 考虑合并进岗位管理
+      { path: '/approvals', name: 'approval', component: Approvals },             //admin-  未完成-岗位审批
       { path: '/departments', name: 'departments', component: Users },       //admin-  未完成-院系管理
       { path: '/majors', name: 'majors', component: Users },                 //admin-  #未完成-专业管理 不确定是否合并到院系管理
       { path: '/profile', name: 'profile', component: Users },               //all-    未完成-个人信息修改
