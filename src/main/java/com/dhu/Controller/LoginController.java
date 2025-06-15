@@ -52,10 +52,4 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/testurl")
-    public String testUrl(HttpServletRequest request) {
-        String url = request.getRequestURL().toString();
-        System.out.println("请求URL：" + url);
-        return url;
-    }
 }

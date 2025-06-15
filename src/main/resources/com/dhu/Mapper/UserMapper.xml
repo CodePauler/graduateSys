@@ -11,7 +11,8 @@
     </insert>
 
     <select id="findByUsernameAndPassword" resultType="com.dhu.Pojo.User">
-        SELECT * FROM user WHERE username = #{username} AND password = #{password}
+        select * from user
+        where username = #{username} and password = #{password}
     </select>
 
     <select id="list" resultType="com.dhu.Pojo.User">

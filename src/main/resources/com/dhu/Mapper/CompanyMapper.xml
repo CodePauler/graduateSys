@@ -81,4 +81,10 @@
         where user_id = #{hrId}
     </select>
 
+    <!-- 根据用户ID查询公司ID -->
+    <select id="findIdByUserId" resultType="java.lang.Integer">
+        select company_id from company
+        where user_id = #{userId}
+    </select>
+
 </mapper>

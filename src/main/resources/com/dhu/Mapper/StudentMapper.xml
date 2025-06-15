@@ -91,5 +91,10 @@
         </where>
     </select>
 
+<!--    根据用户ID查找学生ID-->
+    <select id="findIdByUserId" resultType="java.lang.Integer">
+        select student_id from student where user_id = #{userId}
+    </select>
+
 
 </mapper>

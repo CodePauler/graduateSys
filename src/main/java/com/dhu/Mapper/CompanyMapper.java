@@ -24,4 +24,6 @@ public interface CompanyMapper {
     void deleteByIds(List<Integer> ids);
 
     CompanyInfo getByHrId(Integer hrId);
+
+    Integer findIdByUserId(Integer id);
 }

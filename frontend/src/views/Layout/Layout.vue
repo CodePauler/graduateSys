@@ -32,12 +32,6 @@
                 </el-icon>
                 <span>岗位列表</span>
               </el-menu-item>
-              <el-menu-item index="/applications">
-                <el-icon>
-                  <Document />
-                </el-icon>
-                <span>投递管理</span>
-              </el-menu-item>
               <!-- 学生：可查看自己的简历、自己的投递 -->
               <template v-if="role === 'student'">
                 <el-menu-item index="/resume">
@@ -45,6 +39,21 @@
                     <List />
                   </el-icon>
                   <span>我的简历</span>
+                </el-menu-item>
+              </template>
+              <el-menu-item index="/applications">
+                <el-icon>
+                  <Document />
+                </el-icon>
+                <span>我的投递</span>
+              </el-menu-item>
+              <!-- 企业：可发布、查看、修改自己的招聘 -->
+              <template v-if="role === 'company'">
+                <el-menu-item index="/hires">
+                  <el-icon>
+                    <Document />
+                  </el-icon>
+                  <span>我的招聘</span>
                 </el-menu-item>
               </template>
               <!-- 管理员：用户管理、公告管理 -->
