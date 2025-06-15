@@ -28,6 +28,7 @@ public class TokenInterceptor implements HandlerInterceptor {   //Jwt鉴权
             Claims claims = JwtUtils.parseToken(jwt); // 解析 JWT 得到 claims
             String role = (String) claims.get("role"); // 获取用户角色
             request.setAttribute("role", role);
+            log.info("解析 token 成功，用户角色: {}", role);
         }
         catch (Exception e){
             e.printStackTrace();
