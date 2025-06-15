@@ -31,4 +31,12 @@ public interface StudentService {
      * 批量删除学生
      */
     void deleteStudent(List<Integer> ids);
+
+    String getResumeById(Integer id);
+
+    /**
+     * 保存简历
+     */
+    void updateResumeById(Integer studentId, String resumeUrl);
+
 }

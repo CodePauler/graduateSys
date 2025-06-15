@@ -9,7 +9,7 @@ import Jobs from '@/views/Public/Jobs.vue';
 import Companies from '@/views/Admin/Companies.vue';
 import Announcements from '@/views/Admin/Announcements.vue';
 import Applications from '@/views/Public/Applications.vue';
-import Approvals from '@/views/Admin/Approvals.vue';
+import Resume from '@/views/Student/Resume.vue';
 const routes = [
   { path: '/',
     name: 'index',
@@ -22,9 +22,9 @@ const routes = [
       { path: '/jobs', name: 'jobs', component: Jobs },                       //*all-   岗位展示 学生可查看、申请；企业可发布、修改
       { path: '/applications', name: 'applications', component: Applications },     //*student-   未完成-投递管理 学生可管理自己的申请
       {path: '/hires', name: 'hires', component: Users},                     //*company-  未完成-发布、修改、删除招聘，审核应聘简历
-      { path: '/resume',  name: 'resume', component: Users },                //student-未完成-简历管理
+      { path: '/resume',  name: 'resume', component: Resume },                //student-未完成-简历管理
       { path: '/announcements', name: 'announcements', component: Announcements },   //admin- 公告管理
-      // { path: '/approvals', name: 'approval', component: Approvals },             //admin-  未完成-岗位审批 考虑合并到/jobs
+      { path: '/approvals', name: 'approval', component: Jobs },             //admin-  未完成-岗位审批 考虑合并到/jobs
       { path: '/departments', name: 'departments', component: Users },       //admin-  未完成-院系管理
       { path: '/majors', name: 'majors', component: Users },                 //admin-  #未完成-专业管理 不确定是否合并到院系管理
       { path: '/profile', name: 'profile', component: Users },               //all-    未完成-个人信息修改

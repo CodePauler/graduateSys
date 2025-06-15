@@ -21,6 +21,17 @@
         </where>
     </update>
 
+
+    <update id="updateResumeById">
+        UPDATE student
+        <set>
+            <if test="resumeUrl != null and resumeUrl != ''">resume_url = #{resumeUrl},</if>
+        </set>
+        <where>
+            student_id = #{studentId}
+        </where>
+    </update>
+
     <select id="getById" resultType="com.dhu.Pojo.StudentInfo">
         SELECT s.student_id         AS studentId,
                u.name               AS name,
@@ -88,6 +99,11 @@
 <!--    根据用户ID查找学生ID-->
     <select id="findIdByUserId" resultType="java.lang.Integer">
         select student_id from student where user_id = #{userId}
+    </select>
+
+
+    <select id="getResumeById" resultType="java.lang.String">
+        select resume_url from student where student_id = #{studentId}
     </select>
 
 

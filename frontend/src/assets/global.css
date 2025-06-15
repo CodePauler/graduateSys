@@ -15,3 +15,11 @@
     font-size: 32px;
     font-weight: 600;
 }
+
+.layout-container,
+.layout-container, .el-container,
+.layout-container, .el-aside,
+.layout-container, .el-main{
+    height: 100vh;
+    min-height: 0;
+}

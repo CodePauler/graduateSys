@@ -17,7 +17,7 @@
         <el-button type="primary" plain @click="logout">退出登录</el-button>
       </el-header>
       <el-container style:="height: 500px;">
-        <el-aside width="200px" class="sidebar">
+        <el-aside width="256px" class="sidebar">
           <el-scrollbar>
             <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" router>
               <el-menu-item index="/home">
@@ -174,5 +174,21 @@ onMounted(() => {
 
 .layout-container .el-main {
   padding: 0;
+}
+
+.layout-container,
+.layout-container,
+.el-container,
+.layout-container,
+.el-aside,
+.layout-container,
+.el-main {
+  height: 100vh;
+  min-height: 0;
+}
+
+span {
+  font-size: 16px;
+  color: #333;
 }
 </style>

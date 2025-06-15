@@ -25,4 +25,10 @@ public interface StudentMapper {
     void deleteByIds(List<Integer> ids);
 
     Integer findIdByUserId(Integer id);
+
+//    更新学生简历
+    void updateResumeById(Integer studentId, String resumeUrl);
+
+//    根据学生ID获取简历
+    String getResumeById(Integer id);
 }

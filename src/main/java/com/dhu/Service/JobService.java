@@ -20,5 +20,6 @@ public interface JobService {
 //    company-删除岗位
     void deleteJob(List<Integer> ids);
 
+//    company-发布岗位
     void addJob(JobInfo jobInfo);
 }

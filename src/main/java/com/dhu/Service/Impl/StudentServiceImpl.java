@@ -1,10 +1,7 @@
 package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.StudentMapper;
-import com.dhu.Pojo.PageResult;
-import com.dhu.Pojo.Student;
-import com.dhu.Pojo.StudentInfo;
-import com.dhu.Pojo.StudentQueryParam;
+import com.dhu.Pojo.*;
 import com.dhu.Service.StudentService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -17,7 +14,8 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
-    StudentMapper studentMapper;
+    private StudentMapper studentMapper;
+
 
     @Override
     public PageResult<StudentInfo> page(StudentQueryParam studentQueryParam) {
@@ -38,6 +36,17 @@ public class StudentServiceImpl implements StudentService {
         }
         studentMapper.deleteByIds(ids);
     }
+
+    @Override
+    public String getResumeById(Integer id) {
+        return studentMapper.getResumeById(id);
+    }
+
+    @Override
+    public void updateResumeById(Integer studentId, String resumeUrl) {
+        studentMapper.updateResumeById(studentId, resumeUrl);
+    }
+
 
     @Override
     public void updateByStudentId(Student student) {
