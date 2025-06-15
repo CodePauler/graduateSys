@@ -1,8 +1,6 @@
 package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.CompanyMapper;
-import com.dhu.Mapper.UserMapper;
-import com.dhu.Pojo.Company;
 import com.dhu.Pojo.CompanyInfo;
 import com.dhu.Pojo.CompanyQueryParam;
 import com.dhu.Pojo.PageResult;
@@ -11,7 +9,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
