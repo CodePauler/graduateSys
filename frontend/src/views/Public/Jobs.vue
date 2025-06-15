@@ -46,7 +46,6 @@ const addFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
     { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
-    { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { placeholder: '请输入已聘人数', clearable: true } },
     { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
     { label: '公司简介', prop: 'companyIntro', component: 'el-input', props: { disabled: true } },
     { label: '岗位描述', prop: 'description', component: 'el-input', props: { type: 'textarea', placeholder: '请输入岗位描述', clearable: true } }
@@ -241,12 +240,11 @@ const tableActions = (row) => {
     }
     else return []
 }
-// 编辑用户信息（查询回显） 以及弹窗
+// 编辑岗位信息（查询回显） 以及弹窗
 const job = ref({})
 const editFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { autocomplete: 'off' } },
-    { label: '已聘人数', prop: 'hiredNumber', component: 'el-input', props: { autocomplete: 'off' } },
     { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
     {
         label: '审核状态', prop: 'status', component: 'el-select', props: { autocomplete: 'off' },

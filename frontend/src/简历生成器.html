@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>简历生成器</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    .form-container, .preview-container {
+      margin-bottom: 30px;
+    }
+    input, textarea {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 8px;
+    }
+    .resume-preview {
+      width: 800px;
+      padding: 30px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+    .resume-preview h1 {
+      margin-bottom: 5px;
+    }
+    .resume-section {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>简历信息填写</h2>
+  <div class="form-container">
+    <label>姓名: <input id="name" /></label>
+    <label>电话: <input id="phone" /></label>
+    <label>邮箱: <input id="email" /></label>
+    <label>教育背景: <textarea id="education"></textarea></label>
+    <label>项目经历: <textarea id="projects"></textarea></label>
+    <label>技能特长: <textarea id="skills"></textarea></label>
+    <button onclick="generateResume()">生成简历预览</button>
+    <button onclick="exportPDF()">导出为 PDF</button>
+  </div>
+
+  <h2>简历预览</h2>
+  <div class="preview-container">
+    <div id="resume" class="resume-preview">
+      <h1 id="r_name">姓名</h1>
+      <p id="r_contact">电话 / 邮箱</p>
+      <div class="resume-section">
+        <h3>🎓 教育背景</h3>
+        <p id="r_education"></p>
+      </div>
+      <div class="resume-section">
+        <h3>💼 项目经历</h3>
+        <p id="r_projects"></p>
+      </div>
+      <div class="resume-section">
+        <h3>🛠️ 技能特长</h3>
+        <p id="r_skills"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function generateResume() {
+      document.getElementById("r_name").innerText = document.getElementById("name").value;
+      document.getElementById("r_contact").innerText =
+        document.getElementById("phone").value + " / " + document.getElementById("email").value;
+      document.getElementById("r_education").innerText = document.getElementById("education").value;
+      document.getElementById("r_projects").innerText = document.getElementById("projects").value;
+      document.getElementById("r_skills").innerText = document.getElementById("skills").value;
+    }
+
+    async function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const element = document.getElementById("resume");
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4',
+      });
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pageWidth;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save("resume.pdf");
+    }
+  </script>
+</body>
+</html>

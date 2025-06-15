@@ -61,6 +61,7 @@ const company = ref([])
 const tableColumns = [
     { label: "企业ID", prop: "companyId" },
     { label: "企业名称", prop: "companyName" },
+    { label: "企业简介", prop: "companyIntro" },
     { label: "HR姓名", prop: "hrName" },
     { label: "HR性别", prop: "gender" },
     { label: "HR电话", prop: "phone" },
@@ -113,6 +114,7 @@ const Company = ref({})
 const editFields = [
     { label: "企业ID", prop: "companyId", component: "el-input", props: { disabled: true } },
     { label: "企业名称", prop: "companyName", component: "el-input", props: { placeholder: "请输入企业名称" } },
+    { label: "企业简介", prop: "companyIntro", component: "el-input", props: { type: "textarea", placeholder: "请输入企业简介" } },
     { label: "HR姓名", prop: "hrName", component: "el-input", props: { placeholder: "请输入HR姓名" } },
     {
         label: "HR性别", prop: "gender", component: "el-select", props: { placeholder: "请选择HR性别" },
