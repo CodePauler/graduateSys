@@ -73,9 +73,19 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", userLogin.getId());
             claims.put("username", userLogin.getUsername());
+            claims.put("name", userLogin.getName());
             claims.put("role", userLogin.getRole());
+            Integer studentId = null;
+            Integer companyId = null;
+            if ("student".equals(userLogin.getRole())) {
+                studentId = studentMapper.findIdByUserId(userLogin.getId());
+                claims.put("studentId", studentId);
+            } else if ("company".equals(userLogin.getRole())) {
+                companyId = companyMapper.findIdByUserId(userLogin.getId());
+                claims.put("companyId", companyId);
+            }
             String jwt = JwtUtils.generateToken(claims);
-            return new LoginInfo(userLogin.getId(), userLogin.getUsername(), userLogin.getName(), userLogin.getRole(),
+            return new LoginInfo(userLogin.getId(), userLogin.getUsername(), userLogin.getName(), userLogin.getRole(),studentId,companyId,
                     jwt);
         } else {
             return null; // 登录失败，返回null

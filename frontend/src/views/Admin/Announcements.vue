@@ -1,5 +1,5 @@
 <template>
-    <h1>公告管理</h1>
+    <div class="headerContent">公告管理</div>
     <!-- 搜索栏 -->
     <div class="container">
         <SearchBar :fields="searchFields" :model="searchAnnouncement" @search="search" @clear="clear" />

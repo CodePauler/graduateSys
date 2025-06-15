@@ -1,5 +1,5 @@
 <template>
-    <h1>用户管理</h1>
+    <div class="headerContent">用户管理</div>
     <!-- 搜索栏 -->
     <div class="container">
         <SearchBar :fields="searchFields" :model="searchUser" @search="search" @clear="clear" />

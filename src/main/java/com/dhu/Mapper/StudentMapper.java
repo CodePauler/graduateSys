@@ -24,4 +24,5 @@ public interface StudentMapper {
 //    根据id批量删除学生
     void deleteByIds(List<Integer> ids);
 
+    Integer findIdByUserId(Integer id);
 }
