@@ -106,6 +106,7 @@ const searchJob = reactive({
     hiredNumber: '',
     status: '已通过',
     companyName: '',
+    studentId: localStorage.getItem('studentId') || '',
     page: 1,
     pageSize: 10
 })
@@ -164,7 +165,7 @@ const pagination = reactive({
 })
 // 表格操作按钮
 const dialogFormVisible = ref(false)
-const tableActions = computed(() => {
+const tableActions = (row) => {
     if (role === 'admin') {
         return [
             {
@@ -205,9 +206,18 @@ const tableActions = computed(() => {
             }
         ]
     } else if (role === 'student') {
+        if (row.hasApplied === "1") {
+            return [
+                {
+                    label: '已申请',
+                    type: 'success',
+                    disabled: true
+                }
+            ]
+        }
         return [
             {
-                label: '申请',
+                label: '去申请',
                 type: 'primary',
                 onClick: async (row) => {
                     ElMessageBox.confirm('是否确认申请该岗位？', '提示', {
@@ -216,7 +226,11 @@ const tableActions = computed(() => {
                         type: 'info',
                     }).then(async () => {
                         const result = await applyJobApi(localStorage.getItem('studentId'), row.jobId)
+                        if(result.code !== 1) {
+                            ElMessage.error(result.msg)
+                        }
                         ElMessage.success('申请成功')
+                        search();
                     }).catch(() => {
                         ElMessage.info('取消申请')
                     })
@@ -225,7 +239,7 @@ const tableActions = computed(() => {
         ]
     }
     else return []
-})
+}
 // 编辑用户信息（查询回显） 以及弹窗
 const job = ref({})
 const editFields = [

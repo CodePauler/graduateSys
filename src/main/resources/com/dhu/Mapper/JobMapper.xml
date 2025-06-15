@@ -60,10 +60,15 @@
                j.company_id,
                c.company_name,
                c.company_intro,
-               j.status
+               j.status,
+        CASE
+            WHEN e.employment_id IS NOT NULL THEN 1
+            ELSE 0
+        END AS has_applied
         FROM job j
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
         LEFT JOIN company c ON j.company_id=c.company_id
+        LEFT JOIN employment e ON j.job_id = e.job_id AND e.student_id = #{studentId}
         <where>
             <if test="jobId != null and jobId != ''">
                 AND j.job_id = #{jobId}

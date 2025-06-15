@@ -17,4 +17,6 @@ public class JobQueryParam {
     private String companyName; // 公司名称
     private String description; // 岗位描述
     private String status; // 岗位状态（待审核/已通过/不通过）
+
+    private Integer studentId; // 学生ID，用于查询学生已申请的岗位
 }

@@ -19,4 +19,5 @@ public class JobInfo {
     private String companyName; // 公司名称
     private String companyIntro; // 公司简介
     private String status; // 岗位状态（待审核/已通过/不通过）
+    private String hasApplied; // 是否已申请（学生端使用）
 }
