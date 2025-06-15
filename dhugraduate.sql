@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : local
+ Source Server         : mysql-1
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 15/06/2025 22:53:56
+ Date: 16/06/2025 02:36:06
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `announcement`  (
   PRIMARY KEY (`announcement_id`) USING BTREE,
   INDEX `publisher_id`(`creator_id` ASC) USING BTREE,
   CONSTRAINT `announcement_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统公告表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统公告表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of announcement
@@ -43,6 +43,7 @@ CREATE TABLE `announcement`  (
 INSERT INTO `announcement` VALUES (1, '东华大学就业管理系统2025年第2号', '祝同学们找到一个适合自己的牛圈！！！', 3, '2025-06-14 13:58:35', '2025-06-14 17:14:14', 'testAttachment', '/testAttachment.txt', 0, 0);
 INSERT INTO `announcement` VALUES (2, '东华大学', '天下无不散的宴席', 3, '2025-06-24 13:59:08', '2025-06-24 13:59:08', NULL, NULL, 0, 0);
 INSERT INTO `announcement` VALUES (7, '上海大学', '123123', 3, '2025-06-14 17:40:42', '2025-06-14 17:40:42', '2222', '', 1, 0);
+INSERT INTO `announcement` VALUES (10, '有点累', 'debug de疯了', 3, '2025-06-16 01:30:34', '2025-06-16 01:30:34', '没有，别想了', '', 0, 0);
 
 -- ----------------------------
 -- Table structure for company
@@ -56,7 +57,7 @@ CREATE TABLE `company`  (
   PRIMARY KEY (`company_id`) USING BTREE,
   INDEX `company_ibfk_1`(`user_id` ASC) USING BTREE,
   CONSTRAINT `company_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of company
@@ -67,6 +68,7 @@ INSERT INTO `company` VALUES (5, 26, '携程', '心脏与字节只能有一个�
 INSERT INTO `company` VALUES (6, 28, '华为', '心脏与字节只能有一个跳动');
 INSERT INTO `company` VALUES (7, 26, '阿里巴巴', '我不喜欢钱');
 INSERT INTO `company` VALUES (8, 29, 'jumpTrading', '神秘公司');
+INSERT INTO `company` VALUES (9, 34, '123312', '132312132123');
 
 -- ----------------------------
 -- Table structure for department
@@ -187,18 +189,20 @@ CREATE TABLE `student`  (
   `user_id` bigint NOT NULL COMMENT '关联用户ID',
   `major_id` bigint NULL DEFAULT NULL COMMENT '所学专业ID',
   `graduation_year` int NULL DEFAULT NULL COMMENT '毕业年份',
+  `resume_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '简历的url',
   PRIMARY KEY (`student_id`) USING BTREE,
   UNIQUE INDEX `user_id`(`user_id` ASC) USING BTREE,
   INDEX `major_id`(`major_id` ASC) USING BTREE,
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2132122 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 123123322 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (10101, 32, 3, 2025);
-INSERT INTO `student` VALUES (70127, 2, 1, 2026);
+INSERT INTO `student` VALUES (10101, 32, 3, 2025, NULL);
+INSERT INTO `student` VALUES (70127, 2, 1, 2026, 'https://java-dhu.oss-cn-shanghai.aliyuncs.com/2025/06/resume/c5625dcb1c714b0296d42ba32160d9aa.pdf');
+INSERT INTO `student` VALUES (123123321, 33, 1, 2026, NULL);
 
 -- ----------------------------
 -- Table structure for user
@@ -217,7 +221,7 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE,
   CONSTRAINT `user_chk_1` CHECK (`gender` in (_utf8mb4'男',_utf8mb4'女'))
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -233,6 +237,8 @@ INSERT INTO `user` VALUES (29, '是学生', '123', 'student', '使学生', '男'
 INSERT INTO `user` VALUES (30, '企业2', '123', 'company', '企业2', '女', '2134', '123231', NULL);
 INSERT INTO `user` VALUES (31, '企业3', '123', 'company', '企业3', '男', '213', '123', NULL);
 INSERT INTO `user` VALUES (32, '学生n', '123', 'student', '学生n', '女', '1234', '123213321', NULL);
+INSERT INTO `user` VALUES (33, '好累好累的学生', '123456', 'student', '累累累', '女', '123213', '213123', NULL);
+INSERT INTO `user` VALUES (34, '企业1', '123', 'company', '123', '男', '123321', '123123', NULL);
 
 -- ----------------------------
 -- View structure for company_job_summary
