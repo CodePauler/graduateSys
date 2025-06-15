@@ -95,8 +95,6 @@ const tableColumns = [
     { prop: 'department', label: '学院' },
     { prop: 'graduationYear', label: '毕业年份' },
     { prop: 'employmentStatus', label: '就业状态' },
-    { prop: 'jobTitle', label: '职业名称' },
-    { prop: 'jobType', label: '职业类型' },
 ]
 const tableActions = [
     {
@@ -157,8 +155,6 @@ const editFields = [
             { label: '电子信息', value: '3' }
         ]
     },
-    { label: '职业名称', prop: 'jobTitle', component: 'el-input', props: { disabled: true } },
-    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { disabled: true } },
     {
         label: '毕业年份', prop: 'graduationYear', component: 'el-select', props: { placeholder: '请选择毕业年份', clearable: true },
         options: [
@@ -167,13 +163,6 @@ const editFields = [
             { label: '2027', value: '2027' }
         ]
     },
-    {
-        label: '就业状态', prop: 'employmentStatus', component: 'el-select', props: { placeholder: '请选择就业状态', clearable: true },
-        options: [
-            { label: '待业', value: '待业' },
-            { label: '就业', value: '就业' }
-        ]
-    }
 ]
 const saveStudent = async () => {
     dialogFormVisible.value = false;
