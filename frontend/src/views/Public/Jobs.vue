@@ -100,13 +100,14 @@ const searchFields = [
         ]
     }
 ]
+const rawStudentId = localStorage.getItem('studentId')
 const searchJob = reactive({
     title: '',
     demandNumber: '',
     hiredNumber: '',
     status: '已通过',
     companyName: '',
-    studentId: localStorage.getItem('studentId') || '',
+    studentId: rawStudentId && rawStudentId !== 'null' ? Number(rawStudentId) : undefined,
     page: 1,
     pageSize: 10
 })
@@ -226,7 +227,7 @@ const tableActions = (row) => {
                         type: 'info',
                     }).then(async () => {
                         const result = await applyJobApi(localStorage.getItem('studentId'), row.jobId)
-                        if(result.code !== 1) {
+                        if (result.code !== 1) {
                             ElMessage.error(result.msg)
                         }
                         ElMessage.success('申请成功')

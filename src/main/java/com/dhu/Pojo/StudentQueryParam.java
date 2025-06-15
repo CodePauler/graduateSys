@@ -11,7 +11,7 @@ public class StudentQueryParam {
     private Integer page = 1;
     private Integer pageSize = 10;
 
-    private Long studentId;
+    private Integer studentId;
     private String name;
     private String gender;
     private Long majorId;
