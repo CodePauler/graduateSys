@@ -5,8 +5,8 @@
 <mapper namespace="com.dhu.Mapper.StudentMapper">
 
     <insert id="insert" parameterType="com.dhu.Pojo.User">
-        INSERT INTO student (student_id, user_id, major_id, graduation_year, employment_status)
-        VALUES (#{studentId}, #{userId}, #{majorId}, #{graduationYear}, #{employmentStatus})
+        INSERT INTO student (student_id, user_id, major_id, graduation_year)
+        VALUES (#{studentId}, #{userId}, #{majorId}, #{graduationYear})
     </insert>
 
     <update id="updateByStudentId">
@@ -15,7 +15,6 @@
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             <if test="majorId != null and majorId != ''">major_id = #{majorId},</if>
             <if test="graduationYear != null and graduationYear != ''">graduation_year = #{graduationYear},</if>
-            <if test="employmentStatus != null and employmentStatus != ''">employment_status = #{employmentStatus},</if>
         </set>
         <where>
             student_id = #{studentId}
@@ -32,7 +31,7 @@
                s.employment_status  AS employmentStatus,
                j.title              AS job_title,
                jt.name              AS job_type
-        FROM student s
+        FROM student_info s
                  LEFT JOIN user u ON s.user_id = u.id
                  LEFT JOIN major m ON s.major_id = m.id
                  LEFT JOIN department d ON m.department_id = d.id
@@ -59,7 +58,7 @@
                s.employment_status  AS employmentStatus,
                j.title              AS job_title,
                jt.`name`            AS job_type
-        FROM student s
+        FROM student_info s
         LEFT JOIN user u ON s.user_id = u.id
         LEFT JOIN major m ON s.major_id = m.id
         LEFT JOIN department d ON m.department_id = d.id

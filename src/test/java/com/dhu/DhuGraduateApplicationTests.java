@@ -28,7 +28,7 @@ class DhuGraduateApplicationTests {
     public void testStudentMapper(){
         StudentQueryParam studentQueryParam;
         studentQueryParam=new StudentQueryParam();
-        studentQueryParam.setStudentId(valueOf(1));
+        studentQueryParam.setStudentId(1); // 直接用Integer
         List<StudentInfo> list = studentMapper.list(studentQueryParam);
         for (StudentInfo studentInfo : list) {
             System.out.println(studentInfo);

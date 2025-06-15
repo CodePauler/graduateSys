@@ -6,8 +6,8 @@
 
 <!--    company-发布岗位-->
     <insert id="addJob" useGeneratedKeys="true" keyProperty="jobId">
-        INSERT INTO job (title, type_id, description, demand_number, hired_number, company_id, status)
-        VALUES (#{title}, #{typeId}, #{description}, #{demandNumber}, #{hiredNumber}, #{companyId}, #{status})
+        INSERT INTO job (title, type_id, description, demand_number, company_id, status)
+        VALUES (#{title}, #{typeId}, #{description}, #{demandNumber}, #{companyId}, #{status})
     </insert>
 
 
@@ -27,9 +27,6 @@
             </if>
             <if test="demandNumber != null and demandNumber != ''">
                 demand_number = #{demandNumber},
-            </if>
-            <if test="hiredNumber != null and hiredNumber != ''">
-                hired_number = #{hiredNumber},
             </if>
             <if test="status != null and status != ''">
                 status = #{status},
@@ -65,7 +62,7 @@
             WHEN e.employment_id IS NOT NULL THEN 1
             ELSE 0
         END AS has_applied
-        FROM job j
+        FROM job_info j
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
         LEFT JOIN company c ON j.company_id=c.company_id
         LEFT JOIN employment e ON j.job_id = e.job_id AND e.student_id = #{studentId}
@@ -103,7 +100,7 @@
                c.company_name,
                c.company_intro,
                j.status
-        FROM job j
+        FROM job_info j
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
         LEFT JOIN company c ON j.company_id=c.company_id
         WHERE j.job_id = #{jobId}

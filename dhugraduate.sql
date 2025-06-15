@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : mysql-1
+ Source Server         : local
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 15/06/2025 17:21:34
+ Date: 15/06/2025 19:18:22
 */
 
 SET NAMES utf8mb4;
@@ -106,7 +106,7 @@ CREATE TABLE `employment`  (
 -- ----------------------------
 -- Records of employment
 -- ----------------------------
-INSERT INTO `employment` VALUES (7, 70127, 2, '待审核', '2025-06-15 17:20:17');
+INSERT INTO `employment` VALUES (7, 70127, 2, '已录用', '2025-06-15 17:20:17');
 
 -- ----------------------------
 -- Table structure for job
@@ -117,7 +117,6 @@ CREATE TABLE `job`  (
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '职位标题',
   `type_id` bigint NULL DEFAULT NULL COMMENT '职业类型ID',
   `demand_number` int NOT NULL COMMENT '需求数量',
-  `hired_number` int NULL DEFAULT 0 COMMENT '聘用数量',
   `company_id` bigint NOT NULL COMMENT '用人单位（公司ID）',
   `status` enum('待审核','已通过','不通过') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '待审核' COMMENT '审核状态',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '职位描述',
@@ -131,9 +130,9 @@ CREATE TABLE `job`  (
 -- ----------------------------
 -- Records of job
 -- ----------------------------
-INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 5, 1, 1, '已通过', '宇宙的尽头');
-INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 2, 1, 4, '已通过', '谁还干前端啊');
-INSERT INTO `job` VALUES (5, '主播666', 1, 999, 999, 1, '不通过', '我管你这的那的');
+INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 5, 1, '已通过', '宇宙的尽头');
+INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 2, 4, '已通过', '谁还干前端啊');
+INSERT INTO `job` VALUES (5, '主播666', 1, 999, 1, '不通过', '我管你这的那的');
 
 -- ----------------------------
 -- Table structure for job_type
@@ -187,7 +186,6 @@ CREATE TABLE `student`  (
   `user_id` bigint NOT NULL COMMENT '关联用户ID',
   `major_id` bigint NULL DEFAULT NULL COMMENT '所学专业ID',
   `graduation_year` int NULL DEFAULT NULL COMMENT '毕业年份',
-  `employment_status` enum('待业','就业') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '待业' COMMENT '就业标志',
   PRIMARY KEY (`student_id`) USING BTREE,
   UNIQUE INDEX `user_id`(`user_id` ASC) USING BTREE,
   INDEX `major_id`(`major_id` ASC) USING BTREE,
@@ -198,8 +196,8 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (10101, 32, 3, 2025, '待业');
-INSERT INTO `student` VALUES (70127, 2, 1, 2026, '待业');
+INSERT INTO `student` VALUES (10101, 32, 3, 2025);
+INSERT INTO `student` VALUES (70127, 2, 1, 2026);
 
 -- ----------------------------
 -- Table structure for user
@@ -234,5 +232,17 @@ INSERT INTO `user` VALUES (29, '是学生', '123', 'student', '使学生', '男'
 INSERT INTO `user` VALUES (30, '企业2', '123', 'company', '企业2', '女', '2134', '123231', NULL);
 INSERT INTO `user` VALUES (31, '企业3', '123', 'company', '企业3', '男', '213', '123', NULL);
 INSERT INTO `user` VALUES (32, '学生n', '123', 'student', '学生n', '女', '1234', '123213321', NULL);
+
+-- ----------------------------
+-- View structure for job_info
+-- ----------------------------
+DROP VIEW IF EXISTS `job_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `job_info` AS select `j`.`job_id` AS `job_id`,`j`.`title` AS `title`,`j`.`type_id` AS `type_id`,`j`.`demand_number` AS `demand_number`,`j`.`company_id` AS `company_id`,`j`.`status` AS `status`,`j`.`description` AS `description`,(select count(0) from `employment` `e` where ((`e`.`job_id` = `j`.`job_id`) and (`e`.`status` = '已录用'))) AS `hired_number` from `job` `j`;
+
+-- ----------------------------
+-- View structure for student_info
+-- ----------------------------
+DROP VIEW IF EXISTS `student_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from `student` `s`;
 
 SET FOREIGN_KEY_CHECKS = 1;
