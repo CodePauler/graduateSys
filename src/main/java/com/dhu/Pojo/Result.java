@@ -1,7 +1,6 @@
 package com.dhu.Pojo;
 
 import lombok.Data;
-import java.io.Serializable;
 
 /**
  * 后端统一返回结果
