@@ -35,8 +35,13 @@ public class UserServiceImpl implements UserService {
         if (existingUser != null) {
             return Result.error("用户名已存在");
         }
+        // 判断是否为后台管理创建（extraParams含有adminCreate=true）
+        boolean isAdminCreate = extraParams.get("adminCreate") != null
+                && Boolean.TRUE.equals(extraParams.get("adminCreate"));
+        if ("admin".equals(user.getRole()) && !isAdminCreate) {
+            return Result.error("禁止通过注册接口创建管理员账号");
+        }
         userMapper.insert(user);
-
         Integer userId = user.getId();
         log.info("注册用户ID: {}", userId);
         // 如果需要根据角色进行不同的处理
@@ -60,6 +65,8 @@ public class UserServiceImpl implements UserService {
             company.setCompanyName((String) extraParams.get("companyName"));
             company.setCompanyIntro((String) extraParams.get("companyIntro"));
             companyMapper.insert(company);
+        } else if ("admin".equals(user.getRole())) {
+            // 管理员不需要额外处理
         } else {
             return Result.error("未知角色");
         }
