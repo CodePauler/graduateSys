@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 16/06/2025 03:34:06
+ Date: 16/06/2025 14:19:41
 */
 
 SET NAMES utf8mb4;
@@ -63,7 +63,7 @@ CREATE TABLE `company`  (
 -- Records of company
 -- ----------------------------
 INSERT INTO `company` VALUES (1, 3, '字节跳动', '心脏与字节只能有一个跳动');
-INSERT INTO `company` VALUES (4, 22, '饿了么', '心脏与字节只能有一个跳动');
+INSERT INTO `company` VALUES (4, 5, '饿了么', '心脏与字节只能有一个跳动');
 INSERT INTO `company` VALUES (5, 26, '携程', '心脏与字节只能有一个跳动');
 INSERT INTO `company` VALUES (6, 28, '华为', '心脏与字节只能有一个跳动');
 INSERT INTO `company` VALUES (7, 26, '阿里巴巴', '我不喜欢钱');
@@ -129,7 +129,7 @@ CREATE TABLE `job`  (
   INDEX `company_id`(`company_id` ASC) USING BTREE,
   CONSTRAINT `job_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `job_type` (`type_id`) ON DELETE SET NULL ON UPDATE RESTRICT,
   CONSTRAINT `job_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job
@@ -137,6 +137,7 @@ CREATE TABLE `job`  (
 INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 5, 1, '已通过', '宇宙的尽头');
 INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 2, 4, '已通过', '谁还干前端啊');
 INSERT INTO `job` VALUES (5, '主播666', 1, 999, 1, '不通过', '我管你这的那的');
+INSERT INTO `job` VALUES (6, '岗位发布测试1', 1, 5, 4, '待审核', 'ssssss');
 
 -- ----------------------------
 -- Table structure for job_type
@@ -275,6 +276,6 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_employment_summa
 -- View structure for student_info
 -- ----------------------------
 DROP VIEW IF EXISTS `student_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from `student` `s`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`name` AS `major`,`u`.`gender` AS `gender`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`id` = `s`.`major_id`)));
 
 SET FOREIGN_KEY_CHECKS = 1;
