@@ -13,6 +13,25 @@
             @submit="saveAnnouncement" />
     </div>    
 
+    <!-- 统计饼图 2x2 -->
+    <div class="container pie-grid">
+      <div class="pie-item">
+        <v-chart :option="companyOption" autoresize style="height:320px" />
+        <div class="pie-title">企业就业（各企业就业人数）</div>
+      </div>
+      <div class="pie-item">
+        <v-chart :option="departmentOption" autoresize style="height:320px" />
+        <div class="pie-title">学院就业（各学院就业率）</div>
+      </div>
+      <div class="pie-item">
+        <v-chart :option="studentOption" autoresize style="height:320px" />
+        <div class="pie-title">学生就业（就业学生人数与未就业人数）</div>
+      </div>
+      <div class="pie-item">
+        <v-chart :option="studentCountOption" autoresize style="height:320px" />
+        <div class="pie-title">学生人数（各学院学生人数）</div>
+      </div>
+    </div>
 </template>
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
@@ -24,7 +43,15 @@ import DetailDialog from '@/components/DetailDialog.vue';
 import { queryAnnouncementsApi, queryAnnouncementByIdApi } from '@/api/public/announcements';
 import { insertAnnouncementApi, updateAnnouncementApi, deleteAnnouncementApi } from '@/api/admin/announcements';
 import { ElMessage, ElMessageBox } from 'element-plus';
-
+// 新增统计接口
+import { queryCompanyStatisticsApi, queryDepartmentStatisticsApi, queryGlobalStatisticsApi, queryStudentStatisticsApi } from '@/api/public/statistics';
+// 引入echarts
+import { use } from 'echarts/core';
+import VChart from 'vue-echarts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent]);
 
 // 搜索
 const searchAnnouncement = reactive({
@@ -168,8 +195,77 @@ const clear = () => {
     searchAnnouncement.endDate = '';
     search();
 }
+
+// 饼图option
+const companyOption = ref({});
+const departmentOption = ref({});
+const studentOption = ref({});
+const studentCountOption = ref({});
+
+// 获取统计数据并设置option
+const fetchStatistics = async () => {
+  // 企业就业
+  const companyRes = await queryCompanyStatisticsApi();
+  if (companyRes.code === 1 && Array.isArray(companyRes.data)) {
+    companyOption.value = { 
+      title: { text: '企业就业', left: 'center' },
+      tooltip: { trigger: 'item' },
+      legend: { orient: 'vertical', left: 'left' },
+      series: [{
+        name: '企业就业', type: 'pie', radius: '50%',
+        data: companyRes.data.map(item => ({ value: item.jobCount, name: item.companyName })),
+        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+      }]
+    }
+  }
+  // 学院就业
+  const departmentRes = await queryDepartmentStatisticsApi();
+  if (departmentRes.code === 1 && Array.isArray(departmentRes.data)) {
+    // 学院就业率
+    departmentOption.value = {
+      title: { text: '学院就业率', left: 'center' },
+      tooltip: { trigger: 'item' },
+      legend: { orient: 'vertical', left: 'left' },
+      series: [{
+        name: '就业率', type: 'pie', radius: '50%',
+        data: departmentRes.data.map(item => ({ value: item.employmentRate, name: item.departmentName })),
+        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+      }]
+    }
+    // 学生人数（各学院）
+    studentCountOption.value = {
+      title: { text: '学生人数', left: 'center' },
+      tooltip: { trigger: 'item' },
+      legend: { orient: 'vertical', left: 'left' },
+      series: [{
+        name: '学生人数', type: 'pie', radius: '50%',
+        data: departmentRes.data.map(item => ({ value: item.totalStudents, name: item.departmentName })),
+        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+      }]
+    }
+  }
+  // 学生就业(未完成)
+  const studentRes = await queryStudentStatisticsApi();
+  if (studentRes.code === 1 && studentRes.data) {
+    studentOption.value = {
+      title: { text: '学生就业', left: 'center' },
+      tooltip: { trigger: 'item' },
+      legend: { orient: 'vertical', left: 'left' },
+      series: [{
+        name: '学生就业', type: 'pie', radius: '50%',
+        data: [
+          { value: studentRes.data.employedCount, name: '已就业' },
+          { value: studentRes.data.unemployedCount, name: '未就业' }
+        ],
+        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+      }]
+    }
+  }
+}
+
 onMounted(() => {
     search();
+    fetchStatistics();
 });
 </script>
 <style>
@@ -178,5 +274,27 @@ onMounted(() => {
     width: 100%;
     padding: 0;
     flex-wrap: wrap;
+}
+.pie-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+.pie-item {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pie-title {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
 }
 </style>
