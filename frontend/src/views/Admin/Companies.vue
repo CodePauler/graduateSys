@@ -1,16 +1,18 @@
 <template>
     <div class="headerContent">企业管理</div>
-    <!-- 搜索栏 -->
-    <div class="container">
-        <SearchBar :fields="searchFields" :model="searchCompany" @search="search" @clear="clear" />
+    <!-- 搜索栏和批量操作按钮并排 -->
+    <div class="container search-bar-row">
+        <SearchBar :fields="searchFields" :model="searchCompany" @search="search" @clear="clear">
+            <template #batch-action>
+                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete" style="margin-left:8px;">批量删除</el-button>
+            </template>
+        </SearchBar>
     </div>
-
     <!-- 数据表格 -->
     <div class="container">
         <DataTable :data="company" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" />
+            @page-change="handleCurrentChange" @size-change="handleSizeChange" @selection-change="handleSelectionChange" />
     </div>
-
     <!-- 编辑弹窗 -->
     <div class="container">
         <EditDialog v-model="dialogFormVisible" :title="'企业信息'" :model="Company" :fields="editFields"
@@ -177,7 +179,39 @@ const clear = () => {
     searchCompany.pageSize = 10;
     search();
 }
+const multipleSelection = ref([])
+const handleSelectionChange = (val) => {
+    multipleSelection.value = val
+}
+const handleBatchDelete = () => {
+    if (!multipleSelection.value.length) return
+    ElMessageBox.confirm(`确定要删除选中的${multipleSelection.value.length}个企业吗？`, '警告', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+    }).then(async () => {
+        const ids = multipleSelection.value.map(item => item.companyId)
+        const result = await deleteCompanyApi(ids)
+        if (result.code === 1) {
+            ElMessage.success('批量删除成功')
+            search()
+        } else {
+            ElMessage.error(result.msg)
+        }
+    }).catch(() => {
+        ElMessage.info('已取消删除')
+    })
+}
 onMounted(() => {
     search();
 });
 </script>
+<style scoped>
+.container {
+    margin: 20px;
+}
+.search-bar-row {
+    display: flex;
+    align-items: flex-end;
+}
+</style>

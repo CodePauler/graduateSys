@@ -11,6 +11,7 @@
     <el-form-item>
       <el-button type="primary" @click="$emit('search')">查询</el-button>
       <el-button @click="$emit('clear')">清空</el-button>
+      <slot name="batch-action"></slot>
     </el-form-item>
   </el-form>
 </template>
