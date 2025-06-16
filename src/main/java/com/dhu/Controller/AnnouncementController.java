@@ -32,7 +32,6 @@ public class AnnouncementController {
     /**
      * ID查询-admin
      */
-    @RoleCheck({"admin"})
     @GetMapping("/{id}")
     public Result getAnnouncementById(@PathVariable Integer id){
         log.info("查询公告ID: {}", id);
