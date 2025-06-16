@@ -34,6 +34,24 @@ request.interceptors.response.use(
     return response.data
   },
   (error) => { //失败回调
+    // 检查token过期或未授权
+    if (error.response && error.response.status === 401) {
+      ElMessage.error('登录已过期，请重新登录')
+      localStorage.removeItem('token')
+      localStorage.removeItem('role')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('name')
+      // 跳转到登录页
+      window.location.href = '/login'
+      return Promise.reject('登录已过期')
+    }
+    // 检查后端返回的jwt过期等信息
+    if (error.response && error.response.data && typeof error.response.data === 'string' && error.response.data.includes('JWT expired')) {
+      ElMessage.error('登录已过期，请重新登录')
+      localStorage.clear()
+      window.location.href = '/login'
+      return Promise.reject('登录已过期')
+    }
     ElMessage.error(error.message || '网络错误')
     return Promise.reject(error)
   }

@@ -30,17 +30,17 @@ public class UserServiceImpl implements UserService {
     private CompanyMapper companyMapper;
 
     @Override
-    public Result register(User user, Map<String , Object> extraParams) {
+    public Result register(User user, Map<String, Object> extraParams) {
         User existingUser = userMapper.findByUsernameAndPassword(user);
-        if(existingUser!=null){
+        if (existingUser != null) {
             return Result.error("用户名已存在");
         }
         userMapper.insert(user);
 
-        Integer userId=user.getId();
+        Integer userId = user.getId();
         log.info("注册用户ID: {}", userId);
-//        如果需要根据角色进行不同的处理
-        if("student".equals(user.getRole())){
+        // 如果需要根据角色进行不同的处理
+        if ("student".equals(user.getRole())) {
             Student student = new Student();
             if (extraParams.get("studentId") != null) {
                 student.setStudentId(Integer.valueOf(extraParams.get("studentId").toString()));
@@ -51,8 +51,9 @@ public class UserServiceImpl implements UserService {
             }
             student.setGraduationYear((String) extraParams.get("graduationYear"));
             student.setEmploymentStatus("待业"); // 默认
+            student.setResumeUrl(""); // 简历url默认空字符串
             studentMapper.insert(student);
-        } else if("company".equals(user.getRole())){
+        } else if ("company".equals(user.getRole())) {
             Company company = new Company();
 
             company.setUserId(userId);
@@ -85,7 +86,8 @@ public class UserServiceImpl implements UserService {
                 claims.put("companyId", companyId);
             }
             String jwt = JwtUtils.generateToken(claims);
-            return new LoginInfo(userLogin.getId(), userLogin.getUsername(), userLogin.getName(), userLogin.getRole(),studentId,companyId,
+            return new LoginInfo(userLogin.getId(), userLogin.getUsername(), userLogin.getName(), userLogin.getRole(),
+                    studentId, companyId,
                     jwt);
         } else {
             return null; // 登录失败，返回null
