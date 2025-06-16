@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.PageResult;
 import com.dhu.Pojo.Result;
 import com.dhu.Pojo.User;
@@ -7,6 +8,7 @@ import com.dhu.Pojo.UserQueryParam;
 import com.dhu.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RoleCheck({"admin"})
     @GetMapping
     public Result page(UserQueryParam userQueryParam){
         log.info("请求查询参数:{}",userQueryParam);
@@ -26,6 +29,7 @@ public class UserController {
         return Result.success(page);
     }
 
+    @RoleCheck({"admin"})
     @GetMapping("/{id}")
     public Result getUserById(@PathVariable Integer id) {
         log.info("查询用户ID: {}", id);
@@ -38,6 +42,7 @@ public class UserController {
     }
 
 //    修改用户
+    @RoleCheck({"admin"})
     @PutMapping
     public Result updateUser(@RequestBody User user){
         log.info("修改用户信息: {}", user);
@@ -46,6 +51,7 @@ public class UserController {
     }
 
 //    删除用户（支持批量删除）
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteUsers(@RequestParam List<Integer> ids){
         log.info("删除用户ID列表: {}", ids);

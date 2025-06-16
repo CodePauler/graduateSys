@@ -1,10 +1,7 @@
 package com.dhu.Service;
 
 
-import com.dhu.Pojo.PageResult;
-import com.dhu.Pojo.Student;
-import com.dhu.Pojo.StudentInfo;
-import com.dhu.Pojo.StudentQueryParam;
+import com.dhu.Pojo.*;
 
 import java.util.List;
 
@@ -42,6 +39,6 @@ public interface StudentService {
     /**
      * 根据岗位ID查询申请该岗位的学生信息
      */
-    List<StudentInfo> getApplicationStudentsByJobId(Integer jobId);
+    List<ApplicationStudent> getApplicationStudentsByJobId(Integer jobId);
 
 }

@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.Announcement;
 import com.dhu.Pojo.AnnouncementQueryParam;
 import com.dhu.Pojo.PageResult;
@@ -31,6 +32,7 @@ public class AnnouncementController {
     /**
      * ID查询-admin
      */
+    @RoleCheck({"admin"})
     @GetMapping("/{id}")
     public Result getAnnouncementById(@PathVariable Integer id){
         log.info("查询公告ID: {}", id);
@@ -46,6 +48,7 @@ public class AnnouncementController {
     /**
      * 更新公告-admin
      */
+    @RoleCheck({"admin"})
     @PutMapping
     public Result updateAnnouncement(@RequestBody Announcement announcement){
         log.info("修改公告信息: {}", announcement);
@@ -56,6 +59,7 @@ public class AnnouncementController {
     /**
      * 发布公告--admin
      */
+    @RoleCheck({"admin"})
     @PostMapping
     public Result addAnnouncement(@RequestBody Announcement announcement) {
         log.info("发布公告: {}", announcement);
@@ -66,6 +70,7 @@ public class AnnouncementController {
     /**
      * 删除公告--admin
      */
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteAnnouncements(@RequestParam List<Integer> ids) {
         log.info("删除公告ID列表: {}", ids);

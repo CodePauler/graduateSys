@@ -44,7 +44,7 @@
                   <el-icon>
                     <Document />
                   </el-icon>
-                  <span>我的投递</span>
+                  <span>我的Offer</span>
                 </el-menu-item>
               </template>
               <!-- 企业：可发布、查看、修改自己的招聘 -->

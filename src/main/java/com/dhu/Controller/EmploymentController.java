@@ -23,8 +23,9 @@ public class EmploymentController {
     private EmploymentService employmentService;
 
 //    学生申请岗位
+    @RoleCheck({"student","admin"})
     @PostMapping
-    public Result allpyJob(@RequestBody Map<String, Integer> params) {
+    public Result applyJob(@RequestBody Map<String, Integer> params) {
         Integer studentId = params.get("studentId");
         Integer jobId = params.get("jobId");
         log.info("学生ID: {}, 申请岗位ID: {}", studentId, jobId);
@@ -32,4 +33,12 @@ public class EmploymentController {
         return Result.success("申请成功");
     }
 
+//    学生拒绝OFFER
+    @RoleCheck({"student","admin"})
+    @DeleteMapping
+    public Result refuseOffer(@RequestParam Integer jobId, Integer studentId){
+        log.info("学生ID: {}, 拒绝岗位ID: {}", studentId, jobId);
+        employmentService.refuseOffer(jobId, studentId);
+        return Result.success("拒绝成功");
+    }
 }

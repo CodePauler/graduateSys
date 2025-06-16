@@ -1,9 +1,7 @@
 package com.dhu.Controller;
 
 import com.dhu.Annotation.RoleCheck;
-import com.dhu.Pojo.JobInfo;
-import com.dhu.Pojo.Result;
-import com.dhu.Pojo.StudentInfo;
+import com.dhu.Pojo.*;
 import com.dhu.Service.EmploymentService;
 import com.dhu.Service.JobService;
 import com.dhu.Service.StudentService;
@@ -53,7 +51,7 @@ public class HiresController {
         if (jobId == null) {
             return Result.error("岗位ID不能为空");
         }
-        List<StudentInfo> applications = studentService.getApplicationStudentsByJobId(jobId);
+        List<ApplicationStudent> applications = studentService.getApplicationStudentsByJobId(jobId);
         return Result.success(applications);
     }
 
@@ -62,7 +60,10 @@ public class HiresController {
      */
     @RoleCheck({"company","admin"})
     @PostMapping("/applications")
-    public Result updateApplication(@RequestParam String status, @RequestParam Integer jobId, @RequestParam Integer studentId) {
+    public Result updateApplication(@RequestBody ApplicationRequest applicationRequest) {
+        String status = applicationRequest.getStatus();
+        Integer jobId = applicationRequest.getJobId();
+        Integer studentId = applicationRequest.getStudentId();
         log.info("{}学生ID: {} 的申请，岗位ID: {}",status, studentId, jobId);
         if (jobId == null || studentId == null) {
             return Result.error("岗位ID和学生ID不能为空");

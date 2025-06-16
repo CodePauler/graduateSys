@@ -10,4 +10,7 @@ public interface EmploymentMapper {
 
 //    通过岗位ID和学生ID批准申请
     boolean updateApplication(String status,Integer jobId, Integer studentId);
+
+//    通过岗位ID和学生ID删除申请
+    void deleteApplication(Integer jobId, Integer studentId);
 }

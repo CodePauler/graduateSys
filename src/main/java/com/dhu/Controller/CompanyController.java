@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.CompanyInfo;
 import com.dhu.Pojo.CompanyQueryParam;
 import com.dhu.Pojo.PageResult;
@@ -19,6 +20,7 @@ public class CompanyController {
     private CompanyService companyService;
 
 //    分页查询
+    @RoleCheck({"admin"})
     @GetMapping
     public Result page(CompanyQueryParam companyQueryParam){
         log.info("请求查询参数:{}", companyQueryParam);
@@ -27,6 +29,7 @@ public class CompanyController {
     }
 
 //    ID查询
+    @RoleCheck({"company", "admin"})
     @GetMapping("/{id}")
     public Result getCompanyById(@PathVariable Integer id){
         log.info("查询公司ID: {}", id);
@@ -39,6 +42,7 @@ public class CompanyController {
     }
 
 //    修改信息
+    @RoleCheck({"company", "admin"})
     @PutMapping
     public Result updateCompany(@RequestBody CompanyInfo companyInfo) {
         log.info("修改公司信息: {}", companyInfo);
@@ -47,6 +51,7 @@ public class CompanyController {
     }
 
 //    删除公司
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteCompanies(@RequestParam List<Integer> ids) {
         log.info("删除公司ID列表: {}", ids);
@@ -55,6 +60,7 @@ public class CompanyController {
     }
 
 //    根据HR用户ID获取公司信息
+    @RoleCheck({"company", "admin"})
     @GetMapping("/getCompanyByHrId/{hrId}")
     public Result getCompanyByHrId(@PathVariable Integer hrId) {
         log.info("根据HR用户ID查询公司信息: {}", hrId);

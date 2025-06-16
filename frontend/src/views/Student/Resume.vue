@@ -2,6 +2,10 @@
     <div class="headerContent" v-if="role === 'student' && showUpload">
         上传简历，寻找你的千里马
     </div>
+    <!-- 上传成功后显示PDF预览 -->
+    <div v-if="resumeUrl && !showUpload" style="margin-top: 24px; height: auto;">
+        <iframe :src="resumeUrl" width="100%" height="600px" style="border: none;"></iframe>
+    </div>
     <el-upload v-if="role === 'student' && showUpload" class="upload-demo" drag :http-request="axiosUpload"
         :befor-upload="beforeUpload">
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
@@ -14,10 +18,7 @@
             </div>
         </template>
     </el-upload>
-    <!-- 上传成功后显示PDF预览 -->
-    <div v-if="resumeUrl && !showUpload" style="margin-top: 24px; height: auto;">
-        <iframe :src="resumeUrl" width="100%" height="600px" style="border: none;"></iframe>
-    </div>
+    
 </template>
 
 <script setup>

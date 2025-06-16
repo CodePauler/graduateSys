@@ -6,8 +6,8 @@
 
 <!--    company-发布岗位-->
     <insert id="addJob" useGeneratedKeys="true" keyProperty="jobId">
-        INSERT INTO job (title, type_id, description, demand_number, company_id, status)
-        VALUES (#{title}, #{typeId}, #{description}, #{demandNumber}, #{companyId}, #{status})
+        INSERT INTO job (title, type_id, description, demand_number, company_id, status,salary,location)
+        VALUES (#{title}, #{typeId}, #{description}, #{demandNumber}, #{companyId}, #{status},#{salary},#{location})
     </insert>
 
 
@@ -30,6 +30,12 @@
             </if>
             <if test="status != null and status != ''">
                 status = #{status},
+            </if>
+            <if test="salary != null and salary != ''">
+                salary = #{salary},
+            </if>
+            <if test="location != null and location != ''">
+                location = #{location},
             </if>
         </set>
         WHERE job_id = #{jobId}
@@ -57,6 +63,8 @@
                j.company_id,
                c.company_name,
                c.company_intro,
+                j.salary,
+                j.location,
                j.status,
         CASE
             WHEN e.employment_id IS NOT NULL THEN 1
@@ -85,6 +93,12 @@
             <if test="status != null and status != ''">
                 AND j.status = #{status}
             </if>
+            <if test="salary != null and salary != ''">
+                AND j.salary = #{salary}
+            </if>
+            <if test="location != null and location != ''">
+                AND j.location LIKE CONCAT('%', #{location}, '%')
+            </if>
         </where>
     </select>
 
@@ -99,6 +113,8 @@
                j.company_id,
                c.company_name,
                c.company_intro,
+                j.salary,
+                j.location,
                j.status
         FROM job_info j
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
@@ -111,6 +127,16 @@
         select ji.*
         from job_info ji
         where ji.company_id = #{companyId}
+    </select>
+
+
+<!--    student-查询自己申请的岗位-->
+    <select id="getMyApplicationJob" resultType="com.dhu.Pojo.JobInfo">
+        select job_info.*,company.company_name, company.company_intro, employment.status applicationStatus,employment.apply_date
+        from job_info
+        left join company on job_info.company_id = company.company_id
+        left join employment on job_info.job_id = employment.job_id
+        where student_id = #{studentId}
     </select>
 
 

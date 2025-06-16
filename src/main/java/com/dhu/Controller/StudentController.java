@@ -3,6 +3,7 @@ package com.dhu.Controller;
 import com.dhu.Annotation.RoleCheck;
 import com.dhu.Mapper.StudentMapper;
 import com.dhu.Pojo.*;
+import com.dhu.Service.JobService;
 import com.dhu.Service.StudentService;
 import com.dhu.Utils.AliyunOSSOperator;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +28,8 @@ public class StudentController {
 
     @Autowired
     private AliyunOSSOperator aliyunOSSOperator;
+    @Autowired
+    private JobService jobService;
 
 
     //    分页查询
@@ -40,6 +43,7 @@ public class StudentController {
 
 
 //    根据ID查询
+    @RoleCheck({"student","admin"})
     @GetMapping("/{id}")
     public Result getStudentById(@PathVariable Integer id) {
         log.info("查询学生ID: {}", id);
@@ -53,6 +57,7 @@ public class StudentController {
 
 //    更新学生信息
     @PutMapping
+    @RoleCheck({"student","admin"})
     public Result updateStudent(@RequestBody Student student) {
         log.info("修改学生信息: {}", student);
         studentService.updateByStudentId(student);
@@ -60,6 +65,7 @@ public class StudentController {
     }
 
 //    删除学生
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteStudents(@RequestParam List<Integer>ids) {
         log.info("删除学生ID列表: {}", ids);
@@ -68,7 +74,7 @@ public class StudentController {
     }
 
 //    上传简历
-    @RoleCheck({"student"})
+    @RoleCheck({"student","admin"})
     @PostMapping("/resume/{id}")
     public Result uploadResume(@PathVariable Integer id, @RequestParam("file")MultipartFile resume) throws Exception {
         log.info("上传学生ID: {} 的简历: {}", id, resume);
@@ -105,5 +111,17 @@ public class StudentController {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+//    获取自己申请的岗位
+    @RoleCheck({"student","admin"})
+    @GetMapping("/applications")
+    public Result getMyApplicationJob(@RequestParam Integer studentId) {
+        log.info("查询学生ID: {} 的申请信息", studentId);
+        if (studentId == null) {
+            return Result.error("学生ID不能为空");
+        }
+        List<JobInfo> applications = jobService.getMyApplicationJob(studentId);
+        return Result.success(applications);
     }
 }

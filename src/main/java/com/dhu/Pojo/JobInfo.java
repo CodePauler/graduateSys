@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +21,9 @@ public class JobInfo {
     private String companyName; // 公司名称
     private String companyIntro; // 公司简介
     private String status; // 岗位状态（待审核/已通过/不通过）
+    private String applicationStatus; // 申请状态（待审核/已通过/不通过）
     private String hasApplied; // 是否已申请（学生端使用）
+    private LocalDateTime applyDate; // 申请时间
+    private String salary; // 岗位薪资
+    private String location; // 岗位类型名称
 }

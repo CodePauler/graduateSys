@@ -109,8 +109,15 @@
 
 
 <!--    根据岗位ID查找申请该岗位的学生 -->
-    <select id="getApplicationStudentsByJobId" resultType="com.dhu.Pojo.StudentInfo">
-        select student_info.*
+    <select id="getApplicationStudentsByJobId" resultType="com.dhu.Pojo.ApplicationStudent">
+        select student_info.student_id,
+            student_info.name,
+               student_info.gender,
+               student_info.major,
+                student_info.graduation_year,
+                student_info.phone,
+               employment.status,
+                student_info.resume_url
         from student_info
         join employment on student_info.student_id = employment.student_id
         where employment.job_id = #{jobId}

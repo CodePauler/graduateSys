@@ -31,7 +31,7 @@ export const getJobsByCompanyIdApi = (companyId) => {
 }
 
 // 通过/拒绝学生申请
-export const approveApplicationApi = (studentId,jobId) => {
-    console.log("通过学生申请：studentId=", studentId, ", jobId=", jobId);
-    return request.post(`/hires/applications`,{studentId, jobId});
+export const updateApplicationApi = (status,studentId,jobId) => {
+    console.log("更新status:",status,"学生申请：studentId=", studentId, ", jobId=", jobId);
+    return request.post(`/hires/applications`,{status,studentId, jobId});
 }

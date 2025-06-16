@@ -49,6 +49,7 @@ public class JobController {
     /**
      * company-修改岗位信息
      */
+    @RoleCheck({"company","admin"})
     @PutMapping
     public Result updateJob(@RequestBody JobInfo jobInfo) {
         log.info("修改岗位信息: {}", jobInfo);
@@ -59,6 +60,7 @@ public class JobController {
     /**
      * company-删除岗位
      */
+    @RoleCheck({"company","admin"})
     @DeleteMapping()
     public Result deleteJobs(@RequestParam List<Integer> ids) {
         log.info("删除岗位ID: {}", ids);
@@ -69,6 +71,7 @@ public class JobController {
     /**
      * company-发布岗位
      */
+    @RoleCheck({"company","admin"})
     @PostMapping
     public Result addJob(@RequestBody JobInfo jobInfo) {
         log.info("发布岗位: {}", jobInfo);

@@ -15,5 +15,7 @@ public class Job {
     private String hiredNumber; // 已录用人数
     private Integer companyId; // 外键，关联公司ID
     private String status; // 岗位状态（待审核/已通过/不通过）
+    private String salary; // 岗位薪资
+    private String location; // 岗位类型名称
     private String description; // 岗位描述
 }

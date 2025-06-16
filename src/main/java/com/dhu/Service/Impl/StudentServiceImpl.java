@@ -48,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentInfo> getApplicationStudentsByJobId(Integer jobId) {
+    public List<ApplicationStudent> getApplicationStudentsByJobId(Integer jobId) {
         return studentMapper.getApplicationStudentsByJobId(jobId);
     }
 

@@ -25,4 +25,7 @@ public interface JobService {
 
 //    company-查询自己发布的岗位
     List<JobInfo> getJobsByCompanyId(Integer companyId);
+
+//    student-查询自己申请的岗位
+    List<JobInfo> getMyApplicationJob(Integer studentId);
 }

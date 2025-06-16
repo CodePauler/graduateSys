@@ -8,7 +8,7 @@ import Layout from '@/views/Layout/Layout.vue';
 import Jobs from '@/views/Public/Jobs.vue';
 import Companies from '@/views/Admin/Companies.vue';
 import Announcements from '@/views/Admin/Announcements.vue';
-import Applications from '@/views/Public/Applications.vue';
+import Applications from '@/views/Student/Applications.vue';
 import Resume from '@/views/Student/Resume.vue';
 import Hires from '@/views/Company/Hires.vue';
 import Home from '@/views/Public/Home.vue';

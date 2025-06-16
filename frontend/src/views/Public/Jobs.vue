@@ -9,16 +9,6 @@
         <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear" />
     </div>
 
-    <!-- admin-发布岗位 考虑移动到/hires company专属 -->
-    <div class="container" v-if="role === 'company'">
-        <el-button type="primary" @click="openAddDialog()">发布岗位</el-button>
-    </div>
-    <!-- admin-新增岗位弹窗 同上-->
-    <div class="container" v-if="role === 'company'">
-        <EditDialog v-model="addDialogVisible" :title="'发布岗位'" :model="addJob" :fields="addFields"
-            @submit="addJobSubmit" />
-    </div>
-
     <div class="container">
         <!-- 数据表格 -->
         <DataTable :data="jobInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
@@ -36,51 +26,8 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { queryJobsApi, queryJobByIdApi } from '@/api/public/jobs';
 import { updateJobApi, deleteJobApi, insertJobApi } from '@/api/company/jobs';
-import { queryCompanyByHrIdApi } from '@/api/public/company';
 import { applyJobApi } from '@/api/student/Jobs';
 const role = localStorage.getItem('role')
-// company-发布岗位
-const addDialogVisible = ref(false);
-const addJob = ref({});
-const addFields = [
-    { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
-    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
-    { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
-    { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
-    { label: '公司简介', prop: 'companyIntro', component: 'el-input', props: { disabled: true } },
-    { label: '岗位描述', prop: 'description', component: 'el-input', props: { type: 'textarea', placeholder: '请输入岗位描述', clearable: true } }
-]
-const openAddDialog = async () => {
-    const company = await queryCompanyByHrIdApi(localStorage.getItem('userId'));
-    if (company.code === 1) {
-        addJob.value = {
-            title: '',
-            jobType: '',
-            typeId: 1, //测试
-            demandNumber: '',
-            hiredNumber: '',
-            companyId: company.data.companyId,
-            companyName: company.data.companyName,
-            companyIntro: company.data.companyIntro,
-            description: '',
-            status: '待审核'
-        };
-    } else {
-        ElMessage.error('获取公司信息失败，请先创建公司');
-        return;
-    }
-    addDialogVisible.value = true;
-}
-const addJobSubmit = async () => {
-    const result = await insertJobApi(addJob.value);
-    if (result.code === 1) {
-        ElMessage.success('岗位发布成功');
-        addDialogVisible.value = false;
-        search();
-    } else {
-        ElMessage.error(result.msg);
-    }
-}
 
 
 // 搜索栏字段配置
@@ -138,7 +85,7 @@ const clear = () => {
     searchJob.jobType = '';
     searchJob.companyName = '';
     searchJob.description = '';
-    searchJob.status = '';
+    searchJob.status = searchJob.status;
     searchJob.page = 1;
     searchJob.pageSize = 10;
     search();

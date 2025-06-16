@@ -48,4 +48,9 @@ public class JobServiceImpl implements JobService {
     public List<JobInfo> getJobsByCompanyId(Integer companyId) {
         return jobMapper.getJobsByCompanyId(companyId);
     }
+
+    @Override
+    public List<JobInfo> getMyApplicationJob(Integer studentId) {
+        return jobMapper.getMyApplicationJob(studentId);
+    }
 }
