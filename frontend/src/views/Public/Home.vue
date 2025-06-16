@@ -1,8 +1,9 @@
 <template>
     <div class="headerContent">首页</div>
     
-    <!-- 数据表格 -->
-    <div class="container">
+    <!-- 公告栏 -->
+    <div class="container announcement-section">
+        <div class="section-title">最新公告</div>
         <DataTableWithPagination :data="announcementInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
             @page-change="handleCurrentChange" @size-change="handleSizeChange" />
     </div>
@@ -30,6 +31,34 @@
       <div class="pie-item">
         <v-chart :option="studentCountOption" autoresize style="height:320px" />
         <div class="pie-title">学生人数（各学院学生人数）</div>
+      </div>
+    </div>
+
+    <!-- 统计数据概览 -->
+    <div class="container statistics-overview">
+      <div class="overview-item">
+        <div class="overview-label">毕业生总数</div>
+        <div class="overview-value">{{ globalStats.totalStudents || 0 }}</div>
+      </div>
+      <div class="overview-divider"></div>
+      <div class="overview-item">
+        <div class="overview-label">入驻企业总数</div>
+        <div class="overview-value">{{ globalStats.companyCount || 0 }}</div>
+      </div>
+      <div class="overview-divider"></div>
+      <div class="overview-item">
+        <div class="overview-label">发布的岗位数</div>
+        <div class="overview-value">{{ globalStats.jobCount || 0 }}</div>
+      </div>
+      <div class="overview-divider"></div>
+      <div class="overview-item">
+        <div class="overview-label">所有岗位总需要人数</div>
+        <div class="overview-value">{{ globalStats.totalJobDemand || 0 }}</div>
+      </div>
+      <div class="overview-divider"></div>
+      <div class="overview-item">
+        <div class="overview-label">收到的offer总量</div>
+        <div class="overview-value">{{ globalStats.totalHired || 0 }}</div>
       </div>
     </div>
 </template>
@@ -201,6 +230,7 @@ const companyOption = ref({}); // 企业就业（饼图）
 const departmentOption = ref({}); // 学院就业率（柱状图）
 const studentOption = ref({}); // 学生就业（饼图）
 const studentCountOption = ref({}); // 学生人数（柱状图）
+const globalStats = ref({}); // 全局统计数据
 
 // 获取统计数据并设置option
 const fetchStatistics = async () => {
@@ -269,6 +299,9 @@ const fetchStatistics = async () => {
   // 学生就业统计
   const studentRes = await queryGlobalStatisticsApi();
   if (studentRes.code === 1 && studentRes.data) {
+    // 存储全局统计数据
+    globalStats.value = studentRes.data;
+    
     studentOption.value = {
       title: { text: '学生就业统计', left: 'center' },
       tooltip: { 
@@ -337,5 +370,53 @@ onMounted(() => {
   font-weight: bold;
   font-size: 16px;
   text-align: center;
+}
+.announcement-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.section-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #333;
+  border-left: 4px solid #409eff;
+  padding-left: 12px;
+}
+.statistics-overview {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 24px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.overview-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.overview-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+.overview-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #409eff;
+}
+.overview-divider {
+  width: 1px;
+  height: 60px;
+  background-color: #e4e7ed;
+  margin: 0 16px;
 }
 </style>
