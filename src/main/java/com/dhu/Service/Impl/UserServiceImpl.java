@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result register(User user, Map<String, Object> extraParams) {
-        User existingUser = userMapper.findByUsernameAndPassword(user);
+        User existingUser = userMapper.findByUsername(user.getUsername());
         if (existingUser != null) {
             return Result.error("用户名已存在");
         }

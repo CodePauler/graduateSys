@@ -125,8 +125,10 @@ const onSubmit = () => {
           ElMessage.success('注册成功');
           showSuccess.value = true;
           router.push('/login');
+        } else if (res.msg && res.msg.includes('用户名已存在')) {
+          ElMessage.error('用户名重复，请更换用户名');
         } else {
-          ElMessage.error(res.data.msg);
+          ElMessage.error(res.data?.msg || res.msg || '注册失败');
         }
       } catch (e) {
         ElMessage.error('网络错误');
