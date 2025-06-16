@@ -174,17 +174,20 @@ onMounted(() => {
 
 .layout-container .el-main {
   padding: 0;
+  overflow: visible;
 }
 
-.layout-container,
-.layout-container,
-.el-container,
-.layout-container,
-.el-aside,
-.layout-container,
-.el-main {
-  height: 100vh;
-  min-height: 0;
+.layout-container {
+  min-height: 100vh;
+}
+
+.layout-container .el-container {
+  min-height: calc(100vh - 60px);
+}
+
+.layout-container .el-aside {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
 }
 
 span {
