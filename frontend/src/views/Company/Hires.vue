@@ -1,15 +1,14 @@
 <template>
+    <!-- company-发布岗位 -->
+    <!-- company-新增岗位弹窗 -->
+    <div class="container" v-if="role === 'company'">
+        <EditDialog v-model="addDialogVisible" :title="'发布岗位'" :model="addJob" :fields="addFields"
+            @submit="addJobSubmit" />
+    </div>
     <div class="headerContent">
         我的招聘
     </div>
     <div v-if="!jobList.length">
-
-        <!-- company-发布岗位 -->
-        <!-- company-新增岗位弹窗 -->
-        <div class="container" v-if="role === 'company'">
-            <EditDialog v-model="addDialogVisible" :title="'发布岗位'" :model="addJob" :fields="addFields"
-                @submit="addJobSubmit" />
-        </div>
         <el-empty description="暂无岗位">
             <el-button type="primary" size="large" @click="openAddDialog">
                 发布招聘
@@ -17,6 +16,9 @@
         </el-empty>
     </div>
     <div v-else>
+        <el-button v-if="jobList.length" type="primary" size="large" @click="openAddDialog">
+            发布招聘
+        </el-button>
         <el-collapse v-model="activeJobIds" accordion>
             <el-collapse-item v-for="job in jobList" :key="job.jobId" :name="String(job.jobId)">
                 <template #title>
