@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Mapper.MajorMapper;
 import com.dhu.Pojo.Major;
 import com.dhu.Pojo.MajorQueryParam;
@@ -29,6 +30,7 @@ public class MajorController {
     }
 
 //    新增专业
+    @RoleCheck({"admin"})
     @PostMapping
     public Result addMajor(@RequestBody Major major) {
         log.info("新增专业: {}", major);
@@ -39,6 +41,7 @@ public class MajorController {
     }
 
 //    修改专业信息
+    @RoleCheck({"admin"})
     @PutMapping
     public Result updateMajor(@RequestBody Major major) {
         log.info("修改专业信息: {}", major);
@@ -50,6 +53,7 @@ public class MajorController {
     }
 
 //    删除专业
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteMajor(@RequestParam List<Integer> ids) {
         log.info("删除专业ID: {}", ids);

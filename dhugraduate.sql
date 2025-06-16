@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 16/06/2025 23:04:01
+ Date: 17/06/2025 00:53:40
 */
 
 SET NAMES utf8mb4;
@@ -74,11 +74,11 @@ INSERT INTO `company` VALUES (9, 34, '123312', '132312132123');
 -- ----------------------------
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '院系ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '院系名称',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
+  `department_id` bigint NOT NULL AUTO_INCREMENT COMMENT '院系ID',
+  `department_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '院系名称',
+  PRIMARY KEY (`department_id`) USING BTREE,
+  UNIQUE INDEX `name`(`department_name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of department
@@ -173,13 +173,13 @@ INSERT INTO `job_type` VALUES (3, '现代服务类');
 -- ----------------------------
 DROP TABLE IF EXISTS `major`;
 CREATE TABLE `major`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '专业ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '专业名称',
+  `major_id` bigint NOT NULL AUTO_INCREMENT COMMENT '专业ID',
+  `major_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '专业名称',
   `department_id` bigint NULL DEFAULT NULL COMMENT '所属院系',
-  PRIMARY KEY (`id`) USING BTREE,
+  PRIMARY KEY (`major_id`) USING BTREE,
   INDEX `department_id`(`department_id` ASC) USING BTREE,
-  CONSTRAINT `major_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
+  CONSTRAINT `major_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`) ON DELETE SET NULL ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of major
@@ -187,6 +187,7 @@ CREATE TABLE `major`  (
 INSERT INTO `major` VALUES (1, '计算机科学', 1);
 INSERT INTO `major` VALUES (2, '软件工程', 1);
 INSERT INTO `major` VALUES (3, '电子信息', 1);
+INSERT INTO `major` VALUES (4, '数据科学与大数据技术', 1);
 
 -- ----------------------------
 -- Table structure for student
@@ -202,7 +203,7 @@ CREATE TABLE `student`  (
   UNIQUE INDEX `user_id`(`user_id` ASC) USING BTREE,
   INDEX `major_id`(`major_id` ASC) USING BTREE,
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-  CONSTRAINT `student_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
+  CONSTRAINT `student_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`major_id`) ON DELETE SET NULL ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 123123322 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -257,7 +258,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `company_job_summary` AS 
 -- View structure for department_info
 -- ----------------------------
 DROP VIEW IF EXISTS `department_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `department_info` AS select `d`.`id` AS `department_id`,`d`.`name` AS `department_name`,count(`s`.`student_id`) AS `total_students`,sum((`s`.`employment_status` = '就业')) AS `employed_students`,round(ifnull((sum((`s`.`employment_status` = '就业')) / nullif(count(`s`.`student_id`),0)),0),4) AS `employment_rate` from ((`department` `d` left join `major` `m` on((`d`.`id` = `m`.`department_id`))) left join `student_info` `s` on((`m`.`id` = `s`.`major_id`))) group by `d`.`id`,`d`.`name`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `department_info` AS select `d`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,count(`s`.`student_id`) AS `total_students`,sum((`s`.`employment_status` = '就业')) AS `employed_students`,round(ifnull((sum((`s`.`employment_status` = '就业')) / nullif(count(`s`.`student_id`),0)),0),4) AS `employment_rate` from ((`department` `d` left join `major` `m` on((`d`.`department_id` = `m`.`department_id`))) left join `student_info` `s` on((`m`.`major_id` = `s`.`major_id`))) group by `d`.`department_id`,`d`.`department_name`;
 
 -- ----------------------------
 -- View structure for global_info
@@ -281,6 +282,6 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_employment_summa
 -- View structure for student_info
 -- ----------------------------
 DROP VIEW IF EXISTS `student_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`id` = `s`.`major_id`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`major_name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`major_id` = `s`.`major_id`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

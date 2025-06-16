@@ -1,5 +1,6 @@
 package com.dhu.Controller;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.Department;
 import com.dhu.Pojo.PageResult;
 import com.dhu.Pojo.Result;
@@ -27,6 +28,7 @@ public class DepartmentController {
     }
 
 //    新增学院
+    @RoleCheck({"admin"})
     @PostMapping
     public Result addDepartment(@RequestBody Department department) {
         log.info("新增学院: {}", department);
@@ -35,6 +37,7 @@ public class DepartmentController {
     }
 
 //    修改学院
+    @RoleCheck({"admin"})
     @PutMapping
     public Result updateDepartment(@RequestBody Department department) {
         log.info("修改学院: {}", department);
@@ -43,6 +46,7 @@ public class DepartmentController {
     }
 
 //    删除学院
+    @RoleCheck({"admin"})
     @DeleteMapping
     public Result deleteDepartment(@RequestParam List<Integer> ids) {
         log.info("删除学院ID: {}", ids);

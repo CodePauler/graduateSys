@@ -1,5 +1,6 @@
 package com.dhu.Service.Impl;
 
+import com.dhu.Annotation.RoleCheck;
 import com.dhu.Mapper.MajorMapper;
 import com.dhu.Pojo.Major;
 import com.dhu.Pojo.MajorQueryParam;
@@ -27,6 +28,7 @@ public class MajorServiceImpl implements MajorService {
     }
 
 //    新增学院
+    @RoleCheck({"admin"})
     @Override
     public void addMajor(Major major) {
         majorMapper.insertMajor(major);
