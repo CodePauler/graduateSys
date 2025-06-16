@@ -26,11 +26,10 @@
         where announcement_id = #{announcementId}
     </update>
     <delete id="deleteAnnouncements">
-        delete from announcement where announcement_id in (
+        delete from announcement where announcement_id in
             <foreach collection="ids" item="id" open="(" close=")" separator=",">
                 #{id}
             </foreach>
-            )
         </delete>
 
 
