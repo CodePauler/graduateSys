@@ -239,7 +239,7 @@ const fetchStatistics = async () => {
       series: [{
         name: '就业率',
         type: 'bar',
-        data: departmentRes.data.map(item => item.employmentRate),
+        data: departmentRes.data.map(item => 100*item.employmentRate),
         itemStyle: { color: '#91cc75' },
         label: { show: true, position: 'top', formatter: '{c}%' }
       }]
