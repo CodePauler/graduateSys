@@ -79,7 +79,7 @@
             <if test="name != null and name != ''">
                 AND u.name LIKE CONCAT('%', #{name}, '%')
             </if>
-            <if test="gender !=null and gender != ''">
+            <if test="gender != null and gender != ''">
                 AND u.gender = #{gender}
             </if>
             <if test="majorId != null and majorId != ''">

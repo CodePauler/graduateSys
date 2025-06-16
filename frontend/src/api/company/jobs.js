@@ -17,3 +17,15 @@ export const deleteJobApi = (ids) => {
     console.log("删除岗位：ids=", ids);
     return request.delete(`/jobs?ids=${ids}`);
 }
+
+//  获取申请信息
+export const getApplicationsByJobIdApi = (jobId) => {
+    console.log("获取申请信息：jobId=", jobId);
+    return request.get(`/hires/applications?jobId=${jobId}`);
+}
+
+//  获取岗位列表
+export const getJobsByCompanyIdApi = (companyId) => {
+    console.log("获取岗位列表：companyId=", companyId);
+    return request.get(`/hires/jobs?companyId=${companyId}`);
+}

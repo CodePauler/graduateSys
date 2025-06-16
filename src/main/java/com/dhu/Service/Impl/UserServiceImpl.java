@@ -79,9 +79,11 @@ public class UserServiceImpl implements UserService {
             Integer studentId = null;
             Integer companyId = null;
             if ("student".equals(userLogin.getRole())) {
+                log.info("学生登录，用户ID: {}", userLogin.getId());
                 studentId = studentMapper.findIdByUserId(userLogin.getId());
                 claims.put("studentId", studentId);
             } else if ("company".equals(userLogin.getRole())) {
+                log.info("公司登录，用户ID: {}", userLogin.getId());
                 companyId = companyMapper.findIdByUserId(userLogin.getId());
                 claims.put("companyId", companyId);
             }

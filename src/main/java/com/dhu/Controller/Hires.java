@@ -33,7 +33,7 @@ public class Hires {
      * company-查看自己发布的招聘
      */
     @RoleCheck({"company","admin"})
-    @GetMapping("/jobs/{companyId}")
+    @GetMapping("/jobs")
     public Result getJobs(@RequestParam Integer companyId){
         log.info("查询公司ID: {} 发布的岗位", companyId);
         if (companyId == null) {
@@ -47,7 +47,7 @@ public class Hires {
      * company-根据岗位Id查询收到的申请（学生信息）
      */
     @RoleCheck({"company","admin"})
-    @GetMapping("/applications/{jobId}")
+    @GetMapping("/applications")
     public Result getApplicationStudentsByJobId(@RequestParam Integer jobId) {
         log.info("查询岗位ID: {} 的申请信息", jobId);
         if (jobId == null) {
