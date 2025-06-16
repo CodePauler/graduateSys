@@ -4,7 +4,8 @@
     <div class="container search-bar-row">
         <SearchBar :fields="searchFields" :model="searchAnnouncement" @search="search" @clear="clear">
             <template #batch-action>
-                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete" style="margin-left:8px;">批量删除</el-button>
+                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete"
+                    style="margin-left:8px;">批量删除</el-button>
             </template>
         </SearchBar>
     </div>
@@ -20,11 +21,12 @@
     <!-- 数据表格 -->
     <div class="container">
         <DataTable :data="announcementInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" @selection-change="handleSelectionChange" />
+            @page-change="handleCurrentChange" @size-change="handleSizeChange"
+            @selection-change="handleSelectionChange" />
     </div>
     <!-- 编辑弹窗 -->
     <div class="container">
-        <EditDialog v-model="dialogFormVisible" :title="'企业信息'" :model="announcement" :fields="editFields"
+        <EditDialog v-model="dialogFormVisible" :title="'公告信息'" :model="announcement" :fields="editFields"
             @submit="saveAnnouncement" />
     </div>
 </template>
@@ -305,9 +307,5 @@ const handleBatchDelete = () => {
     width: 100%;
     padding: 0;
     flex-wrap: wrap;
-}
-.search-bar-row {
-    display: flex;
-    align-items: flex-end;
 }
 </style>

@@ -29,6 +29,18 @@ public class MajorController {
         return Result.success(page);
     }
 
+//    根据专业ID查询专业信息
+    @GetMapping("/{id}")
+    public Result getMajorById(@PathVariable Integer id) {
+        log.info("查询专业ID: {}", id);
+        Major major = majorService.getMajorById(id);
+        if (major != null) {
+            return Result.success(major);
+        } else {
+            return Result.error("专业不存在");
+        }
+    }
+
 //    新增专业
     @RoleCheck({"admin"})
     @PostMapping

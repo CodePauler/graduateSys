@@ -4,7 +4,7 @@
     <el-form-item v-for="item in fields" :key="item.prop" :label="item.label">
       <component :is="item.component" v-model="model[item.prop]" v-bind="item.props">
         <template v-if="item.options" #default>
-          <el-option v-for="option in item.options" :key="option.value" :label="option.label" :value="option.value" />
+          <el-option v-for="option in (item.options && item.options.value ? item.options.value : item.options)" :key="option.value" :label="option.label" :value="option.value" />
         </template>
       </component>
     </el-form-item>

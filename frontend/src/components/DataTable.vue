@@ -1,11 +1,12 @@
 <template>
-  <el-table :data="data" table-layout="auto" style="height: 550px;" @selection-change="$emit('selection-change', $event)">
+  <el-table :data="data" table-layout="auto" style="height: 550px;"
+    @selection-change="$emit('selection-change', $event)">
     <el-table-column type="selection" width="55" />
     <el-table-column v-for="col in columns" :key="col.prop" v-bind="col" />
     <el-table-column v-if="actions.length" label="操作" width="180">
       <template #default="scope">
-        <el-button v-for="btn in (typeof actions === 'function' ? actions(scope.row) : actions)" :key="btn.label" :disabled="btn.disabled" :size="btn.size"
-          :type="btn.type" @click="btn.onClick(scope.row)">
+        <el-button v-for="btn in (typeof actions === 'function' ? actions(scope.row) : actions)" :key="btn.label"
+          :disabled="btn.disabled" :size="btn.size" :type="btn.type" @click="btn.onClick(scope.row)">
           {{ btn.label }}
         </el-button>
       </template>

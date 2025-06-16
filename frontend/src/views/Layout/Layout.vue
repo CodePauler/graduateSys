@@ -74,7 +74,7 @@
                   <el-icon>
                     <User />
                   </el-icon>
-                  <span>学生管理</span>
+                  <span>毕业生管理</span>
                 </el-menu-item>
                 <el-menu-item index="/companies">
                   <el-icon>
@@ -100,7 +100,7 @@
                   </el-icon>
                   <span>岗位审批</span>
                 </el-menu-item>
-                <el-menu-item index="/departments">
+                <el-menu-item index="/faculties">
                   <el-icon>
                     <HelpFilled />
                   </el-icon>

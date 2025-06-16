@@ -24,16 +24,31 @@
 <!--    删除学院-->
     <delete id="deleteDepartment">
         delete from department
-        where department_id in (
-            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        where department_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
                 #{id}
-            </foreach>
-            )
+        </foreach>
     </delete>
 
     <!--    查询所有学院-->
     <select id="selectAllDepartments" resultType="com.dhu.Pojo.Department">
         select * from department
+        <where>
+            <if test="departmentId != null">
+                AND department_id = #{departmentId}
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                AND department_name LIKE CONCAT('%', #{departmentName}, '%')
+            </if>
+        </where>
+        order by department_id
+    </select>
+
+
+<!--    根据ID获取学院信息-->
+    <select id="selectById" resultType="com.dhu.Pojo.Department">
+        select * from department
+        where department_id = #{departmentId}
     </select>
 
 </mapper>

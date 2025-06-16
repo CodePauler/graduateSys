@@ -2,6 +2,7 @@ package com.dhu.Controller;
 
 import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.Department;
+import com.dhu.Pojo.DepartmentQueryParam;
 import com.dhu.Pojo.PageResult;
 import com.dhu.Pojo.Result;
 import com.dhu.Service.DepartmentService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/department")
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
@@ -22,9 +23,10 @@ public class DepartmentController {
 
 //    获取所有学院
     @GetMapping
-    public Result getAllDepartments() {
-        log.info("获取所有学院");
-        return Result.success(departmentService.getAllDepartments());
+    public Result getAllDepartments(DepartmentQueryParam departmentQueryParam) {
+        log.info("获取所有学院，查询参数：{}", departmentQueryParam);
+        PageResult<Department> departments = departmentService.getAllDepartments(departmentQueryParam);
+        return Result.success(departments);
     }
 
 //    新增学院
@@ -34,6 +36,18 @@ public class DepartmentController {
         log.info("新增学院: {}", department);
         departmentService.addDepartment(department);
         return Result.success("新增成功");
+    }
+
+//    根据学院ID获取学院信息
+    @GetMapping("/{id}")
+    public Result getDepartmentById(@PathVariable Integer id) {
+        log.info("查询学院ID: {}", id);
+        Department department = departmentService.getDepartmentById(id);
+        if (department != null) {
+            return Result.success(department);
+        } else {
+            return Result.error("学院不存在");
+        }
     }
 
 //    修改学院

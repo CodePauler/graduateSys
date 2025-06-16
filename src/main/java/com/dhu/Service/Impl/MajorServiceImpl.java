@@ -46,4 +46,10 @@ public class MajorServiceImpl implements MajorService {
     public void deleteMajor(List<Integer> ids) {
         majorMapper.deleteMajor(ids);
     }
+
+//    根据专业ID获取专业信息
+    @Override
+    public Major getMajorById(Integer id) {
+        return majorMapper.selectMajorById(id);
+    }
 }

@@ -20,4 +20,7 @@ public interface MajorMapper {
 
 //    删除学院
     void deleteMajor(List<Integer> ids);
+
+//    根据专业ID获取专业信息
+    Major selectMajorById(Integer id);
 }

@@ -44,11 +44,10 @@
 <!--    admin-批量删除岗位-->
     <delete id="deleteJobs">
         delete from job
-        where job_id in(
+        where job_id in
             <foreach collection="ids" item="id" open="(" separator="," close=")">
                 #{id}
             </foreach>
-            )
     </delete>
 
 
