@@ -5,83 +5,85 @@
         <SearchBar :fields="searchFields" :model="searchUser" @search="search" @clear="clear">
             <template #batch-action>
                 <el-button type="primary" @click="openCreateDialog" style="margin-left:8px;">创建用户</el-button>
-                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete" style="margin-left:8px;">批量删除</el-button>
+                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete"
+                    style="margin-left:8px;">批量删除</el-button>
             </template>
         </SearchBar>
     </div>
     <div class="container">
         <!-- 数据表格 -->
         <DataTable :data="userInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" @selection-change="handleSelectionChange" />
+            @page-change="handleCurrentChange" @size-change="handleSizeChange"
+            @selection-change="handleSelectionChange" />
     </div>
 
     <!-- 编辑弹窗 -->
     <EditDialog v-model="dialogFormVisible" :title="'用户编辑'" :model="user" :fields="editFields" @submit="saveUser" />
     <!-- 创建用户弹窗（动态表单） -->
     <el-dialog v-model="createDialogVisible" title="创建用户" width="500px">
-      <el-form :model="createUser" label-width="80px">
-        <el-form-item label="身份" required>
-          <el-select v-model="createUser.role" placeholder="请选择身份">
-            <el-option label="管理员" value="admin" />
-            <el-option label="学生" value="student" />
-            <el-option label="企业" value="company" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="用户名" required>
-          <el-input v-model="createUser.username" />
-        </el-form-item>
-        <el-form-item label="密码" required>
-          <el-input v-model="createUser.password" type="password" />
-        </el-form-item>
-        <el-form-item label="姓名" required>
-          <el-input v-model="createUser.name" />
-        </el-form-item>
-        <el-form-item label="性别" required>
-          <el-select v-model="createUser.gender" placeholder="请选择性别">
-            <el-option label="男" value="男" />
-            <el-option label="女" value="女" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="createUser.email" />
-        </el-form-item>
-        <el-form-item label="电话">
-          <el-input v-model="createUser.phone" />
-        </el-form-item>
-        <!-- 学生专属字段 -->
-        <template v-if="createUser.role === 'student'">
-          <el-form-item label="学号" required>
-            <el-input v-model="createUser.studentId" />
-          </el-form-item>
-          <el-form-item label="专业" required>
-            <el-select v-model="createUser.majorId" placeholder="请选择专业">
-              <el-option label="计算机科学" value="1" />
-              <el-option label="软件工程" value="2" />
-              <el-option label="电子信息" value="3" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="毕业年限" required>
-            <el-select v-model="createUser.graduationYear" placeholder="请选择毕业年限">
-              <el-option label="2024" value="2024" />
-              <el-option label="2025" value="2025" />
-              <el-option label="2026" value="2026" />
-            </el-select>
-          </el-form-item>
+        <el-form :model="createUser" label-width="80px">
+            <el-form-item label="身份" required>
+                <el-select v-model="createUser.role" placeholder="请选择身份">
+                    <el-option label="管理员" value="admin" />
+                    <el-option label="学生" value="student" />
+                    <el-option label="企业" value="company" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="用户名" required>
+                <el-input v-model="createUser.username" />
+            </el-form-item>
+            <el-form-item label="密码" required>
+                <el-input v-model="createUser.password" type="password" />
+            </el-form-item>
+            <el-form-item label="姓名" required>
+                <el-input v-model="createUser.name" />
+            </el-form-item>
+            <el-form-item label="性别" required>
+                <el-select v-model="createUser.gender" placeholder="请选择性别">
+                    <el-option label="男" value="男" />
+                    <el-option label="女" value="女" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="邮箱">
+                <el-input v-model="createUser.email" />
+            </el-form-item>
+            <el-form-item label="电话">
+                <el-input v-model="createUser.phone" />
+            </el-form-item>
+            <!-- 学生专属字段 -->
+            <template v-if="createUser.role === 'student'">
+                <el-form-item label="学号" required>
+                    <el-input v-model="createUser.studentId" />
+                </el-form-item>
+                <el-form-item label="专业" required>
+                    <el-select v-model="createUser.majorId" placeholder="请选择专业">
+                        <el-option label="计算机科学" value="1" />
+                        <el-option label="软件工程" value="2" />
+                        <el-option label="电子信息" value="3" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="毕业年限" required>
+                    <el-select v-model="createUser.graduationYear" placeholder="请选择毕业年限">
+                        <el-option label="2024" value="2024" />
+                        <el-option label="2025" value="2025" />
+                        <el-option label="2026" value="2026" />
+                    </el-select>
+                </el-form-item>
+            </template>
+            <!-- 企业专属字段 -->
+            <template v-if="createUser.role === 'company'">
+                <el-form-item label="企业名称" required>
+                    <el-input v-model="createUser.companyName" />
+                </el-form-item>
+                <el-form-item label="企业简介" required>
+                    <el-input v-model="createUser.companyIntro" type="textarea" />
+                </el-form-item>
+            </template>
+        </el-form>
+        <template #footer>
+            <el-button @click="handleCreateDialogCancel">取消</el-button>
+            <el-button type="primary" @click="createUserSubmit">确定</el-button>
         </template>
-        <!-- 企业专属字段 -->
-        <template v-if="createUser.role === 'company'">
-          <el-form-item label="企业名称" required>
-            <el-input v-model="createUser.companyName" />
-          </el-form-item>
-          <el-form-item label="企业简介" required>
-            <el-input v-model="createUser.companyIntro" type="textarea" />
-          </el-form-item>
-        </template>
-      </el-form>
-      <template #footer>
-        <el-button @click="handleCreateDialogCancel">取消</el-button>
-        <el-button type="primary" @click="createUserSubmit">确定</el-button>
-      </template>
     </el-dialog>
 </template>
 <script setup>
@@ -324,15 +326,22 @@ const handleBatchDelete = () => {
         ElMessage.info('已取消删除')
     })
 }
-
-onMounted(() => {
+const majorOptions = ref([])
+onMounted(async () => {
     search();
+    const res = await queryMajorsApi();
+    if (res.code === 1) {
+        majorOptions.value = res.data;
+    } else {
+        ElMessage.error('获取专业列表失败: ' + res.message);
+    }
 });
 </script>
 <style scoped>
 .container {
     margin: 20px;
 }
+
 .search-bar-row {
     display: flex;
     align-items: flex-end;

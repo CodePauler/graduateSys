@@ -36,16 +36,16 @@
         SELECT s.student_id         AS studentId,
                u.name               AS name,
                u.gender             AS gender,
-               m.name               AS major,
-               d.`name`             AS department,
+               m.major_name               AS major,
+               d.`department_name`             AS department,
                s.graduation_year    AS graduationYear,
                s.employment_status  AS employmentStatus,
                j.title              AS job_title,
                jt.name              AS job_type
         FROM student_info s
                  LEFT JOIN user u ON s.user_id = u.id
-                 LEFT JOIN major m ON s.major_id = m.id
-                 LEFT JOIN department d ON m.department_id = d.id
+                 LEFT JOIN major m ON s.major_id = m.major_id
+                 LEFT JOIN department d ON m.department_id = d.department_id
                  LEFT JOIN employment e ON s.student_id = e.student_id
                  LEFT JOIN job j  ON e.job_id = j.job_id
                  LEFT JOIN job_type jt ON j.type_id = jt.type_id
@@ -63,15 +63,15 @@
         SELECT s.student_id         AS studentId,
                u.name               AS name,
                u.gender             AS gender,
-               m.name               AS major,
-               d.`name`             AS department,
+               m.major_name               AS major,
+               d.`department_name`             AS department,
                s.graduation_year    AS graduationYear,
                s.resume_url         AS resumeUrl,
                s.employment_status  AS employmentStatus
         FROM student_info s
         LEFT JOIN user u ON s.user_id = u.id
-        LEFT JOIN major m ON s.major_id = m.id
-        LEFT JOIN department d ON m.department_id = d.id
+        LEFT JOIN major m ON s.major_id = m.major_id
+        LEFT JOIN department d ON m.department_id = d.department_id
         <where>
             <if test="studentId != null and studentId != ''">
                 AND s.student_id = #{studentId}
@@ -86,7 +86,7 @@
                 AND s.major_id = #{majorId}
             </if>
             <if test="departmentId != null and departmentId !=''">
-                AND d.id = #{departmentId}
+                AND d.department_id = #{departmentId}
             </if>
             <if test="graduationYear != null and graduationYear != ''">
                 AND s.graduation_year = #{graduationYear}

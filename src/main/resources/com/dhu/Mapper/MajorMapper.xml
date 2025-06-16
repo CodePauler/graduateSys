@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.Mapper.MajorMapper">
+
+
+
+    <!--    新增专业-->
+    <insert id="insertMajor" useGeneratedKeys="true" keyProperty="majorId">
+        insert into major(major_name, department_id)
+        values (#{majorName},#{departmentId})
+    </insert>
+
+
+
+    <!--    修改专业信息-->
+    <update id="updateMajor">
+        update major
+        <set>
+            <if test="majorName != null and majorName != ''">
+                major_name = #{majorName},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
+            </if>
+        </set>
+        where major_id = #{majorId}
+    </update>
+
+
+<!--    删除专业-->
+    <delete id="deleteMajor">
+        delete from major
+        where major_id in (
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            )
+    </delete>
+
+
+<!--    条件查询专业-->
+    <select id="selectAllMajors" resultType="com.dhu.Pojo.Major">
+        select major.major_id,major.major_name,department.department_id,department.department_name from major
+        <where>
+            <if test="majorId != null">
+                AND major_id = #{majorId}
+            </if>
+            <if test="majorName != null and majorName != ''">
+                AND major_name LIKE CONCAT('%', #{majorName}, '%')
+            </if>
+            <if test="departmentId != null">
+                AND department_id = #{departmentId}
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                AND department_name LIKE CONCAT('%', #{departmentName}, '%')
+            </if>
+        </where>
+        left join department on department.department_id = major.department_id
+    </select>
+</mapper>
