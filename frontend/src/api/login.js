@@ -7,6 +7,7 @@ export const loginApi = (data) => {
 };
 
 // 注册
-export const registerApi = (data) => {
-  return request.post('/register', data);
+export const registerApi = (data, adminCreate = false) => {
+  const params = adminCreate ? { ...data, adminCreate: true } : data;
+  return request.post('/register', params);
 };
