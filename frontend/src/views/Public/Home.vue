@@ -7,7 +7,7 @@
             @page-change="handleCurrentChange" @size-change="handleSizeChange" />
     </div>
 
-    <!-- 编辑弹窗 -->·
+    <!-- 编辑弹窗 -->
     <div class="container">
         <DetailDialog v-model="dialogFormVisible" :title="'公告详情'" :model="announcement" :fields="editFields"
             @submit="saveAnnouncement" />
