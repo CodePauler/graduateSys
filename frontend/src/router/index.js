@@ -11,12 +11,13 @@ import Announcements from '@/views/Admin/Announcements.vue';
 import Applications from '@/views/Public/Applications.vue';
 import Resume from '@/views/Student/Resume.vue';
 import Hires from '@/views/Company/Hires.vue';
+import Home from '@/views/Public/Home.vue';
 const routes = [
   { path: '/',
     name: 'index',
     component:Layout, // 所有页面的父组件，包含导航栏和侧边栏
     children: [
-      { path: '/home', name:'home',component:Users, },                      //*all-   未完成-首页，展示公告和毕业生统计情况(/graduates似乎没有什么必要)
+      { path: '/home', name:'home',component:Home, },                      //*all-   未完成-首页，展示公告和毕业生统计情况(/graduates似乎没有什么必要)
       { path:'/users', name: 'users', component: Users,},                     //*admin-  用户管理
       { path:'/students',name:'students',component:Students,},                //*admin- 学生管理
       { path:'/companies',name:'companies',component:Companies},                 //*admin- 企业管理
