@@ -4,14 +4,12 @@ import com.dhu.Annotation.RoleCheck;
 import com.dhu.Pojo.JobInfo;
 import com.dhu.Pojo.Result;
 import com.dhu.Pojo.StudentInfo;
+import com.dhu.Service.EmploymentService;
 import com.dhu.Service.JobService;
 import com.dhu.Service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +19,15 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/hires")
-public class Hires {
+public class HiresController {
 
     @Autowired
     JobService jobService;
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private EmploymentService employmentService;
 
     /**
      * company-查看自己发布的招聘
@@ -55,5 +55,19 @@ public class Hires {
         }
         List<StudentInfo> applications = studentService.getApplicationStudentsByJobId(jobId);
         return Result.success(applications);
+    }
+
+    /**
+     * 通过学生申请
+     */
+    @RoleCheck({"company","admin"})
+    @PostMapping("/applications")
+    public Result updateApplication(@RequestParam String status, @RequestParam Integer jobId, @RequestParam Integer studentId) {
+        log.info("{}学生ID: {} 的申请，岗位ID: {}",status, studentId, jobId);
+        if (jobId == null || studentId == null) {
+            return Result.error("岗位ID和学生ID不能为空");
+        }
+        employmentService.updateApplication(status,jobId, studentId);
+        return Result.success("申请处理成功");
     }
 }

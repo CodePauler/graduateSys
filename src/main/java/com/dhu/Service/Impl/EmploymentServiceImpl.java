@@ -15,4 +15,9 @@ public class EmploymentServiceImpl implements EmploymentService {
     public void applyJob(Integer studentId, Integer jobId) {
         employmentMapper.insert(studentId, jobId);
     }
+
+    @Override
+    public void updateApplication(String status,Integer jobId, Integer studentId) {
+        employmentMapper.updateApplication(status,jobId, studentId);
+    }
 }

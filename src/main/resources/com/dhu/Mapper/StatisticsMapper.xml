@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.Mapper.StatisticsMapper">
+
+
+<!--    统计公司招募情况-->
+    <select id="getCompanyJobStatistics" resultType="com.dhu.Pojo.StatisticsCompanyJob">
+        select * from company_job_summary;
+    </select>
+
+
+<!--    统计学院就业情况-->
+    <select id="getDepartmentEmploymentStatistics" resultType="com.dhu.Pojo.StatisticsDepartment">
+        select * from department_info;
+    </select>
+
+<!--    总体就业情况-->
+    <select id="getGlobalEmploymentStatistics" resultType="com.dhu.Pojo.StatisticsGlobal">
+        select * from global_info;
+    </select>
+
+<!--    学生求职申请情况-->
+    <select id="getStudentJobApplicationsStatistics" resultType="com.dhu.Pojo.StatisticsStudent">
+        select * from student_employment_summary
+    </select>
+</mapper>

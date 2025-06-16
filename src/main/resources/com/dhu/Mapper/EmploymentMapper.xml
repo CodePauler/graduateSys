@@ -9,4 +9,11 @@
         insert into employment (student_id, job_id)
         values (#{studentId}, #{jobId})
     </insert>
+
+<!--    通过申请-->
+    <update id="updateApplication">
+        update employment
+        set application_status = #{status}
+        where student_id = #{studentId} and job_id = #{jobId}
+    </update>
 </mapper>
