@@ -1,7 +1,6 @@
 package com.dhu.Controller;
 
 import com.dhu.Annotation.RoleCheck;
-import com.dhu.Mapper.StudentMapper;
 import com.dhu.Pojo.*;
 import com.dhu.Service.StudentService;
 import com.dhu.Utils.AliyunOSSOperator;
