@@ -76,7 +76,6 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { registerApi } from '@/api/login';
-import SuccessResult from '@/components/SuccessResult.vue';
 
 const router = useRouter();
 const form = reactive({
