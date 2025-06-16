@@ -1,14 +1,17 @@
 <template>
     <h1>岗位审批</h1>
-    <!-- 搜索栏 -->
-    <div class="container">
-        <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear" />
+    <!-- 搜索栏和批量操作按钮并排 -->
+    <div class="container search-bar-row">
+        <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear">
+            <template #batch-action>
+                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete" style="margin-left:8px;">批量删除</el-button>
+            </template>
+        </SearchBar>
     </div>
-
     <div class="container">
         <!-- 数据表格 -->
         <DataTable :data="jobInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" />"
+            @page-change="handleCurrentChange" @size-change="handleSizeChange" @selection-change="handleSelectionChange" />
     </div>
     <!-- 分页 -->
     <div class="container">
@@ -154,9 +157,38 @@ const handleSizeChange = (size) => {
 onMounted(() => {
     search();
 });
+
+// 处理多选
+const multipleSelection = ref([])
+const handleSelectionChange = (val) => {
+    multipleSelection.value = val
+}
+const handleBatchDelete = () => {
+    if (!multipleSelection.value.length) return
+    ElMessageBox.confirm(`确定要删除选中的${multipleSelection.value.length}个岗位吗？`, '警告', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+    }).then(async () => {
+        const ids = multipleSelection.value.map(item => item.jobId)
+        const result = await deleteJobApi(ids)
+        if (result.code === 1) {
+            ElMessage.success('批量删除成功')
+            search()
+        } else {
+            ElMessage.error(result.msg)
+        }
+    }).catch(() => {
+        ElMessage.info('已取消删除')
+    })
+}
 </script>
 <style scoped>
 .container {
     margin: 10px;
+}
+.search-bar-row {
+    display: flex;
+    align-items: flex-end;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <el-table :data="data" table-layout="auto" style="height: 550px;">
+  <el-table :data="data" table-layout="auto" style="height: 550px;" @selection-change="$emit('selection-change', $event)">
+    <el-table-column type="selection" width="55" />
     <el-table-column v-for="col in columns" :key="col.prop" v-bind="col" />
     <el-table-column v-if="actions.length" label="操作" width="180">
       <template #default="scope">
@@ -22,5 +23,5 @@ defineProps({
   actions: Array,     // [{ label: '编辑', type: 'primary', onClick: fn }]
   pagination: Object  // { page, pageSize, total }
 })
-defineEmits(['page-change', 'size-change'])
+defineEmits(['page-change', 'size-change', 'selection-change'])
 </script>
