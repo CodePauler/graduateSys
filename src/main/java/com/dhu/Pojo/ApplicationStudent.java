@@ -12,6 +12,7 @@ public class ApplicationStudent {
     private String major;
     private String graduationYear;
     private String phone;
+    private String email;
     private String status;
     private String resumeUrl;
 }

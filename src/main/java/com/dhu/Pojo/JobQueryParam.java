@@ -14,6 +14,7 @@ public class JobQueryParam {
     private Integer jobId; // 岗位ID
     private String title; // 岗位名称
     private String jobType; // 岗位类型名称
+    private String typeId; // 岗位类型ID
     private String companyName; // 公司名称
     private String description; // 岗位描述
     private String status; // 岗位状态（待审核/已通过/不通过）

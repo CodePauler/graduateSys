@@ -20,7 +20,7 @@
                 title = #{title},
             </if>
             <if test="typeId != null and typeId != ''">
-                type_id = #{typeId},
+                type_id = #{jobType},
             </if>
             <if test="description != null and description != ''">
                 description = #{description},
@@ -102,6 +102,9 @@
             <if test="location != null and location != ''">
                 AND j.location LIKE CONCAT('%', #{location}, '%')
             </if>
+            <if test="typeId != null and typeId != ''">
+                AND jt.type_id = #{typeId}
+            </if>
         </where>
     </select>
 
@@ -142,6 +145,12 @@
         left join company on job_info.company_id = company.company_id
         left join employment on job_info.job_id = employment.job_id
         where student_id = #{studentId}
+    </select>
+
+
+<!--    获取所有职业类型-->
+    <select id="selectAllJobTypes" resultType="com.dhu.Pojo.JobType">
+        select type_id,name type_name from job_type
     </select>
 
 

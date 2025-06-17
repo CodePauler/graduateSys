@@ -61,7 +61,8 @@
                                 <p><strong>性别：</strong>{{ student.gender }}</p>
                                 <p><strong>专业：</strong>{{ student.major }}</p>
                                 <p><strong>毕业年份：</strong>{{ student.graduationYear }}</p>
-                                <p><strong>状态：</strong>{{ student.employmentStatus }}</p>
+                                <p><strong>联系电话：</strong>{{ student.phone }}</p>
+                                <p><strong>电子邮箱：</strong>{{ student.email }}</p>
                                 <el-button-group>
                                     <el-button type="primary" size="small" @click="viewResume(student.resumeUrl)">
                                         查看简历
@@ -90,7 +91,9 @@ import EditDialog from '@/components/EditDialog.vue';
 import { getJobsByCompanyIdApi, getApplicationsByJobIdApi, updateApplicationApi } from '@/api/company/jobs'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { queryCompanyByHrIdApi } from '@/api/public/company';
-import { insertJobApi,updateJobApi,deleteJobApi } from '@/api/company/jobs';
+import { insertJobApi, updateJobApi, deleteJobApi } from '@/api/company/jobs';
+import { queryJobTypesApi } from '@/api/public/jobs';
+const typeOptions = ref([])
 // 发布招聘
 // company-发布岗位
 const role = localStorage.getItem('role')
@@ -98,7 +101,7 @@ const addDialogVisible = ref(false);
 const addJob = ref({});
 const addFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
-    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
+    { label: '职业类型', prop: 'typeId', component: 'el-select', props: { placeholder: '请选择职业类型', clearable: true }, options: typeOptions.value },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
     { label: '工作地点', prop: 'location', component: 'el-input', props: { placeholder: '请输入工作地点', clearable: true } },
     { label: '薪资范围', prop: 'salary', component: 'el-input', props: { placeholder: '请输入薪资范围', clearable: true } },
@@ -112,7 +115,7 @@ const openAddDialog = async () => {
         addJob.value = {
             title: '',
             jobType: '',
-            typeId: 1, //测试
+            typeId: '',
             demandNumber: '',
             location: '',
             salary: '',
@@ -145,7 +148,7 @@ const editDialogVisible = ref(false)
 const editJob = ref({})
 const editFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
-    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
+    { label: '职业类型', prop: 'typeId', component: 'el-select', props: { placeholder: '请选择职业类型', clearable: true }, options: typeOptions.value },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
     { label: '工作地点', prop: 'location', component: 'el-input', props: { placeholder: '请输入工作地点', clearable: true } },
     { label: '薪资范围', prop: 'salary', component: 'el-input', props: { placeholder: '请输入薪资范围', clearable: true } },
@@ -184,7 +187,7 @@ const handleDeleteJob = (job) => {
         } else {
             ElMessage.error(res.msg || '删除失败')
         }
-    }).catch(() => {})
+    }).catch(() => { })
 }
 
 
@@ -215,20 +218,6 @@ const loadJobs = async () => {
     activeJobIds.value = jobList.value.length > 0 ? String(jobList.value[0].jobId) : null // 默认展开第一个岗位
 }
 
-// // 每次展开时加载对应学生
-// const loadStudentsForJob = async (jobId) => {
-//     if (appliedStudentsMap.value[jobId]) return // 已加载过
-//     const res = await getApplicationsByJobIdApi(jobId)
-//     if (res.code === 1) {
-//         appliedStudentsMap.value[jobId] = res.data
-//         console.log(`加载岗位 ${jobId} 的学生申请`, appliedStudentsMap.value[jobId])
-//     }
-// }
-
-// // 监听展开事件
-// watch(activeJobIds, (newJobId) => {
-//     if (newJobId) loadStudentsForJob(Number(newJobId))
-// })
 
 // 打开简历
 const viewResume = (url) => {
@@ -259,7 +248,22 @@ const updateApplication = async (status, studentId, jobId) => {
     })
 }
 
-onMounted(loadJobs)
+onMounted(async () => {
+    loadJobs()
+    const res = await queryJobTypesApi()
+    if (res.code === 1) {
+        typeOptions.value = res.data.map(type => ({
+            label: type.typeName,
+            value: type.typeId
+        }))
+        addFields[1].options = typeOptions.value
+        editFields[1].options = typeOptions.value
+        console.log('职业类型加载成功', typeOptions.value)
+    }
+    else {
+        ElMessage.error('获取职业类型失败，请稍后再试')
+    }
+})
 const getStatusType = (status) => {
     switch (status) {
         case '待审核':

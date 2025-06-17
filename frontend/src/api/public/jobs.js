@@ -11,3 +11,9 @@ export const queryJobByIdApi = (id) => {
     console.log("接收参数：id=", id);
     return request.get(`/jobs/${id}`);
 }
+
+// 查询所有职业类型
+export const queryJobTypesApi = () => {
+    console.log("查询所有职业类型");
+    return request.get('/jobs/types');
+}
