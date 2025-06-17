@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : mysql-1
+ Source Server         : local
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 17/06/2025 00:53:40
+ Date: 17/06/2025 12:44:06
 */
 
 SET NAMES utf8mb4;
@@ -264,7 +264,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `department_info` AS sele
 -- View structure for global_info
 -- ----------------------------
 DROP VIEW IF EXISTS `global_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (select count(0) from `student`) AS `total_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '就业')) AS `employed_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '待业')) AS `unemployed_students`,(select count(0) from `company`) AS `company_count`,(select sum(`job`.`demand_number`) from `job`) AS `total_job_demand`,(select sum(`job_info`.`hired_number`) from `job_info`) AS `total_hired`,(select count(0) from `job`) AS `job_count`,(select count(0) from `employment` where (`employment`.`status` = '已录用')) AS `total_applications`,(select count(0) from `announcement`) AS `announcement_count`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (select count(0) from `student`) AS `total_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '就业')) AS `employed_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '待业')) AS `unemployed_students`,(select count(0) from `company`) AS `company_count`,(select sum(`job`.`demand_number`) from `job` where (`job`.`status` = '已通过')) AS `total_job_demand`,(select sum(`job_info`.`hired_number`) from `job_info`) AS `total_hired`,(select count(0) from `job` where (`job`.`status` = '已通过')) AS `job_count`,(select count(0) from `employment` where (`employment`.`status` = '已录用')) AS `total_applications`,(select count(0) from `announcement`) AS `announcement_count`;
 
 -- ----------------------------
 -- View structure for job_info
