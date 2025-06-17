@@ -13,6 +13,7 @@ import Resume from '@/views/Student/Resume.vue';
 import Hires from '@/views/Company/Hires.vue';
 import Home from '@/views/Public/Home.vue';
 import Faculties from '@/views/Admin/Faculties.vue';
+import Profile from '@/views/Public/Profile.vue';
 const routes = [
   { path: '/',
     name: 'index',
@@ -28,7 +29,7 @@ const routes = [
       { path: '/resume',  name: 'resume', component: Resume },                //student-简历管理
       { path: '/announcements', name: 'announcements', component: Announcements },   //admin- 公告管理
       { path: '/faculties', name: 'faculties', component: Faculties },       //admin-  未完成-院系管理
-      { path: '/profile', name: 'profile', component: Users },               //all-    未完成-个人信息修改
+      { path: '/profile', name: 'profile', component: Profile },               //all-    未完成-个人信息修改
     ]
   },
   { path: '/login', name: 'login', component: Login },
