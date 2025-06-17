@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 17/06/2025 15:46:31
+ Date: 17/06/2025 16:01:46
 */
 
 SET NAMES utf8mb4;
@@ -100,18 +100,18 @@ CREATE TABLE `employment`  (
   INDEX `job_id`(`job_id` ASC) USING BTREE,
   CONSTRAINT `employment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `employment_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `job` (`job_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of employment
 -- ----------------------------
 INSERT INTO `employment` VALUES (7, 70127, 2, '已录用', '2025-06-15 17:20:17');
-INSERT INTO `employment` VALUES (8, 70127, 1, '已录用', '2025-06-19 17:20:17');
 INSERT INTO `employment` VALUES (9, 10101, 1, '已录用', '2025-06-16 03:27:06');
 INSERT INTO `employment` VALUES (11, 70127, 6, '已录用', '2025-06-16 15:00:17');
 INSERT INTO `employment` VALUES (12, 10101, 6, '已录用', '2025-06-16 15:00:47');
 INSERT INTO `employment` VALUES (13, 10101, 5, '待审核', '2025-06-16 15:00:48');
 INSERT INTO `employment` VALUES (14, 10101, 2, '已录用', '2025-06-16 15:00:49');
+INSERT INTO `employment` VALUES (15, 70127, 1, '已录用', '2025-06-17 15:49:34');
 
 -- ----------------------------
 -- Table structure for job
@@ -269,7 +269,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (
 -- View structure for job_info
 -- ----------------------------
 DROP VIEW IF EXISTS `job_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `job_info` AS select `t`.`job_id` AS `job_id`,`t`.`title` AS `title`,`t`.`type_id` AS `type_id`,`t`.`demand_number` AS `demand_number`,`t`.`company_id` AS `company_id`,`t`.`status` AS `status`,`t`.`salary` AS `salary`,`t`.`location` AS `location`,`t`.`description` AS `description`,`t`.`hired_number` AS `hired_number`,(case when ((`t`.`demand_number` - `t`.`hired_number`) > 0) then '招聘中' else '已结束' end) AS `hire_status` from (select `j`.`job_id` AS `job_id`,`j`.`title` AS `title`,`j`.`type_id` AS `type_id`,`j`.`demand_number` AS `demand_number`,`j`.`company_id` AS `company_id`,`j`.`status` AS `status`,`j`.`salary` AS `salary`,`j`.`location` AS `location`,`j`.`description` AS `description`,(select count(0) from `employment` `e` where ((`e`.`job_id` = `j`.`job_id`) and (`e`.`status` = '已录用'))) AS `hired_number` from `job` `j`) `t` where (`t`.`hired_number` < `t`.`demand_number`);
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `job_info` AS select `t`.`job_id` AS `job_id`,`t`.`title` AS `title`,`t`.`type_id` AS `type_id`,`t`.`demand_number` AS `demand_number`,`t`.`company_id` AS `company_id`,`t`.`status` AS `status`,`t`.`salary` AS `salary`,`t`.`location` AS `location`,`t`.`description` AS `description`,`t`.`hired_number` AS `hired_number`,(case when ((`t`.`demand_number` - `t`.`hired_number`) > 0) then '招聘中' else '已结束' end) AS `hire_status` from (select `j`.`job_id` AS `job_id`,`j`.`title` AS `title`,`j`.`type_id` AS `type_id`,`j`.`demand_number` AS `demand_number`,`j`.`company_id` AS `company_id`,`j`.`status` AS `status`,`j`.`salary` AS `salary`,`j`.`location` AS `location`,`j`.`description` AS `description`,(select count(0) from `employment` `e` where ((`e`.`job_id` = `j`.`job_id`) and (`e`.`status` = '已录用'))) AS `hired_number` from `job` `j`) `t`;
 
 -- ----------------------------
 -- View structure for student_employment_summary
