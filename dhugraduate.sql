@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : mysql-1
+ Source Server         : local
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 17/06/2025 16:01:46
+ Date: 17/06/2025 16:06:53
 */
 
 SET NAMES utf8mb4;
@@ -107,11 +107,10 @@ CREATE TABLE `employment`  (
 -- ----------------------------
 INSERT INTO `employment` VALUES (7, 70127, 2, '已录用', '2025-06-15 17:20:17');
 INSERT INTO `employment` VALUES (9, 10101, 1, '已录用', '2025-06-16 03:27:06');
-INSERT INTO `employment` VALUES (11, 70127, 6, '已录用', '2025-06-16 15:00:17');
-INSERT INTO `employment` VALUES (12, 10101, 6, '已录用', '2025-06-16 15:00:47');
+INSERT INTO `employment` VALUES (11, 70127, 6, '待审核', '2025-06-16 15:00:17');
+INSERT INTO `employment` VALUES (12, 10101, 6, '待审核', '2025-06-16 15:00:47');
 INSERT INTO `employment` VALUES (13, 10101, 5, '待审核', '2025-06-16 15:00:48');
-INSERT INTO `employment` VALUES (14, 10101, 2, '已录用', '2025-06-16 15:00:49');
-INSERT INTO `employment` VALUES (15, 70127, 1, '已录用', '2025-06-17 15:49:34');
+INSERT INTO `employment` VALUES (14, 10101, 2, '不录用', '2025-06-16 15:00:49');
 
 -- ----------------------------
 -- Table structure for job
@@ -137,12 +136,12 @@ CREATE TABLE `job`  (
 -- ----------------------------
 -- Records of job
 -- ----------------------------
-INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 2, 1, '已通过', '上海', '9-10k', '宇宙的尽头');
-INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 2, 4, '已通过', '南京', '7-8k', '谁还干前端啊');
+INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 5, 1, '已通过', '上海', '9-10k', '宇宙的尽头');
+INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 1, 4, '已通过', '南京', '7-8k', '谁还干前端啊');
 INSERT INTO `job` VALUES (5, '主播666', 1, 999, 1, '已通过', '杭州', '8-9k', '我管你这的那的');
 INSERT INTO `job` VALUES (6, '岗位发布测试1', 1, 5, 4, '已通过', '上海', '11-14k', 'ssssss');
 INSERT INTO `job` VALUES (7, '外包', 1, 99999, 6, '待审核', '上海', '6-7k', '外包的同学不准吃零食');
-INSERT INTO `job` VALUES (8, '测试岗位发布', 1, 2, 4, '已通过', NULL, NULL, '测试');
+INSERT INTO `job` VALUES (8, '测试岗位发布', 1, 5, 4, '已通过', NULL, NULL, '测试');
 
 -- ----------------------------
 -- Table structure for job_type
