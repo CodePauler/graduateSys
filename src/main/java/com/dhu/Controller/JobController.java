@@ -1,10 +1,7 @@
 package com.dhu.Controller;
 
 import com.dhu.Annotation.RoleCheck;
-import com.dhu.Pojo.JobInfo;
-import com.dhu.Pojo.JobQueryParam;
-import com.dhu.Pojo.PageResult;
-import com.dhu.Pojo.Result;
+import com.dhu.Pojo.*;
 import com.dhu.Service.JobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +74,16 @@ public class JobController {
         log.info("发布岗位: {}", jobInfo);
         jobService.addJob(jobInfo);
         return Result.success("岗位发布成功");
+    }
+
+    /**
+     * 获取所有职业类型
+     */
+    @GetMapping("/types")
+    public Result getAllJobTypes() {
+        log.info("获取所有职业类型");
+        List<JobType> jobTypes = jobService.getAllJobTypes();
+        return Result.success(jobTypes);
     }
 
 }

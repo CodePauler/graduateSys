@@ -2,6 +2,7 @@ package com.dhu.Service;
 
 import com.dhu.Pojo.JobInfo;
 import com.dhu.Pojo.JobQueryParam;
+import com.dhu.Pojo.JobType;
 import com.dhu.Pojo.PageResult;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface JobService {
 
 //    student-查询自己申请的岗位
     List<JobInfo> getMyApplicationJob(Integer studentId);
+
+//    all-获取所有职业类型
+    List<JobType> getAllJobTypes();
 }

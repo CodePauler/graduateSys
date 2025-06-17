@@ -70,17 +70,17 @@ import SearchBar from '@/components/SearchBar.vue';
 import EditDialog from '@/components/EditDialog.vue';
 import { ref, reactive, onMounted, computed } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { queryJobsApi, queryJobByIdApi } from '@/api/public/jobs';
+import { queryJobsApi, queryJobByIdApi, queryJobTypesApi } from '@/api/public/jobs';
 import { updateJobApi, deleteJobApi, insertJobApi } from '@/api/company/jobs';
 import { applyJobApi } from '@/api/student/Jobs';
 const role = localStorage.getItem('role')
-
+const typeOptions = ref([])
 
 // 搜索栏字段配置
 const searchFields = [
     { label: '岗位ID', prop: 'jobId', component: 'el-input', props: { placeholder: '请输入岗位ID', clearable: true } },
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
-    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
+    { label: '职业类型', prop: 'typeId', component: 'el-select', props: { placeholder: '请选择职业类型', clearable: true }, options: typeOptions.value },
     { label: '公司名称', prop: 'companyName', component: 'el-input', props: { placeholder: '请输入公司名称', clearable: true } },
     { label: '岗位描述', prop: 'description', component: 'el-input', props: { placeholder: '请输入岗位描述', clearable: true } },
     {
@@ -105,7 +105,7 @@ const searchJob = reactive({
     pageSize: 10
 })
 if (role === 'admin') {
-    searchJob.hireStatus = '' // 管理员默认查询已通过的岗位
+    searchJob.hireStatus = '' //默认查询所有岗位
 }
 // 查询岗位列表
 const search = async () => {
@@ -124,7 +124,7 @@ const handleTabChange = (tabName) => {
     if (adminTab.value === 'manage') {
         searchJob.status = '已通过'
     } else {
-        searchJob.status = '待审核' // 或 ['待审核', '不通过']，看后端支持
+        searchJob.status = '待审核'
     }
     search()
 }
@@ -133,6 +133,7 @@ const clear = () => {
     searchJob.jobId = '';
     searchJob.title = '';
     searchJob.jobType = '';
+    searchJob.typeId = '';
     searchJob.companyName = '';
     searchJob.description = '';
     searchJob.status = searchJob.status;
@@ -297,8 +298,21 @@ const handleSizeChange = (size) => {
     searchJob.pageSize = size;
     search();
 }
-onMounted(() => {
+onMounted(async () => {
     search();
+    const res = await queryJobTypesApi()
+    if (res.code === 1) {
+        typeOptions.value = res.data.map(type => ({
+            label: type.typeName,
+            value: type.typeId
+        }))
+        searchFields[2].options = typeOptions.value
+        // editFields[1].options = typeOptions.value
+        console.log('职业类型加载成功', typeOptions.value)
+    }
+    else {
+        ElMessage.error('获取职业类型失败，请稍后再试')
+    }
 });
 </script>
 <style scoped>

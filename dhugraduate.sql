@@ -1,8 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : local
- Source Server         : local
+ Source Server         : mysql-1
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -12,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 17/06/2025 16:14:56
+ Date: 18/06/2025 03:02:01
 */
 
 SET NAMES utf8mb4;
@@ -281,6 +280,6 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_employment_summa
 -- View structure for student_info
 -- ----------------------------
 DROP VIEW IF EXISTS `student_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`major_name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`major_id` = `s`.`major_id`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`major_name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,`u`.`email` AS `email`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`major_id` = `s`.`major_id`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

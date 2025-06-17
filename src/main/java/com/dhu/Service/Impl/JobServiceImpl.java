@@ -3,6 +3,7 @@ package com.dhu.Service.Impl;
 import com.dhu.Mapper.JobMapper;
 import com.dhu.Pojo.JobInfo;
 import com.dhu.Pojo.JobQueryParam;
+import com.dhu.Pojo.JobType;
 import com.dhu.Pojo.PageResult;
 import com.dhu.Service.JobService;
 import com.github.pagehelper.Page;
@@ -52,5 +53,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<JobInfo> getMyApplicationJob(Integer studentId) {
         return jobMapper.getMyApplicationJob(studentId);
+    }
+
+    @Override
+    public List<JobType> getAllJobTypes() {
+        return jobMapper.selectAllJobTypes();
     }
 }

@@ -109,6 +109,7 @@
                student_info.major,
                 student_info.graduation_year,
                 student_info.phone,
+                student_info.email,
                employment.status,
                 student_info.resume_url
         from student_info
