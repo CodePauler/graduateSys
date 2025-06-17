@@ -20,4 +20,5 @@ public class JobQueryParam {
     private String salary; // 岗位薪资
     private String location; // 岗位类型名称
     private Integer studentId; // 学生ID，用于查询学生已申请的岗位
+    private String hireStatus;
 }

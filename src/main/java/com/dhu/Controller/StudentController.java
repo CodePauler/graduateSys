@@ -95,6 +95,10 @@ public class StudentController {
     public void getResume(@PathVariable Integer id, HttpServletResponse response) {
         log.info("查询学生ID: {} 的简历", id);
         String resumeUrl = studentService.getResumeById(id);
+        if(resumeUrl == null || resumeUrl.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         try (InputStream in = new URL(resumeUrl).openStream();
              OutputStream out = response.getOutputStream()) {
 

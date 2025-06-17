@@ -10,7 +10,7 @@
     </div>
 
     <!-- 岗位卡片列表 -->
-    <div class="card-list" v-if="role === 'student'">
+    <div class="card-list" v-if="role === 'student' || role === 'company'">
         <el-card v-for="job in jobInfo" :key="job.jobId" shadow="hover" class="job-card">
             <div class="card-header">
                 <div class="title">
@@ -32,7 +32,7 @@
                         <el-button class="big-button" type="success" plain size="small" disabled>已申请</el-button>
                     </el-button-group>
                     <el-button-group v-else>
-                        <el-button class="big-button" type="primary" plain size="small"
+                        <el-button v-if="role === 'student'" class="big-button" type="primary" plain size="small"
                             @click="applyForJob(job)">申请职位</el-button>
                     </el-button-group>
                 </div>
@@ -56,15 +56,9 @@
 
     <!-- 学生用户的分页 -->
     <div v-if="role === 'student'" class="pagination-container">
-        <el-pagination
-            v-model:current-page="pagination.page"
-            v-model:page-size="pagination.pageSize"
-            :page-sizes="[5, 10, 20, 50]"
-            :total="pagination.total"
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+            :page-sizes="[5, 10, 20, 50]" :total="pagination.total" layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
 
     <!-- 编辑弹窗 -->
@@ -103,12 +97,16 @@ const searchJob = reactive({
     title: '',
     demandNumber: '',
     hiredNumber: '',
+    hireStatus: '招聘中',
     status: '已通过',
     companyName: '',
     studentId: rawStudentId && rawStudentId !== 'null' ? Number(rawStudentId) : undefined,
     page: 1,
     pageSize: 10
 })
+if (role === 'admin') {
+    searchJob.hireStatus = '' // 管理员默认查询已通过的岗位
+}
 // 查询岗位列表
 const search = async () => {
     const res = await queryJobsApi(searchJob);
@@ -138,6 +136,7 @@ const clear = () => {
     searchJob.companyName = '';
     searchJob.description = '';
     searchJob.status = searchJob.status;
+    searchJob.hireStatus = searchJob.hireStatus;
     searchJob.page = 1;
     searchJob.pageSize = 10;
     search();
@@ -155,6 +154,7 @@ const tableColumns = [
     { prop: 'description', label: '岗位描述' },
     { prop: 'companyName', label: '公司名称' },
     { prop: 'companyIntro', label: '公司简介' },
+    { prop: 'hireStatus', label: '招聘状态' },
     { prop: 'status', label: '审核状态' }//可以做成下拉框进行审核操作
 ]
 const pagination = reactive({

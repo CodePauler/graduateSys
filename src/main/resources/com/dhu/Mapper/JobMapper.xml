@@ -93,6 +93,9 @@
             <if test="status != null and status != ''">
                 AND j.status = #{status}
             </if>
+            <if test="hireStatus != null and hireStatus != ''">
+                AND j.hire_status = #{hireStatus}
+            </if>
             <if test="salary != null and salary != ''">
                 AND j.salary = #{salary}
             </if>

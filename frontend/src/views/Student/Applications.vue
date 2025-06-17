@@ -1,5 +1,15 @@
 <template>
-    <div class="headerContent">我的Offer</div>
+    <div v-if="applicationList.length" class="headerContent">我的Offer</div>
+
+    <div v-if="!applicationList.length" class="infoContent">还没有申请过岗位哦</div>
+    <div v-if="!applicationList.length" class="empty-container">
+        <el-empty description=" 暂无Offer">
+            <el-button type="primary" size="large" @click="$router.push('/jobs')">
+                去申请岗位
+            </el-button>
+        </el-empty>
+    </div>
+
     <div class="card-list">
         <el-card v-for="app in applicationList" :key="app.id" shadow="hover" class="job-card">
             <div class="card-header">
@@ -38,7 +48,7 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue'
-import { queryMyApplicationsApi,deleteEmploymentApi } from '@/api/student/Jobs';
+import { queryMyApplicationsApi, deleteEmploymentApi } from '@/api/student/Jobs';
 const studentId = localStorage.getItem('studentId');
 const applicationList = ref([]);
 const refuseOffer = async (jobId, studentId) => {
@@ -153,5 +163,19 @@ onMounted(async () => {
     margin-top: 8px;
     font-size: 13px;
     color: #666;
+}
+
+.empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
+.infoContent {
+    text-align: center;
+    font-size: 72px;
+    margin-top: 120px;
+    color: #666
 }
 </style>

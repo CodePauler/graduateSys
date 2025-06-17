@@ -52,7 +52,7 @@ request.interceptors.response.use(
       window.location.href = '/login'
       return Promise.reject('登录已过期')
     }
-    ElMessage.error(error.message || '网络错误')
+    // ElMessage.error(error.message || '网络错误')
     return Promise.reject(error)
   }
 )

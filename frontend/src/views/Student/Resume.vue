@@ -14,11 +14,11 @@
         </div>
         <template #tip>
             <div class="el-upload__tip">
-                只能上传 JPG/PNG/PDF 格式的文件，且不超过 5MB
+                只能上传 PDF 格式的文件，且不超过 5MB
             </div>
         </template>
     </el-upload>
-    
+
 </template>
 
 <script setup>
@@ -27,13 +27,11 @@ import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 const beforeUpload = (file) => {
     const isJpgOrPngOrPdf =
-        file.type === 'image/jpeg' ||
-        file.type === 'image/png' ||
         file.type === 'application/pdf'
     const isLt5MB = file.size / 1024 / 1024 < 5
 
     if (!isJpgOrPngOrPdf) {
-        ElMessage.error('只能上传 JPG/PNG/PDF 格式的文件!')
+        ElMessage.error('只能上传 PDF 格式的文件!')
         return false
     }
     if (!isLt5MB) {
@@ -60,15 +58,21 @@ const axiosUpload = async (file) => {
     }
 }
 onMounted(async () => {
-    const res = await queryStudentResumeApi(studentId);
-    if (res) {
-        showUpload.value = false; // 隐藏上传组件
-        resumeUrl.value = res.data; // 如果有已上传的简历，设置预览链接
-        const blob = new Blob([res], { type: 'application/pdf' })
-        resumeUrl.value = URL.createObjectURL(blob); // 创建预览链接
+    try {
+        const res = await queryStudentResumeApi(studentId);
+        if (res) {
+            showUpload.value = false; // 隐藏上传组件
+            resumeUrl.value = res.data; // 如果有已上传的简历，设置预览链接
+            const blob = new Blob([res], { type: 'application/pdf' })
+            resumeUrl.value = URL.createObjectURL(blob); // 创建预览链接
+        }
+        else {
+            showUpload.value = true; // 如果没有已上传的简历，显示上传组件
+        }
     }
-    else {
-        showUpload.value = true; // 如果没有已上传的简历，显示上传组件
+    catch (error) {
+        console.error('查询简历失败:', error);
+        ElMessage.info('请先上传简历');
     }
 });
 </script>
