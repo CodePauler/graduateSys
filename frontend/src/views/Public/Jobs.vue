@@ -9,10 +9,61 @@
         <SearchBar :fields="searchFields" :model="searchJob" @search="search" @clear="clear" />
     </div>
 
-    <div class="container">
+    <!-- 岗位卡片列表 -->
+    <div class="card-list" v-if="role === 'student'">
+        <el-card v-for="job in jobInfo" :key="job.jobId" shadow="hover" class="job-card">
+            <div class="card-header">
+                <div class="title">
+                    <h1>{{ job.title }}</h1>
+                    <el-tag class="tag big-tag" type="primary">{{ job.jobType }}</el-tag>
+                </div>
+                <div class="salary">{{ job.salary || '面议' }}</div>
+            </div>
+
+            <div class="card-body">
+                <div class="info-tags">
+                    <el-tag class="tag big-tag" size="small">需求: {{ job.demandNumber }}人</el-tag>
+                    <el-tag class="tag big-tag" size="small">已聘: {{ job.hiredNumber }}人</el-tag>
+                </div>
+                <div class="description">{{ job.description }}</div>
+                <div class="action-buttons">
+                    <el-button-group v-if="job.hasApplied === '1'">
+                        <el-button class="big-button" type="success" plain size="small" disabled>已申请</el-button>
+                    </el-button-group>
+                    <el-button-group v-else>
+                        <el-button class="big-button" type="primary" plain size="small"
+                            @click="applyForJob(job)">申请职位</el-button>
+                    </el-button-group>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <el-tag class="tag big-tag" type="success">{{ job.companyName }}</el-tag>
+                <el-tag class="tag big-tag" size="small" type="info" style="margin-left: auto;">
+                    {{ job.status }}
+                </el-tag>
+            </div>
+        </el-card>
+    </div>
+
+    <!-- 管理员和企业用户仍使用表格 -->
+    <div class="container" v-else>
         <!-- 数据表格 -->
         <DataTable :data="jobInfo" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" />"
+            @page-change="handleCurrentChange" @size-change="handleSizeChange" />
+    </div>
+
+    <!-- 学生用户的分页 -->
+    <div v-if="role === 'student'" class="pagination-container">
+        <el-pagination
+            v-model:current-page="pagination.page"
+            v-model:page-size="pagination.pageSize"
+            :page-sizes="[5, 10, 20, 50]"
+            :total="pagination.total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
     </div>
 
     <!-- 编辑弹窗 -->
@@ -187,6 +238,25 @@ const tableActions = (row) => {
     }
     else return []
 }
+
+// 申请职位函数（用于卡片视图）
+const applyForJob = async (job) => {
+    ElMessageBox.confirm('是否确认申请该岗位？', '提示', {
+        confirmButtonText: '确认申请',
+        cancelButtonText: '取消',
+        type: 'info',
+    }).then(async () => {
+        const result = await applyJobApi(localStorage.getItem('studentId'), job.jobId)
+        if (result.code !== 1) {
+            ElMessage.error(result.msg)
+            return
+        }
+        ElMessage.success('申请成功')
+        search();
+    }).catch(() => {
+        ElMessage.info('取消申请')
+    })
+}
 // 编辑岗位信息（查询回显） 以及弹窗
 const job = ref({})
 const editFields = [
@@ -229,4 +299,93 @@ onMounted(() => {
     search();
 });
 </script>
-<style scoped></style>
+<style scoped>
+.title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 18px;
+    margin: 20px;
+}
+
+.big-tag {
+    font-size: 18px !important;
+}
+
+.big-button {
+    font-size: 18px !important;
+}
+
+.card-body {
+    font-size: 18px;
+}
+
+.job-card {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    color: #666;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.salary {
+    color: #f56c6c;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.info-tags {
+    display: flex;
+    font-size: 18px;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.description {
+    margin: 12px 0;
+    line-height: 1.6;
+    color: #666;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin: 12px 0;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+</style>
