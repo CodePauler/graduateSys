@@ -30,26 +30,19 @@
         <where>
             student_id = #{studentId}
         </where>
-    </update>
-
-    <select id="getById" resultType="com.dhu.Pojo.StudentInfo">
+    </update>    <select id="getById" resultType="com.dhu.Pojo.StudentInfo">
         SELECT s.student_id         AS studentId,
                u.name               AS name,
                u.gender             AS gender,
-               m.major_name               AS major,
-               d.`department_name`             AS department,
+               m.major_name         AS major,
+               d.`department_name`  AS department,
                s.graduation_year    AS graduationYear,
-               s.employment_status  AS employmentStatus,
-               j.title              AS job_title,
-               jt.name              AS job_type
+               s.employment_status  AS employmentStatus
         FROM student_info s
                  LEFT JOIN user u ON s.user_id = u.id
                  LEFT JOIN major m ON s.major_id = m.major_id
                  LEFT JOIN department d ON m.department_id = d.department_id
-                 LEFT JOIN employment e ON s.student_id = e.student_id
-                 LEFT JOIN job j  ON e.job_id = j.job_id
-                 LEFT JOIN job_type jt ON j.type_id = jt.type_id
-        where s.student_id = #{studentId}
+        WHERE s.student_id = #{studentId}
     </select>
 
     <delete id="deleteByIds">
