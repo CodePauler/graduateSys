@@ -128,8 +128,9 @@
 
 <!--    company-查询自己发布的岗位-->
     <select id="getJobsByCompanyId" resultType="com.dhu.Pojo.JobInfo">
-        select ji.*
+        select ji.*, jt.name job_type
         from job_info ji
+        left join job_type jt on ji.type_id = jt.type_id
         where ji.company_id = #{companyId}
     </select>
 

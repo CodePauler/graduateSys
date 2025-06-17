@@ -87,6 +87,7 @@ const userId = localStorage.getItem('userId')
 const profile = reactive({
   userId: userId,
   username: '',
+  password: '',
   role: '',
   name: '',
   gender: '',
@@ -111,6 +112,7 @@ const editDialogVisible = ref(false)
 const editForm = reactive({
   userId: '',
   username: '',
+  password: '',
   email: '',
   phone: '',
   companyName: '',
@@ -118,8 +120,9 @@ const editForm = reactive({
 })
 const editFields = [
   { label: '用户名', prop: 'username', component: 'el-input', props: { autocomplete: 'off' } },
+  { label: '密码', prop: 'password', component: 'el-input', props: { type: 'password', autocomplete: 'off' } },
   { label: '邮箱', prop: 'email', component: 'el-input', props: { autocomplete: 'off' } },
-  { label: '电话', prop: 'phone', component: 'el-input', props: { autocomplete: 'off' } }
+  { label: '电话', prop: 'phone', component: 'el-input', props: { autocomplete: 'off' } },
 ]
 if (role === 'company') {
   editFields.push(

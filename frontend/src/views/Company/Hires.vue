@@ -5,6 +5,10 @@
         <EditDialog v-model="addDialogVisible" :title="'发布岗位'" :model="addJob" :fields="addFields"
             @submit="addJobSubmit" />
     </div>
+    <div class="container" v-if="role === 'company'">
+        <EditDialog v-model="editDialogVisible" :title="'编辑岗位'" :model="editJob" :fields="editFields"
+            @submit="editJobSubmit" />
+    </div>
     <div class="headerContent">
         我的招聘
     </div>
@@ -31,7 +35,11 @@
                         <span style="margin-left: 10px;">需求人数：{{ job.demandNumber }}</span>
                     </div>
                 </template>
-
+                <el-row style="margin-bottom: 12px;">
+                    <el-button type="primary" size="small" @click="openEditDialog(job)">编辑</el-button>
+                    <el-button type="danger" size="small" @click="handleDeleteJob(job)"
+                        style="margin-left: 8px;">删除</el-button>
+                </el-row>
                 <!-- 加载学生申请列表 -->
                 <el-empty v-if="!(appliedStudentsMap[job.jobId] && appliedStudentsMap[job.jobId].length)"
                     description="暂无学生申请">
@@ -82,8 +90,7 @@ import EditDialog from '@/components/EditDialog.vue';
 import { getJobsByCompanyIdApi, getApplicationsByJobIdApi, updateApplicationApi } from '@/api/company/jobs'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { queryCompanyByHrIdApi } from '@/api/public/company';
-import { insertJobApi } from '@/api/company/jobs';
-
+import { insertJobApi,updateJobApi,deleteJobApi } from '@/api/company/jobs';
 // 发布招聘
 // company-发布岗位
 const role = localStorage.getItem('role')
@@ -93,6 +100,8 @@ const addFields = [
     { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
     { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
     { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
+    { label: '工作地点', prop: 'location', component: 'el-input', props: { placeholder: '请输入工作地点', clearable: true } },
+    { label: '薪资范围', prop: 'salary', component: 'el-input', props: { placeholder: '请输入薪资范围', clearable: true } },
     { label: '公司名称', prop: 'companyName', component: 'el-input', props: { disabled: true } },
     { label: '公司简介', prop: 'companyIntro', component: 'el-input', props: { disabled: true } },
     { label: '岗位描述', prop: 'description', component: 'el-input', props: { type: 'textarea', placeholder: '请输入岗位描述', clearable: true } }
@@ -105,7 +114,8 @@ const openAddDialog = async () => {
             jobType: '',
             typeId: 1, //测试
             demandNumber: '',
-            hiredNumber: '',
+            location: '',
+            salary: '',
             companyId: company.data.companyId,
             companyName: company.data.companyName,
             companyIntro: company.data.companyIntro,
@@ -129,8 +139,58 @@ const addJobSubmit = async () => {
     }
 }
 
+// 岗位编辑
+// 编辑岗位弹窗
+const editDialogVisible = ref(false)
+const editJob = ref({})
+const editFields = [
+    { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
+    { label: '职业类型', prop: 'jobType', component: 'el-input', props: { placeholder: '请输入职业类型', clearable: true } },
+    { label: '需求人数', prop: 'demandNumber', component: 'el-input', props: { placeholder: '请输入需求人数', clearable: true } },
+    { label: '工作地点', prop: 'location', component: 'el-input', props: { placeholder: '请输入工作地点', clearable: true } },
+    { label: '薪资范围', prop: 'salary', component: 'el-input', props: { placeholder: '请输入薪资范围', clearable: true } },
+    { label: '岗位描述', prop: 'description', component: 'el-input', props: { type: 'textarea', placeholder: '请输入岗位描述', clearable: true } }
+]
+
+// 打开编辑弹窗
+const openEditDialog = (job) => {
+    editDialogVisible.value = true
+    editJob.value = { ...job }
+}
+
+// 编辑提交
+const editJobSubmit = async () => {
+    const res = await updateJobApi(editJob.value)
+    if (res.code === 1) {
+        ElMessage.success('岗位信息已更新')
+        editDialogVisible.value = false
+        loadJobs()
+    } else {
+        ElMessage.error(res.msg || '更新失败')
+    }
+}
+
+// 删除岗位
+const handleDeleteJob = (job) => {
+    ElMessageBox.confirm('确定要删除该岗位吗？', '删除确认', {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(async () => {
+        const res = await deleteJobApi(job.jobId)
+        if (res.code === 1) {
+            ElMessage.success('删除成功')
+            loadJobs()
+        } else {
+            ElMessage.error(res.msg || '删除失败')
+        }
+    }).catch(() => {})
+}
 
 
+
+
+// 申请列表
 const jobList = ref([])
 const appliedStudentsMap = ref({}) // jobId => 学生数组
 const activeJobIds = ref(null) // 当前展开项 jobId
