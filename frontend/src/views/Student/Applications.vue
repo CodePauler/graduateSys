@@ -1,5 +1,10 @@
 <template>
-    <div v-if="applicationList.length" class="headerContent">我的Offer</div>
+    <div class="headerContent">我的Offer</div>
+    
+    <!-- 搜索栏 -->
+    <div class="container">
+        <SearchBar :fields="searchFields" :model="searchApplication" @search="filterApplications" @clear="clear" />
+    </div>
 
     <div v-if="!applicationList.length" class="infoContent">还没有申请过岗位哦</div>
     <div v-if="!applicationList.length" class="empty-container">
@@ -43,14 +48,63 @@
             </div>
         </el-card>
     </div>
+
+    <!-- 分页组件 -->
+    <div class="pagination-container">
+        <el-pagination
+            v-model:current-page="pagination.page"
+            v-model:page-size="pagination.pageSize"
+            :page-sizes="[5, 10, 20, 50]"
+            :total="pagination.total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
 </template>
 
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import { queryMyApplicationsApi, deleteEmploymentApi } from '@/api/student/Jobs';
+import SearchBar from '@/components/SearchBar.vue';
+
 const studentId = localStorage.getItem('studentId');
 const applicationList = ref([]);
+
+// 搜索栏字段配置
+const searchFields = [
+    { label: '岗位名称', prop: 'title', component: 'el-input', props: { placeholder: '请输入岗位名称', clearable: true } },
+    { label: '公司名称', prop: 'companyName', component: 'el-input', props: { placeholder: '请输入公司名称', clearable: true } },
+    { label: '工作地点', prop: 'location', component: 'el-input', props: { placeholder: '请输入工作地点', clearable: true } },
+    {
+        label: '申请状态', prop: 'applicationStatus', component: 'el-select', props: { placeholder: '请选择申请状态', clearable: true },
+        options: [
+            { label: '待审核', value: '待审核' },
+            { label: '已录用', value: '已录用' },
+            { label: '不录用', value: '不录用' }
+        ]
+    }
+]
+
+// 搜索条件
+const searchApplication = reactive({
+    title: '',
+    companyName: '',
+    location: '',
+    applicationStatus: '',
+    studentId: studentId,
+    page: 1,
+    pageSize: 10
+})
+
+// 分页配置
+const pagination = reactive({
+    page: 1,
+    pageSize: 10,
+    total: 0
+})
+
 const refuseOffer = async (jobId, studentId) => {
     ElMessageBox.confirm('您确定要拒绝此Offer吗？', '提示', {
         confirmButtonText: '确定',
@@ -83,19 +137,89 @@ const getStatusType = (status) => {
     }
 }
 
+// 原始数据
+const allApplications = ref([]);
+
 const search = async () => {
+    // 始终使用原来的API调用方式
     const res = await queryMyApplicationsApi(studentId);
     if (res.code === 1) {
         console.log("获取申请列表成功", res.data);
-        applicationList.value = res.data;
+        allApplications.value = res.data || [];
+        
+        // 前端筛选
+        filterApplications();
     }
     else {
         console.error("获取申请列表失败", res.message);
         ElMessage.error("获取申请列表失败: " + res.message);
     }
 }
+
+// 前端筛选函数
+const filterApplications = () => {
+    let filtered = [...allApplications.value];
+    
+    // 按岗位名称筛选
+    if (searchApplication.title) {
+        filtered = filtered.filter(app => 
+            app.title && app.title.toLowerCase().includes(searchApplication.title.toLowerCase())
+        );
+    }
+    
+    // 按公司名称筛选
+    if (searchApplication.companyName) {
+        filtered = filtered.filter(app => 
+            app.companyName && app.companyName.toLowerCase().includes(searchApplication.companyName.toLowerCase())
+        );
+    }
+    
+    // 按工作地点筛选
+    if (searchApplication.location) {
+        filtered = filtered.filter(app => 
+            app.location && app.location.toLowerCase().includes(searchApplication.location.toLowerCase())
+        );
+    }
+    
+    // 按申请状态筛选
+    if (searchApplication.applicationStatus) {
+        filtered = filtered.filter(app => 
+            app.applicationStatus === searchApplication.applicationStatus
+        );
+    }
+    
+    // 更新总数
+    pagination.total = filtered.length;
+    
+    // 分页处理
+    const startIndex = (pagination.page - 1) * pagination.pageSize;
+    const endIndex = startIndex + pagination.pageSize;
+    applicationList.value = filtered.slice(startIndex, endIndex);
+}
+
+// 清空搜索条件
+const clear = () => {
+    searchApplication.title = '';
+    searchApplication.companyName = '';
+    searchApplication.location = '';
+    searchApplication.applicationStatus = '';
+    pagination.page = 1;
+    filterApplications();
+}
+
+// 分页处理
+const handleCurrentChange = (page) => {
+    pagination.page = page;
+    filterApplications();
+}
+
+const handleSizeChange = (size) => {
+    pagination.pageSize = size;
+    pagination.page = 1;
+    filterApplications();
+}
 onMounted(async () => {
-    search(studentId)
+    search()
 })
 </script>
 
@@ -177,5 +301,15 @@ onMounted(async () => {
     font-size: 72px;
     margin-top: 120px;
     color: #666
+}
+
+.container {
+    margin: 20px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
 </style>
