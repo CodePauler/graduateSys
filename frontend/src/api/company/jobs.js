@@ -35,3 +35,15 @@ export const updateApplicationApi = (status,studentId,jobId) => {
     console.log("更新status:",status,"学生申请：studentId=", studentId, ", jobId=", jobId);
     return request.post(`/hires/applications`,{status,studentId, jobId});
 }
+
+// 获取企业招聘统计
+export const getCompanyRecruitmentStatsApi = (companyId) => {
+    console.log("获取企业招聘统计-companyId:", companyId);
+    return request.get(`/companies/${companyId}/recruitment-stats`);
+}
+
+// 获取企业招聘统计数据（从company_job_summary视图）
+export const getCompanyJobSummaryApi = (companyId) => {
+    console.log("获取企业招聘统计-companyId:", companyId);
+    return request.get(`/companies/${companyId}/job-summary`);
+}

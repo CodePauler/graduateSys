@@ -15,12 +15,10 @@ public interface CompanyService {
      */
     CompanyInfo getCompanyById(Integer companyId);
 
-
     /**
      * 更新公司基本信息
      */
     void updateByCompanyId(CompanyInfo companyInfo);
-
 
     /**
      * 批量删除公司
@@ -36,4 +34,9 @@ public interface CompanyService {
      * 获取公司简介信息
      */
     CompanyInfo getCompanyProfileByHrId(Integer hrId);
+
+    /**
+     * 获取企业招聘统计汇总
+     */
+    StatisticsCompanyJob getJobSummaryByCompanyId(Integer companyId);
 }

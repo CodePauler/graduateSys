@@ -95,8 +95,6 @@
         select company_id from company
         where user_id = #{userId}
     </select>
-
-
     <select id="selectCompanyProfileByHrId" resultType="com.dhu.Pojo.CompanyInfo">
         select c.company_name,
                c.company_intro,
@@ -104,6 +102,19 @@
         from company c
         left join company_job_summary ci on c.company_id = ci.company_id
         where c.user_id = #{hrId}
+    </select>
+
+    <!-- 根据公司ID获取招聘统计汇总 -->
+    <select id="getJobSummaryByCompanyId" resultType="com.dhu.Pojo.StatisticsCompanyJob">
+        SELECT 
+            company_id as companyId,
+            company_name as companyName,
+            job_count as jobCount,
+            demand_count as demandCount,
+            approved_count as approvedCount,
+            application_count as applicationCount
+        FROM company_job_summary 
+        WHERE company_id = #{companyId}
     </select>
 
 </mapper>

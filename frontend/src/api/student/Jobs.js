@@ -17,3 +17,9 @@ export const deleteEmploymentApi = (jobId,studentId) =>{
     console.log("拒绝offer-jobId:", jobId, "studentId:", studentId);
     return request.delete(`/employments?jobId=${jobId}&studentId=${studentId}`)
 }
+
+// 获取学生申请统计
+export const getStudentApplicationStatsApi = (studentId) => {
+    console.log("获取学生申请统计-studentId:", studentId);
+    return request.get(`/students/${studentId}/application-stats`);
+}
