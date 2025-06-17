@@ -94,12 +94,6 @@
                   </el-icon>
                   <span>公告管理</span>
                 </el-menu-item>
-                <el-menu-item index="/approvals">
-                  <el-icon>
-                    <Setting />
-                  </el-icon>
-                  <span>岗位审批</span>
-                </el-menu-item>
                 <el-menu-item index="/faculties">
                   <el-icon>
                     <HelpFilled />

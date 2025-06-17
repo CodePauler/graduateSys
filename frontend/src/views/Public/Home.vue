@@ -160,16 +160,16 @@ const editFields = [
 // 数据表格
 const announcementInfo = ref([]); //表格公告列表
 const tableColumns = [
-    //{ label: '公告ID', prop: 'announcementId' },
+    // { label: '公告ID', prop: 'announcementId' },
     { label: '标题', prop: 'title' },
-    /*{ label: '内容', prop: 'content' },
-    { label: '发布人', prop: 'creatorName' },
-    { label: '发布时间', prop: 'createTime' },
-    { label: '修改时间', prop: 'updateTime' },
-    { label: '附件名', prop: 'attachmentName' },
-    { label: '附件地址', prop: 'attachmentUrl' },
-    { label: '是否置顶', prop: 'isPinned' },
-    { label: '浏览量', prop: 'viewCount' }*/
+    { label: '内容', prop: 'content' },
+    // { label: '发布人', prop: 'creatorName' },
+    // { label: '发布时间', prop: 'createTime' },
+    // { label: '修改时间', prop: 'updateTime' },
+    // { label: '附件名', prop: 'attachmentName' },
+    // { label: '附件地址', prop: 'attachmentUrl' },
+    // { label: '是否置顶', prop: 'isPinned' },
+    // { label: '浏览量', prop: 'viewCount' }
 ];
 const tableActions = [
     {

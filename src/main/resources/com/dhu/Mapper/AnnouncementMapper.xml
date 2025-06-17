@@ -25,6 +25,16 @@
         </set>
         where announcement_id = #{announcementId}
     </update>
+
+
+    <update id="updateViewCount">
+        update announcement
+        <set>
+            view_count = view_count + 1
+        </set>
+    </update>
+
+
     <delete id="deleteAnnouncements">
         delete from announcement where announcement_id in
             <foreach collection="ids" item="id" open="(" close=")" separator=",">

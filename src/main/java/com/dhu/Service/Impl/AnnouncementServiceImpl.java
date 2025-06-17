@@ -28,6 +28,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public Announcement getAnnouncementById(Integer announcementId) {
+        announcementMapper.updateViewCount(announcementId);
         return announcementMapper.getAnnouncementById(announcementId);
     }
 

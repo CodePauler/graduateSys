@@ -65,6 +65,7 @@
                 j.salary,
                 j.location,
                j.status,
+               j.hire_status,
         CASE
             WHEN e.employment_id IS NOT NULL THEN 1
             ELSE 0
@@ -114,7 +115,8 @@
                c.company_intro,
                 j.salary,
                 j.location,
-               j.status
+               j.status,
+               j.hire_status
         FROM job_info j
         LEFT JOIN job_type jt ON j.type_id=jt.type_id
         LEFT JOIN company c ON j.company_id=c.company_id

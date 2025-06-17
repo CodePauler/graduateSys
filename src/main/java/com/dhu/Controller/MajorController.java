@@ -49,6 +49,7 @@ public class MajorController {
         if (major.getMajorName() == null || major.getMajorName().isEmpty()) {
             return Result.error("专业名称不能为空");
         }
+        majorService.addMajor(major);
         return Result.success("新增成功");
     }
 

@@ -3,6 +3,7 @@ package com.dhu.Mapper;
 import com.dhu.Pojo.JobInfo;
 import com.dhu.Pojo.JobQueryParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -28,4 +29,5 @@ public interface JobMapper {
 
 //    student--查询自己申请的岗位
     List<JobInfo> getMyApplicationJob(Integer studentId);
+
 }

@@ -24,5 +24,8 @@ public interface AnnouncementMapper {
 //    批量删除公告-admin
     void deleteAnnouncements(List<Integer> ids);
 
+//    更新浏览量
+    void updateViewCount(Integer announcementId);
+
 //
 }

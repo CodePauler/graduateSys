@@ -9,7 +9,7 @@ export const updateMajorApi = (data) =>{
 // 删除专业
 export const deleteMajorApi = (ids) => {
     console.log("删除专业: ids=", ids);
-    return request.delete(`/majors?ids=${id}`);
+    return request.delete(`/majors?ids=${ids}`);
 }
 
 // 新增专业

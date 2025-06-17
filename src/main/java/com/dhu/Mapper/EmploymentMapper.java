@@ -13,4 +13,7 @@ public interface EmploymentMapper {
 
 //    通过岗位ID和学生ID删除申请
     void deleteApplication(Integer jobId, Integer studentId);
+
+//    检查岗位是否已满
+    Boolean isJobFull(Integer jobId);
 }

@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : local
+ Source Server         : mysql-1
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 17/06/2025 12:44:06
+ Date: 17/06/2025 15:40:36
 */
 
 SET NAMES utf8mb4;
@@ -40,10 +40,8 @@ CREATE TABLE `announcement`  (
 -- ----------------------------
 -- Records of announcement
 -- ----------------------------
-INSERT INTO `announcement` VALUES (1, '东华大学就业管理系统2025年第2号', '祝同学们找到一个适合自己的牛圈！！！', 3, '2025-06-14 13:58:35', '2025-06-14 17:14:14', 'testAttachment', '/testAttachment.txt', 0, 0);
-INSERT INTO `announcement` VALUES (2, '东华大学', '天下无不散的宴席', 3, '2025-06-24 13:59:08', '2025-06-24 13:59:08', NULL, NULL, 0, 0);
-INSERT INTO `announcement` VALUES (7, '上海大学', '123123', 3, '2025-06-14 17:40:42', '2025-06-14 17:40:42', '2222', '', 1, 0);
-INSERT INTO `announcement` VALUES (10, '有点累', 'debug de疯了', 3, '2025-06-16 01:30:34', '2025-06-16 01:30:34', '没有，别想了', '', 0, 0);
+INSERT INTO `announcement` VALUES (1, '东华大学就业管理系统2025年第2号', '祝同学们找到一个适合自己的牛圈！！！', 3, '2025-06-14 13:58:35', '2025-06-17 15:05:06', 'testAttachment', '/testAttachment.txt', 0, 2);
+INSERT INTO `announcement` VALUES (2, '东华大学', '天下无不散的宴席', 3, '2025-06-24 13:59:08', '2025-06-17 15:05:06', NULL, NULL, 0, 2);
 
 -- ----------------------------
 -- Table structure for company
@@ -78,7 +76,7 @@ CREATE TABLE `department`  (
   `department_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '院系名称',
   PRIMARY KEY (`department_id`) USING BTREE,
   UNIQUE INDEX `name`(`department_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of department
@@ -134,7 +132,7 @@ CREATE TABLE `job`  (
   INDEX `company_id`(`company_id` ASC) USING BTREE,
   CONSTRAINT `job_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `job_type` (`type_id`) ON DELETE SET NULL ON UPDATE RESTRICT,
   CONSTRAINT `job_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job
@@ -144,6 +142,7 @@ INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 2, 4, '已通过', '南
 INSERT INTO `job` VALUES (5, '主播666', 1, 999, 1, '已通过', '杭州', '8-9k', '我管你这的那的');
 INSERT INTO `job` VALUES (6, '岗位发布测试1', 1, 5, 4, '已通过', '上海', '11-14k', 'ssssss');
 INSERT INTO `job` VALUES (7, '外包', 1, 99999, 6, '待审核', '上海', '6-7k', '外包的同学不准吃零食');
+INSERT INTO `job` VALUES (8, '测试岗位发布', 1, 5, 4, '已通过', NULL, NULL, '测试');
 
 -- ----------------------------
 -- Table structure for job_type
@@ -179,14 +178,14 @@ CREATE TABLE `major`  (
   PRIMARY KEY (`major_id`) USING BTREE,
   INDEX `department_id`(`department_id` ASC) USING BTREE,
   CONSTRAINT `major_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of major
 -- ----------------------------
 INSERT INTO `major` VALUES (1, '计算机科学', 1);
 INSERT INTO `major` VALUES (2, '软件工程', 1);
-INSERT INTO `major` VALUES (3, '电子信息', 1);
+INSERT INTO `major` VALUES (3, '电子信息', 2);
 INSERT INTO `major` VALUES (4, '数据科学与大数据技术', 1);
 
 -- ----------------------------
@@ -255,32 +254,22 @@ DROP VIEW IF EXISTS `company_job_summary`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `company_job_summary` AS select `c`.`company_id` AS `company_id`,`c`.`company_name` AS `company_name`,count(`j`.`job_id`) AS `job_count`,sum(`j`.`demand_number`) AS `demand_count`,sum(ifnull(`e`.`hired_count`,0)) AS `approved_count`,sum(ifnull(`a`.`application_count`,0)) AS `application_count` from (((`company` `c` left join `job` `j` on((`c`.`company_id` = `j`.`company_id`))) left join (select `employment`.`job_id` AS `job_id`,count(0) AS `hired_count` from `employment` where (`employment`.`status` = '已录用') group by `employment`.`job_id`) `e` on((`j`.`job_id` = `e`.`job_id`))) left join (select `employment`.`job_id` AS `job_id`,count(0) AS `application_count` from `employment` group by `employment`.`job_id`) `a` on((`j`.`job_id` = `a`.`job_id`))) group by `c`.`company_id`,`c`.`company_name`;
 
 -- ----------------------------
--- View structure for student_info
--- ----------------------------
-DROP VIEW IF EXISTS `student_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`major_name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`major_id` = `s`.`major_id`)));
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- ----------------------------
 -- View structure for department_info
 -- ----------------------------
 DROP VIEW IF EXISTS `department_info`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `department_info` AS select `d`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,count(`s`.`student_id`) AS `total_students`,sum((`s`.`employment_status` = '就业')) AS `employed_students`,round(ifnull((sum((`s`.`employment_status` = '就业')) / nullif(count(`s`.`student_id`),0)),0),4) AS `employment_rate` from ((`department` `d` left join `major` `m` on((`d`.`department_id` = `m`.`department_id`))) left join `student_info` `s` on((`m`.`major_id` = `s`.`major_id`))) group by `d`.`department_id`,`d`.`department_name`;
 
 -- ----------------------------
--- View structure for job_info
--- ----------------------------
-DROP VIEW IF EXISTS `job_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `job_info` AS select `j`.`job_id` AS `job_id`,`j`.`title` AS `title`,`j`.`type_id` AS `type_id`,`j`.`demand_number` AS `demand_number`,`j`.`company_id` AS `company_id`,`j`.`status` AS `status`,`j`.`salary` AS `salary`,`j`.`location` AS `location`,`j`.`description` AS `description`,(select count(0) from `employment` `e` where ((`e`.`job_id` = `j`.`job_id`) and (`e`.`status` = '已录用'))) AS `hired_number` from `job` `j`;
-
-
--- ----------------------------
 -- View structure for global_info
 -- ----------------------------
 DROP VIEW IF EXISTS `global_info`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (select count(0) from `student`) AS `total_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '就业')) AS `employed_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '待业')) AS `unemployed_students`,(select count(0) from `company`) AS `company_count`,(select sum(`job`.`demand_number`) from `job` where (`job`.`status` = '已通过')) AS `total_job_demand`,(select sum(`job_info`.`hired_number`) from `job_info`) AS `total_hired`,(select count(0) from `job` where (`job`.`status` = '已通过')) AS `job_count`,(select count(0) from `employment` where (`employment`.`status` = '已录用')) AS `total_applications`,(select count(0) from `announcement`) AS `announcement_count`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (select count(0) from `student`) AS `total_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '就业')) AS `employed_students`,(select count(0) from `student_info` where (`student_info`.`employment_status` = '待业')) AS `unemployed_students`,(select count(0) from `company`) AS `company_count`,(select sum(`job`.`demand_number`) from `job`) AS `total_job_demand`,(select sum(`job_info`.`hired_number`) from `job_info`) AS `total_hired`,(select count(0) from `job`) AS `job_count`,(select count(0) from `employment` where (`employment`.`status` = '已录用')) AS `total_applications`,(select count(0) from `announcement`) AS `announcement_count`;
 
+-- ----------------------------
+-- View structure for job_info
+-- ----------------------------
+DROP VIEW IF EXISTS `job_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `job_info` AS select `t`.`job_id` AS `job_id`,`t`.`title` AS `title`,`t`.`type_id` AS `type_id`,`t`.`demand_number` AS `demand_number`,`t`.`company_id` AS `company_id`,`t`.`status` AS `status`,`t`.`salary` AS `salary`,`t`.`location` AS `location`,`t`.`description` AS `description`,`t`.`hired_number` AS `hired_number`,(case when ((`t`.`demand_number` - `t`.`hired_number`) > 0) then '招聘中' else '已结束' end) AS `hire_status` from (select `j`.`job_id` AS `job_id`,`j`.`title` AS `title`,`j`.`type_id` AS `type_id`,`j`.`demand_number` AS `demand_number`,`j`.`company_id` AS `company_id`,`j`.`status` AS `status`,`j`.`salary` AS `salary`,`j`.`location` AS `location`,`j`.`description` AS `description`,(select count(0) from `employment` `e` where ((`e`.`job_id` = `j`.`job_id`) and (`e`.`status` = '已录用'))) AS `hired_number` from `job` `j`) `t` where (`t`.`hired_number` < `t`.`demand_number`);
 
 -- ----------------------------
 -- View structure for student_employment_summary
@@ -288,4 +277,10 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `global_info` AS select (
 DROP VIEW IF EXISTS `student_employment_summary`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_employment_summary` AS select `s`.`student_id` AS `student_id`,`u`.`name` AS `student_name`,`s`.`employment_status` AS `employment_status`,count(`e`.`employment_id`) AS `total_applications`,sum((`e`.`status` = '已录用')) AS `offer_count` from ((`student_info` `s` left join `user` `u` on((`s`.`user_id` = `u`.`id`))) left join `employment` `e` on((`s`.`student_id` = `e`.`student_id`))) group by `s`.`student_id`,`u`.`name`,`s`.`employment_status`;
 
+-- ----------------------------
+-- View structure for student_info
+-- ----------------------------
+DROP VIEW IF EXISTS `student_info`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `student_info` AS select `s`.`student_id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`major_id` AS `major_id`,`s`.`graduation_year` AS `graduation_year`,`s`.`resume_url` AS `resume_url`,`u`.`name` AS `name`,`m`.`major_name` AS `major`,`u`.`gender` AS `gender`,`u`.`phone` AS `phone`,(case when exists(select 1 from `employment` `e` where ((`e`.`student_id` = `s`.`student_id`) and (`e`.`status` = '已录用'))) then '就业' else '待业' end) AS `employment_status` from ((`student` `s` left join `user` `u` on((`u`.`id` = `s`.`user_id`))) left join `major` `m` on((`m`.`major_id` = `s`.`major_id`)));
 
+SET FOREIGN_KEY_CHECKS = 1;

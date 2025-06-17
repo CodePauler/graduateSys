@@ -26,4 +26,5 @@ public class JobInfo {
     private LocalDateTime applyDate; // 申请时间
     private String salary; // 岗位薪资
     private String location; // 岗位类型名称
+    private String hireStatus; // 招聘状态（招聘中/已结束）
 }

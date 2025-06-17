@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobQueryParam {
-    private Integer page;
-    private Integer pageSize;
+    private Integer page=1;
+    private Integer pageSize=10;
 
     private Integer jobId; // 岗位ID
     private String title; // 岗位名称

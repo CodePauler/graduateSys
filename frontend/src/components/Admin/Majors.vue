@@ -240,6 +240,7 @@ const handleBatchDelete = () => {
         type: 'warning',
     }).then(async () => {
         const ids = multipleSelection.value.map(item => item.majorId)
+        console.log("批量删除专业ID", ids);
         const result = await deleteMajorApi(ids)
         if (result.code === 1) {
             ElMessage.success('批量删除成功')
