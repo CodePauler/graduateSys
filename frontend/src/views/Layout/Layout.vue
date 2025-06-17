@@ -145,11 +145,20 @@ watch(() => route.path, (newPath) => {
 const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('role');
+  localStorage.removeItem('studentId');
+  localStorage.removeItem('companyId');
   ElMessage.success('已退出登录');
   router.push('/login');
 };
+
 onMounted(() => {
+  // 确保在组件挂载后正确设置活动菜单
   activeMenu.value = route.path;
+  
+  // 如果当前路径是根路径，重定向到首页
+  if (route.path === '/') {
+    router.replace('/home');
+  }
 });
 </script>
 <style scoped>

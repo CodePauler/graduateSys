@@ -15,9 +15,11 @@ import Home from '@/views/Public/Home.vue';
 import Faculties from '@/views/Admin/Faculties.vue';
 import Profile from '@/views/Public/Profile.vue';
 const routes = [
-  { path: '/',
+  { 
+    path: '/',
     name: 'index',
-    component:Layout, // 所有页面的父组件，包含导航栏和侧边栏
+    component: Layout, // 所有页面的父组件，包含导航栏和侧边栏
+    redirect: '/home', // 添加默认重定向到首页
     children: [
       { path: '/home', name:'home',component:Home, },                      //*all-   首页，展示公告和毕业生统计情况(/graduates似乎没有什么必要)
       { path:'/users', name: 'users', component: Users,},                     //*admin-  用户管理
