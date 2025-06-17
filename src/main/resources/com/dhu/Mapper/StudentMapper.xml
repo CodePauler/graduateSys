@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dhu.Mapper.StudentMapper">
 
-    <insert id="insert" parameterType="com.dhu.Pojo.Student">
-        INSERT INTO student (student_id,user_id, major_id, graduation_year, resume_url)
-        VALUES (#{studentId},#{userId}, #{majorId}, #{graduationYear}, #{resumeUrl})
+    <insert id="insert" parameterType="com.dhu.Pojo.Student" useGeneratedKeys="true" keyProperty="studentId">
+        INSERT INTO student (user_id, major_id, graduation_year, resume_url)
+        VALUES (#{userId}, #{majorId}, #{graduationYear}, #{resumeUrl})
     </insert>
 
     <update id="updateByStudentId">

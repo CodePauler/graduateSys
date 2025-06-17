@@ -50,9 +50,6 @@ public class UserServiceImpl implements UserService {
         // 如果需要根据角色进行不同的处理
         if ("student".equals(user.getRole())) {
             Student student = new Student();
-            if (extraParams.get("studentId") != null) {
-                student.setStudentId(Integer.valueOf(extraParams.get("studentId").toString()));
-            }
             student.setUserId(userId);
             if (extraParams.get("majorId") != null) {
                 student.setMajorId(Integer.valueOf(extraParams.get("majorId").toString()));

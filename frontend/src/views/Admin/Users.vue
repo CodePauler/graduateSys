@@ -326,15 +326,15 @@ const handleBatchDelete = () => {
         ElMessage.info('已取消删除')
     })
 }
-const majorOptions = ref([])
+// const majorOptions = ref([])
 onMounted(async () => {
     search();
-    const res = await queryMajorsApi();
-    if (res.code === 1) {
-        majorOptions.value = res.data;
-    } else {
-        ElMessage.error('获取专业列表失败: ' + res.message);
-    }
+    // const res = await queryMajorsApi();
+    // if (res.code === 1) {
+    //     majorOptions.value = res.data;
+    // } else {
+    //     ElMessage.error('获取专业列表失败: ' + res.message);
+    // }
 });
 </script>
 <style scoped>

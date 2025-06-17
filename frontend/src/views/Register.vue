@@ -33,14 +33,9 @@
 
         <!-- 学生 -->
         <template v-if="form.role === 'student'">
-          <el-form-item label="学号" prop="studentId">
-            <el-input v-model="form.studentId"></el-input>
-          </el-form-item>
           <el-form-item label="专业" prop="majorId">
             <el-select v-model="form.majorId" placeholder="请选择专业">
-              <el-option label="计算机科学" value="1"></el-option>
-              <el-option label="软件工程" value="2"></el-option>
-              <el-option label="电子信息" value="3"></el-option>
+              <el-option v-for="item in majorOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="毕业年限" prop="graduationYear">
@@ -72,11 +67,25 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { registerApi } from '@/api/login';
+import { queryMajorApi } from '@/api/public/majors';
 
+const majorOptions = ref([])
+onMounted(async () => {
+  try {
+    const res = await queryMajorApi();
+    if (res.code === 1) {
+      majorOptions.value = res.data.rows.map(item => ({ label: item.majorName, value: item.majorId }));
+    } else {
+      ElMessage.error('获取专业列表失败');
+    }
+  } catch (error) {
+    ElMessage.error('网络错误，请稍后再试');
+  }
+})
 const router = useRouter();
 const form = reactive({
   username: '',

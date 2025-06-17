@@ -4,14 +4,16 @@
     <div class="container search-bar-row">
         <SearchBar :fields="searchFields" :model="searchCompany" @search="search" @clear="clear">
             <template #batch-action>
-                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete" style="margin-left:8px;">批量删除</el-button>
+                <el-button type="danger" :disabled="!multipleSelection.length" @click="handleBatchDelete"
+                    style="margin-left:8px;">批量删除</el-button>
             </template>
         </SearchBar>
     </div>
     <!-- 数据表格 -->
     <div class="container">
         <DataTable :data="company" :columns="tableColumns" :actions="tableActions" :pagination="pagination"
-            @page-change="handleCurrentChange" @size-change="handleSizeChange" @selection-change="handleSelectionChange" />
+            @page-change="handleCurrentChange" @size-change="handleSizeChange"
+            @selection-change="handleSelectionChange" />
     </div>
     <!-- 编辑弹窗 -->
     <div class="container">
@@ -42,16 +44,7 @@ const searchFields = [
     { label: "HR电话", prop: "phone", component: "el-input", props: { placeholder: "请输入HR电话", clearable: true } },
     { label: "HR邮箱", prop: "email", component: "el-input", props: { placeholder: "请输入HR邮箱", clearable: true } },
 ]
-const searchCompany = reactive({
-    companyId: '',
-    companyName: '',
-    hrName: '',
-    gender: '',
-    phone: '',
-    email: '',
-    page: 1,
-    pageSize: 10
-})
+
 const pagination = reactive({
     page: 1,
     pageSize: 10,
@@ -117,16 +110,16 @@ const editFields = [
     { label: "企业ID", prop: "companyId", component: "el-input", props: { disabled: true } },
     { label: "企业名称", prop: "companyName", component: "el-input", props: { placeholder: "请输入企业名称" } },
     { label: "企业简介", prop: "companyIntro", component: "el-input", props: { type: "textarea", placeholder: "请输入企业简介" } },
-    { label: "HR姓名", prop: "hrName", component: "el-input", props: { placeholder: "请输入HR姓名" } },
+    { label: "HR姓名", prop: "hrName", component: "el-input", props: { disabled:true } },
     {
-        label: "HR性别", prop: "gender", component: "el-select", props: { placeholder: "请选择HR性别" },
+        label: "HR性别", prop: "gender", component: "el-select", props: { disabled:true },
         options: [
             { label: "男", value: "男" },
             { label: "女", value: "女" }
         ]
     },
-    { label: "HR电话", prop: "phone", component: "el-input", props: { placeholder: "请输入HR电话" } },
-    { label: "HR邮箱", prop: "email", component: "el-input", props: { placeholder: "请输入HR邮箱" } },
+    { label: "HR电话", prop: "phone", component: "el-input", props: { disabled:true } },
+    { label: "HR邮箱", prop: "email", component: "el-input", props: { disabled:true } },
 ]
 const saveCompany = async () => {
     dialogFormVisible.value = false;
@@ -151,13 +144,22 @@ const handleCurrentChange = (page) => {
     console.log("当前页码", page);
     search();
 }
-const handleSizeChange = (pageSize) => {
-    pagination.pageSize = pageSize;
-    searchCompany.pageSize = pageSize;
-    console.log("每页条数", pageSize);
+const handleSizeChange = (size) => {
+    pagination.pageSize = size;
+    searchCompany.pageSize = size;
+    console.log("每页条数", size);
     search();
 }
-
+const searchCompany = reactive({
+    companyId: '',
+    companyName: '',
+    hrName: '',
+    gender: '',
+    phone: '',
+    email: '',
+    page: 1,
+    pageSize: 10
+})
 const search = async () => {
     const result = await queryCompaniesApi(searchCompany);
     if (result.code === 1) {
@@ -202,7 +204,7 @@ const handleBatchDelete = () => {
         ElMessage.info('已取消删除')
     })
 }
-onMounted(() => {
+onMounted(async () => {
     search();
 });
 </script>
@@ -210,6 +212,7 @@ onMounted(() => {
 .container {
     margin: 20px;
 }
+
 .search-bar-row {
     display: flex;
     align-items: flex-end;

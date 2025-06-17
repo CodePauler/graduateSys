@@ -176,6 +176,7 @@ const tableActions = (row) => {
                     if (result.code === 1) {
                         console.log("查询岗位信息成功", result.data);
                         job.value = result.data
+                        search()
                     }
                     else {
                         ElMessage.error(result.msg)

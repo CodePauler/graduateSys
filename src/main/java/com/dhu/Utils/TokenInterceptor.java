@@ -15,8 +15,13 @@ public class TokenInterceptor implements HandlerInterceptor {   //Jwt鉴权
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String jwt = request.getHeader("token");
-        String url = request.getRequestURL().toString();
-        log.info("当前请求路径：{}", url);
+        String uri = request.getRequestURI().toString();
+        log.info("当前请求路径：{}", uri);
+        // 只放行 GET /majors
+        if ("/majors".equals(uri) && "GET".equalsIgnoreCase(request.getMethod())) {
+            log.info("放行 GET /majors 请求");
+            return true;
+        }
         if(!StringUtils.hasLength(jwt)) {
             // 如果没有 token，直接返回未登录状态
             log.info("未携带 token，拒绝访问");

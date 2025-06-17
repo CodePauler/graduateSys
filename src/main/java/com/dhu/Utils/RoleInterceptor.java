@@ -16,10 +16,14 @@ public class RoleInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
-        String url = request.getRequestURL().toString();
-        log.info("当前请求路径：{}", url);
+        String uri = request.getRequestURI().toString();
+        log.info("当前请求路径：{}", uri);
         if(!(handler instanceof HandlerMethod)) return true; // 请求不访问方法，直接放行
-
+        // 只放行 GET /majors
+        if ("/majors".equals(uri) && "GET".equalsIgnoreCase(request.getMethod())) {
+            log.info("放行 GET /majors 请求");
+            return true;
+        }
         HandlerMethod method = (HandlerMethod) handler;
         RoleCheck roleCheck = method.getMethodAnnotation(RoleCheck.class);
         if(roleCheck == null) return true; // 方法没有RoleCheck注解，直接放行

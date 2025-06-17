@@ -70,7 +70,6 @@
             <if test="email != null and email != ''">
                 AND u.email = #{email}
             </if>
-
         </where>
     </select>
     <select id="getById" resultType="com.dhu.Pojo.CompanyInfo">
