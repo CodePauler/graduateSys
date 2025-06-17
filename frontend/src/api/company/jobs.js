@@ -33,7 +33,7 @@ export const getJobsByCompanyIdApi = (companyId) => {
 // 通过/拒绝学生申请
 export const updateApplicationApi = (status,studentId,jobId) => {
     console.log("更新status:",status,"学生申请：studentId=", studentId, ", jobId=", jobId);
-    return request.post(`/hires/applications`,{status,studentId, jobId});
+    return request.put(`/hires/applications`,{status,studentId, jobId});
 }
 
 // 获取企业招聘统计

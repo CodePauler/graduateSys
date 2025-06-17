@@ -32,4 +32,7 @@ public interface JobService {
 
 //    all-获取所有职业类型
     List<JobType> getAllJobTypes();
+
+//    获取岗位的招聘状态
+    String getHireStatusByJobId(Integer jobId);
 }

@@ -33,4 +33,7 @@ public interface JobMapper {
 
 //    获取所有职业类型
     List<JobType> selectAllJobTypes();
+
+//    获取岗位的招聘状态
+    String selectHireStatusByJobId(Integer jobId);
 }

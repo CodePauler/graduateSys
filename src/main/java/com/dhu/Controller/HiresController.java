@@ -56,10 +56,10 @@ public class HiresController {
     }
 
     /**
-     * 通过学生申请
+     * 通过/拒绝学生申请
      */
     @RoleCheck({"company","admin"})
-    @PostMapping("/applications")
+    @PutMapping("/applications")
     public Result updateApplication(@RequestBody ApplicationRequest applicationRequest) {
         String status = applicationRequest.getStatus();
         Integer jobId = applicationRequest.getJobId();
@@ -67,6 +67,12 @@ public class HiresController {
         log.info("{}学生ID: {} 的申请，岗位ID: {}",status, studentId, jobId);
         if (jobId == null || studentId == null) {
             return Result.error("岗位ID和学生ID不能为空");
+        }
+        if("已录用".equals(status)){
+            String hireStatus = jobService.getHireStatusByJobId(jobId);
+            if("已结束".equals(hireStatus)){
+                return Result.error("该岗位招聘结束，无法继续录用！");
+            }
         }
         employmentService.updateApplication(status,jobId, studentId);
         return Result.success("申请处理成功");

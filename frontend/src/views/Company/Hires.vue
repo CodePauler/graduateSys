@@ -31,7 +31,11 @@
                         <span style="margin-left: 10px; color: #999;">审核状态：<el-tag :type="getStatusType(job.status)"
                                 size="small">
                                 {{ job.status }}
-                            </el-tag></span>
+                            </el-tag>
+                            招聘状态：<el-tag :type="getStatusType(job.hireStatus)" size="small">
+                                {{ job.hireStatus }}
+                            </el-tag>
+                        </span>
                         <span style="margin-left: 10px;">需求人数：{{ job.demandNumber }}</span>
                     </div>
                 </template>
@@ -270,9 +274,11 @@ const getStatusType = (status) => {
             return 'primary'
         case '已通过':
         case '已录用':
+        case '招聘中':
             return 'success'
         case '不通过':
         case '不录用':
+        case '已结束':
             return 'danger'
         default:
             return 'info'

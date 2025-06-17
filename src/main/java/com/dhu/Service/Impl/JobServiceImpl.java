@@ -59,4 +59,9 @@ public class JobServiceImpl implements JobService {
     public List<JobType> getAllJobTypes() {
         return jobMapper.selectAllJobTypes();
     }
+
+    @Override
+    public String getHireStatusByJobId(Integer jobId) {
+        return jobMapper.selectHireStatusByJobId(jobId);
+    }
 }

@@ -153,5 +153,11 @@
         select type_id,name type_name from job_type
     </select>
 
+<!--    获取某岗位是否招聘结束-->
+    <select id="selectHireStatusByJobId" resultType="java.lang.String">
+        select hire_status from job_info
+        where job_id = #{jobId}
+    </select>
+
 
 </mapper>
