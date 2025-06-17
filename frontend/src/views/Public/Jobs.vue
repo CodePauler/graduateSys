@@ -22,6 +22,7 @@
 
             <div class="card-body">
                 <div class="info-tags">
+                    <el-tag class="tag big-tag" size="small">{{ job.location || '地点待定' }}</el-tag>
                     <el-tag class="tag big-tag" size="small">需求: {{ job.demandNumber }}人</el-tag>
                     <el-tag class="tag big-tag" size="small">已聘: {{ job.hiredNumber }}人</el-tag>
                 </div>
