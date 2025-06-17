@@ -36,32 +36,13 @@
         </div>
       </div>
     </div>
-    <!-- admin专属信息 -->
-    <div v-if="role === 'admin'" class="extra-info">
-      <div class="info-row">
-        <div class="info-item">
-          <span class="label">学生用户数：</span>
-          <span>{{ adminInfo.studentCount }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">企业用户数：</span>
-          <span>{{ adminInfo.companyCount }}</span>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-item">
-          <span class="label">管理员人数：</span>
-          <span>{{ adminInfo.adminCount }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">用户总数：</span>
-          <span>{{ adminInfo.totalCount }}</span>
-        </div>
-      </div>
-    </div>
     <!-- student专属信息 -->
     <div v-if="role === 'student'" class="extra-info">
       <div class="info-row">
+        <div class="info-item">
+          <span class="label">学号：</span>
+          <span>{{ studentInfo.studentId }}</span>
+        </div>
         <div class="info-item">
           <span class="label">专业：</span>
           <span>{{ studentInfo.major }}</span>
@@ -69,6 +50,10 @@
         <div class="info-item">
           <span class="label">毕业年份：</span>
           <span>{{ studentInfo.graduationYear }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">就业状态：</span>
+          <span>{{ studentInfo.employmentStatus }}</span>
         </div>
       </div>
     </div>
@@ -80,71 +65,133 @@
           <span>{{ companyInfo.companyName }}</span>
         </div>
         <div class="info-item">
-          <span class="label">发布岗位总数：</span>
-          <span>{{ companyInfo.postedJobs }}</span>
+          <span class="label">公司简介：</span>
+          <span>{{ companyInfo.companyIntro }}</span>
         </div>
       </div>
     </div>
-    <EditDialog v-model="editDialogVisible" :title="'编辑个人信息'" :model="editForm" :fields="editFields" @submit="saveEdit" />
+    <EditDialog v-model="editDialogVisible" :title="'编辑个人信息'" :model="editForm" :fields="editFields"
+      @submit="saveEdit" />
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import EditDialog from '@/components/EditDialog.vue'
-
-const role = localStorage.getItem('role') 
-
+import { queryUserByIdApi, updateUserApi } from '@/api/public/user'
+import { ElMessage } from 'element-plus'
+import { queryStudentByUserIdApi } from '@/api/public/students'
+import { queryCompanyProfileApi } from '@/api/public/company'
+const role = localStorage.getItem('role')
+const userId = localStorage.getItem('userId')
 const profile = reactive({
-  username: 'zhangsan',
-  role: role === 'student' ? '学生' : role === 'company' ? '企业' : '管理员',
-  name: role === 'company' ? '上海XX科技有限公司' : '张三',
-  gender: role === 'company' ? '-' : '男',
-  email: 'zhangsan@example.com',
-  phone: '13800000000',
-})
-
-// admin专属信息
-const adminInfo = reactive({
-  studentCount: 120,
-  companyCount: 15,
-  adminCount: 3,
-  totalCount: 138,
+  userId: userId,
+  username: '',
+  role: '',
+  name: '',
+  gender: '',
+  email: '',
+  phone: '',
 })
 // student专属信息
 const studentInfo = reactive({
-  major: '计算机科学与技术',
-  graduationYear: 2025,
+  studentId: '1',
+  major: '',
+  graduationYear: '',
+  employmentStatus: '',
 })
+
 // company专属信息
 const companyInfo = reactive({
-  companyName: '上海XX科技有限公司',
-  postedJobs: 8,
+  companyName: '',
+  companyIntro: '',
 })
 
 const editDialogVisible = ref(false)
 const editForm = reactive({
+  userId: '',
   username: '',
   email: '',
-  phone: ''
+  phone: '',
+  companyName: '',
+  companyIntro: '',
 })
 const editFields = [
   { label: '用户名', prop: 'username', component: 'el-input', props: { autocomplete: 'off' } },
   { label: '邮箱', prop: 'email', component: 'el-input', props: { autocomplete: 'off' } },
   { label: '电话', prop: 'phone', component: 'el-input', props: { autocomplete: 'off' } }
 ]
+if (role === 'company') {
+  editFields.push(
+    { label: '公司名称', prop: 'companyName', component: 'el-input', props: {} },
+    { label: '公司简介', prop: 'companyIntro', component: 'el-input', props: { type: 'textarea' } }
+  )
+}
 function openEditDialog() {
+  editForm.userId = userId
   editForm.username = profile.username
   editForm.email = profile.email
   editForm.phone = profile.phone
+  editForm.companyName = companyInfo.companyName
+  editForm.companyIntro = companyInfo.companyIntro
   editDialogVisible.value = true
 }
-function saveEdit() {
-  profile.username = editForm.username
-  profile.email = editForm.email
-  profile.phone = editForm.phone
+const saveEdit = async () => {
+  const res = await updateUserApi(editForm)
+  if (res.code === 1) {
+    ElMessage.success('个人信息更新成功')
+    search()
+  } else {
+    ElMessage.error('个人信息更新失败: ' + res.msg)
+  }
   editDialogVisible.value = false
 }
+
+
+
+const search = async () => {
+  let res
+  res = await queryUserByIdApi(userId)
+  if (res.code === 1) {
+    console.log('获取用户信息成功:', res.data)
+    profile.username = res.data.username
+    profile.name = res.data.name
+    profile.gender = res.data.gender
+    profile.role = res.data.role
+    profile.email = res.data.email
+    profile.phone = res.data.phone
+  } else {
+    console.error('获取用户信息失败:', res.msg)
+    ElMessage.error('获取用户信息失败: ' + res.msg)
+  }
+  if (role === 'student') {
+    res = await queryStudentByUserIdApi(userId)
+    if (res.code === 1) {
+      console.log('获取学生信息成功:', res.data)
+      studentInfo.studentId = res.data.studentId
+      studentInfo.major = res.data.major
+      studentInfo.graduationYear = res.data.graduationYear
+      studentInfo.employmentStatus = res.data.employmentStatus
+    } else {
+      console.error('获取学生信息失败:', res.msg)
+      ElMessage.error('获取学生信息失败: ' + res.msg)
+    }
+  }
+  if (role === 'company') {
+    res = await queryCompanyProfileApi(userId)
+    if (res.code === 1) {
+      console.log('获取公司信息成功:', res.data)
+      companyInfo.companyName = res.data.companyName
+      companyInfo.companyIntro = res.data.companyIntro
+    } else {
+      console.error('获取公司信息失败:', res.msg)
+      ElMessage.error('获取公司信息失败: ' + res.msg)
+    }
+  }
+}
+onMounted(() => {
+  search()
+})
 </script>
 
 <style scoped>
@@ -155,46 +202,55 @@ function saveEdit() {
   max-width: 600px;
   margin: 40px auto 0 auto;
 }
+
 .headerContent {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 32px;
   text-align: left;
 }
+
 .edit-btn {
   margin-bottom: 24px;
 }
+
 .profile-container {
   max-width: 600px;
   margin: 0 auto 40px auto;
   padding: 32px 24px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+
 .profile-title {
   display: none;
 }
+
 .profile-info {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .info-row {
   display: flex;
   justify-content: space-between;
   gap: 24px;
 }
+
 .info-item {
   flex: 1;
   display: flex;
   align-items: center;
   font-size: 16px;
 }
+
 .label {
   color: #888;
   min-width: 80px;
 }
+
 .extra-info {
   margin-top: 32px;
 }

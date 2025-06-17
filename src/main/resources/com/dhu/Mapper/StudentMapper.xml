@@ -123,5 +123,11 @@
         where employment.job_id = #{jobId}
     </select>
 
+<!--    根据用户ID查询学生信息-->
+    <select id="selectStudentInfoByUserId" resultType="com.dhu.Pojo.StudentInfo">
+        select * from student_info
+        where user_id = #{userId}
+    </select>
+
 
 </mapper>

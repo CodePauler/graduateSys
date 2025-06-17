@@ -54,4 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
         // 通过HR ID查询公司信息
         return companyMapper.getByHrId(hrId);
     }
+
+    @Override
+    public CompanyInfo getCompanyProfileByHrId(Integer hrId) {
+        return companyMapper.selectCompanyProfileByHrId(hrId);
+    }
 }

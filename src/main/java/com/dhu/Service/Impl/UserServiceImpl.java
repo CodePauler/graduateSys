@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CompanyMapper companyMapper;
 
+    @Transactional
     @Override
     public Result register(User user, Map<String, Object> extraParams) {
         log.info("注册用户信息: user:{},extraParms:{}", user,extraParams);
@@ -102,6 +104,13 @@ public class UserServiceImpl implements UserService {
         } else {
             return null; // 登录失败，返回null
         }
+    }
+
+    @Transactional
+    @Override
+    public void updateProfile(ProfileUpdate user) {
+        if(user.getCompanyName()!=null && !"".equals(user.getCompanyName())) companyMapper.updateProfile(user);
+        userMapper.updateProfile(user);
     }
 
     @Override

@@ -27,4 +27,7 @@ public interface UserService {
 
 //    删除用户
     void deleteUser(List<Integer> ids);
+
+//    个人中心-信息修改
+    void updateProfile(ProfileUpdate user);
 }

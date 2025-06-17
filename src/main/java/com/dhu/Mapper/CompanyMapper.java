@@ -26,4 +26,10 @@ public interface CompanyMapper {
     CompanyInfo getByHrId(Integer hrId);
 
     Integer findIdByUserId(Integer id);
+
+//    根据HR ID查询公司profile
+    CompanyInfo selectCompanyProfileByHrId(Integer hrId);
+
+//    个人中心-信息修改
+    void updateProfile(ProfileUpdate user);
 }

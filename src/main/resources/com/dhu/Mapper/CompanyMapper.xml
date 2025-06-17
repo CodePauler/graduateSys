@@ -20,7 +20,17 @@
     </update>
 
 
-<!--批量删除-->
+    <update id="updateProfile">
+        update company
+        <set>
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyIntro != null and companyIntro != ''">company_intro = #{companyIntro},</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+
+    <!--批量删除-->
     <delete id="deleteByIds">
         DELETE FROM company
         WHERE company_id IN
@@ -85,6 +95,16 @@
     <select id="findIdByUserId" resultType="java.lang.Integer">
         select company_id from company
         where user_id = #{userId}
+    </select>
+
+
+    <select id="selectCompanyProfileByHrId" resultType="com.dhu.Pojo.CompanyInfo">
+        select c.company_name,
+               c.company_intro,
+               ci.job_count posted_jobs
+        from company c
+        left join company_job_summary ci on c.company_id = ci.company_id
+        where c.user_id = #{hrId}
     </select>
 
 </mapper>

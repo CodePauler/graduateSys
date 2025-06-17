@@ -1,11 +1,9 @@
 package com.dhu.Controller;
 
 import com.dhu.Annotation.RoleCheck;
-import com.dhu.Pojo.PageResult;
-import com.dhu.Pojo.Result;
-import com.dhu.Pojo.User;
-import com.dhu.Pojo.UserQueryParam;
+import com.dhu.Pojo.*;
 import com.dhu.Service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -57,5 +55,30 @@ public class UserController {
         log.info("删除用户ID列表: {}", ids);
         userService.deleteUser(ids);
         return Result.success("删除成功");
+    }
+
+
+//    个人中心-用户自己查询信息
+    @GetMapping("/self/{id}")
+    public Result getSelfUserInfo(@PathVariable Integer id, HttpServletRequest request) {
+        log.info("查询用户ID: {}", id);
+        Integer userId = (Integer) request.getAttribute("userId");
+        if (!userId.equals(id)) {
+            return Result.error("只能查询自己的信息");
+        } else {
+            return Result.success(userService.getUserById(id));
+        }
+    }
+
+//    个人中心-用户自己更新信息
+    @PutMapping("/self")
+    public Result updateSelfUserInfo(@RequestBody ProfileUpdate user, HttpServletRequest request) {
+        log.info("修改用户信息: {}", user);
+        Integer userId = (Integer) request.getAttribute("userId");
+        if (!userId.equals(user.getUserId())) {
+            return Result.error("只能修改自己的信息");
+        }
+        userService.updateProfile(user);
+        return Result.success("修改成功");
     }
 }

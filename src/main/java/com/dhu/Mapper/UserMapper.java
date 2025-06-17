@@ -1,5 +1,6 @@
 package com.dhu.Mapper;
 
+import com.dhu.Pojo.ProfileUpdate;
 import com.dhu.Pojo.User;
 import com.dhu.Pojo.UserQueryParam;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,7 @@ public interface UserMapper {
 
     // 批量删除用户
     void deleteByIds(List<Integer> ids);
+
+//    个人中心-信息修改
+    void updateProfile(ProfileUpdate user);
 }

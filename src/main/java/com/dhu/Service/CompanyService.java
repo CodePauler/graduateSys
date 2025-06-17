@@ -31,4 +31,9 @@ public interface CompanyService {
      * 根据HR用户ID获取公司信息
      */
     CompanyInfo getCompanyByHrId(Integer hrId);
+
+    /**
+     * 获取公司简介信息
+     */
+    CompanyInfo getCompanyProfileByHrId(Integer hrId);
 }

@@ -5,6 +5,7 @@ import com.dhu.Pojo.*;
 import com.dhu.Service.JobService;
 import com.dhu.Service.StudentService;
 import com.dhu.Utils.AliyunOSSOperator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,5 +127,25 @@ public class StudentController {
         }
         List<JobInfo> applications = jobService.getMyApplicationJob(studentId);
         return Result.success(applications);
+    }
+
+//    查询自己的信息
+    @RoleCheck({"student","admin"})
+    @GetMapping("/self/{id}")
+    public Result getSelfStudentInfo(@PathVariable Integer id, HttpServletRequest request) {
+        log.info("查询学生ID: {}", id);
+        if (id == null) {
+            return Result.error("学生ID不能为空");
+        }
+        Integer userId = (Integer) request.getAttribute("userId");
+        if(!userId.equals(id)) {
+            return Result.error("只能查询自己的信息");
+        }
+        StudentInfo studentInfo = studentService.getStudentByUserId(id);
+        if (studentInfo != null) {
+            return Result.success(studentInfo);
+        } else {
+            return Result.error("学生不存在");
+        }
     }
 }

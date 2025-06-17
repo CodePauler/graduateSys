@@ -41,4 +41,9 @@ public interface StudentService {
      */
     List<ApplicationStudent> getApplicationStudentsByJobId(Integer jobId);
 
+
+    /**
+     * 根据用户ID查询学生信息
+     */
+    StudentInfo getStudentByUserId(Integer id);
 }

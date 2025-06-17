@@ -6,6 +6,7 @@ import com.dhu.Pojo.CompanyQueryParam;
 import com.dhu.Pojo.PageResult;
 import com.dhu.Pojo.Result;
 import com.dhu.Service.CompanyService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -72,4 +73,20 @@ public class CompanyController {
         }
     }
 
+//    根据HR用户ID获取自己的信息
+    @RoleCheck({"company", "admin"})
+    @GetMapping("/self/{hrId}")
+    public Result getSelfCompanyInfo(@PathVariable Integer hrId, HttpServletRequest request) {
+        log.info("查询HR用户ID: {}", hrId);
+        Integer userId = (Integer) request.getAttribute("userId");
+        if(!userId.equals(hrId)) {
+            return Result.error("只能查询自己的信息");
+        }
+        CompanyInfo companyInfo = companyService.getCompanyProfileByHrId(hrId);
+        if (companyInfo != null) {
+            return Result.success(companyInfo);
+        } else {
+            return Result.error("公司不存在或未分配");
+        }
+    }
 }
