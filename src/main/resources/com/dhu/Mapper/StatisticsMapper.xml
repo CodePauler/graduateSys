@@ -7,7 +7,7 @@
 
 <!--    统计公司招募情况-->
     <select id="getCompanyJobStatistics" resultType="com.dhu.Pojo.StatisticsCompanyJob">
-        select * from company_job_summary;
+        select * from company_students;
     </select>
 
 
