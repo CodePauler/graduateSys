@@ -37,6 +37,7 @@
                             </el-tag>
                         </span>
                         <span style="margin-left: 10px;">需求人数：{{ job.demandNumber }}</span>
+                        <span style="margin-left: 10px;">已录用：{{ getHiredCount(job.jobId) }}</span>
                     </div>
                 </template>
                 <el-row style="margin-bottom: 12px;">
@@ -44,13 +45,75 @@
                     <el-button type="danger" size="small" @click="handleDeleteJob(job)"
                         style="margin-left: 8px;">删除</el-button>
                 </el-row>
+                
+                <!-- 学生筛选器 -->
+                <div class="filter-section" style="margin-bottom: 16px; padding: 12px; background-color: #f5f7fa; border-radius: 6px;">
+                    <el-row :gutter="16" style="align-items: center;">
+                        <el-col :span="5">
+                            <el-select 
+                                :model-value="studentFilters[job.jobId]?.graduationYear" 
+                                placeholder="筛选毕业年份" 
+                                clearable 
+                                size="small"
+                                @update:model-value="(val) => setStudentFilter(job.jobId, 'graduationYear', val)">
+                                <el-option 
+                                    v-for="year in getGraduationYears(job.jobId)" 
+                                    :key="year" 
+                                    :label="year + '届'" 
+                                    :value="year">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-select 
+                                :model-value="studentFilters[job.jobId]?.major" 
+                                placeholder="筛选专业" 
+                                clearable 
+                                size="small"
+                                @update:model-value="(val) => setStudentFilter(job.jobId, 'major', val)">
+                                <el-option 
+                                    v-for="major in getMajors(job.jobId)" 
+                                    :key="major" 
+                                    :label="major" 
+                                    :value="major">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-select 
+                                :model-value="studentFilters[job.jobId]?.status" 
+                                placeholder="筛选录用状态" 
+                                clearable 
+                                size="small"
+                                @update:model-value="(val) => setStudentFilter(job.jobId, 'status', val)">
+                                <el-option label="待审核" value="待审核"></el-option>
+                                <el-option label="已录用" value="已录用"></el-option>
+                                <el-option label="不录用" value="不录用"></el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-button 
+                                size="small" 
+                                @click="clearFilters(job.jobId)"
+                                :disabled="!hasActiveFilters(job.jobId)">
+                                清空筛选
+                            </el-button>
+                        </el-col>
+                        <el-col :span="5">
+                            <span class="filter-result-text">
+                                共 {{ getFilteredStudents(job.jobId).length }} 名学生
+                            </span>
+                        </el-col>
+                    </el-row>
+                </div>
+                
                 <!-- 加载学生申请列表 -->
-                <el-empty v-if="!(appliedStudentsMap[job.jobId] && appliedStudentsMap[job.jobId].length)"
-                    description="暂无学生申请">
+                <el-empty v-if="!getFilteredStudents(job.jobId).length"
+                    description="暂无符合条件的学生申请">
                     <el-button type="primary" size="small" @click="loadJobs">刷新</el-button>
                 </el-empty>
                 <el-row :gutter="20">
-                    <el-col v-for="student in appliedStudentsMap[job.jobId] || []" :key="student.studentId" :span="12">
+                    <el-col v-for="student in getFilteredStudents(job.jobId)" :key="student.studentId" :span="12">
                         <el-card shadow="hover" class="student-card">
                             <div class="card-header">
                                 <div>
@@ -200,6 +263,8 @@ const handleDeleteJob = (job) => {
 // 申请列表
 const jobList = ref([])
 const appliedStudentsMap = ref({}) // jobId => 学生数组
+const filteredStudentsMap = ref({}) // jobId => 筛选后的学生数组
+const studentFilters = ref({}) // jobId => { graduationYear, major, status }
 const activeJobIds = ref(null) // 当前展开项 jobId
 
 // 模拟 companyId，从登录信息中读取
@@ -216,6 +281,15 @@ const loadJobs = async () => {
         const res = await getApplicationsByJobIdApi(job.jobId)
         if (res.code === 1) {
             appliedStudentsMap.value[job.jobId] = res.data
+            // 初始化筛选器和筛选结果
+            if (!studentFilters.value[job.jobId]) {
+                studentFilters.value[job.jobId] = {
+                    graduationYear: null,
+                    major: null,
+                    status: null
+                }
+            }
+            filteredStudentsMap.value[job.jobId] = res.data
             console.log(`加载岗位 ${job.jobId} 的学生申请`, appliedStudentsMap.value[job.jobId])
         }
     }
@@ -284,6 +358,84 @@ const getStatusType = (status) => {
             return 'info'
     }
 }
+
+// 筛选相关方法
+const getFilteredStudents = (jobId) => {
+    return filteredStudentsMap.value[jobId] || []
+}
+
+const getGraduationYears = (jobId) => {
+    const students = appliedStudentsMap.value[jobId] || []
+    const years = [...new Set(students.map(s => s.graduationYear).filter(year => year))]
+    return years.sort((a, b) => b - a) // 降序排列
+}
+
+const getMajors = (jobId) => {
+    const students = appliedStudentsMap.value[jobId] || []
+    const majors = [...new Set(students.map(s => s.major).filter(major => major))]
+    return majors.sort()
+}
+
+const filterStudents = (jobId) => {
+    const allStudents = appliedStudentsMap.value[jobId] || []
+    const filters = studentFilters.value[jobId]
+    
+    if (!filters) {
+        filteredStudentsMap.value[jobId] = allStudents
+        return
+    }
+    
+    let filtered = allStudents
+    
+    // 按毕业年份筛选
+    if (filters.graduationYear) {
+        filtered = filtered.filter(student => student.graduationYear === filters.graduationYear)
+    }
+    
+    // 按专业筛选
+    if (filters.major) {
+        filtered = filtered.filter(student => student.major === filters.major)
+    }
+    
+    // 按录用状态筛选
+    if (filters.status) {
+        filtered = filtered.filter(student => student.status === filters.status)
+    }
+    
+    filteredStudentsMap.value[jobId] = filtered
+}
+
+const clearFilters = (jobId) => {
+    studentFilters.value[jobId] = {
+        graduationYear: null,
+        major: null,
+        status: null
+    }
+    filteredStudentsMap.value[jobId] = appliedStudentsMap.value[jobId] || []
+}
+
+const hasActiveFilters = (jobId) => {
+    const filters = studentFilters.value[jobId]
+    if (!filters) return false
+    return filters.graduationYear || filters.major || filters.status
+}
+
+const setStudentFilter = (jobId, filterType, value) => {
+    if (!studentFilters.value[jobId]) {
+        studentFilters.value[jobId] = {
+            graduationYear: null,
+            major: null,
+            status: null
+        }
+    }
+    studentFilters.value[jobId][filterType] = value
+    filterStudents(jobId)
+}
+
+const getHiredCount = (jobId) => {
+    const students = appliedStudentsMap.value[jobId] || []
+    return students.filter(student => student.status === '已录用').length
+}
 </script>
 
 <style scoped>
@@ -311,5 +463,16 @@ const getStatusType = (status) => {
 .empty-job-list {
     justify-content: center;
     margin-top: 20px;
+}
+
+/* 筛选器样式 */
+.filter-section {
+    border: 1px solid #dcdfe6;
+}
+
+.filter-result-text {
+    font-size: 14px;
+    color: #606266;
+    font-weight: 500;
 }
 </style>
