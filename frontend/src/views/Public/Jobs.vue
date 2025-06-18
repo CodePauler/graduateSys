@@ -54,8 +54,8 @@
             @page-change="handleCurrentChange" @size-change="handleSizeChange" />
     </div>
 
-    <!-- 学生用户的分页 -->
-    <div v-if="role === 'student'" class="pagination-container">
+    <!-- 学生,企业用户的分页 -->
+    <div v-if="role === 'student' || role === 'company'" class="pagination-container">
         <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
             :page-sizes="[5, 10, 20, 50]" :total="pagination.total" layout="total, sizes, prev, pager, next, jumper"
             @size-change="handleSizeChange" @current-change="handleCurrentChange" />

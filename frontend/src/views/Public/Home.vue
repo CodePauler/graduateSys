@@ -57,7 +57,7 @@
       </div>
       <div class="overview-divider"></div>
       <div class="overview-item">
-        <div class="overview-label">收到的offer总量</div>
+        <div class="overview-label">共发出的offer总量</div>
         <div class="overview-value">{{ globalStats.totalHired || 0 }}</div>
       </div>
     </div>

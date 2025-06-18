@@ -1,6 +1,6 @@
 <template>
     <div class="headerContent" v-if="role === 'student' && showUpload">
-        上传简历，寻找你的千里马
+        上传简历，寻找你的伯乐
     </div>
     <!-- 上传成功后显示PDF预览 -->
     <div v-if="resumeUrl && !showUpload" style="margin-top: 24px; height: auto;">
