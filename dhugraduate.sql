@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 18/06/2025 03:23:00
+ Date: 18/06/2025 14:34:04
 */
 
 SET NAMES utf8mb4;
@@ -35,13 +35,13 @@ CREATE TABLE `announcement`  (
   PRIMARY KEY (`announcement_id`) USING BTREE,
   INDEX `publisher_id`(`creator_id` ASC) USING BTREE,
   CONSTRAINT `announcement_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统公告表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统公告表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of announcement
 -- ----------------------------
-INSERT INTO `announcement` VALUES (1, '东华大学就业管理系统2025年第2号', '祝同学们找到一个适合自己的牛圈！！！', 3, '2025-06-14 13:58:35', '2025-06-17 15:05:06', 'testAttachment', '/testAttachment.txt', 0, 2);
-INSERT INTO `announcement` VALUES (2, '东华大学', '天下无不散的宴席', 3, '2025-06-24 13:59:08', '2025-06-17 15:05:06', NULL, NULL, 0, 2);
+INSERT INTO `announcement` VALUES (11, '东华大学毕业生管理系统2025年第一号公告', '请同学们抓紧秋招机会！', 1, '2025-06-18 14:02:21', '2025-06-18 14:02:21', '无', '', 0, 0);
+INSERT INTO `announcement` VALUES (12, '关于松江大学城联合招聘会的通知', '无', 1, '2025-06-18 14:02:44', '2025-06-18 14:02:44', '无', '', 0, 0);
 
 -- ----------------------------
 -- Table structure for company
@@ -55,17 +55,16 @@ CREATE TABLE `company`  (
   PRIMARY KEY (`company_id`) USING BTREE,
   INDEX `company_ibfk_1`(`user_id` ASC) USING BTREE,
   CONSTRAINT `company_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES (1, 3, '字节跳动', '心脏与字节只能有一个跳动');
-INSERT INTO `company` VALUES (4, 5, '饿了么', '心脏与字节只能有一个跳动');
-INSERT INTO `company` VALUES (5, 26, '携程', '心脏与字节只能有一个跳动');
-INSERT INTO `company` VALUES (6, 28, '华为', '心脏与字节只能有一个跳动');
-INSERT INTO `company` VALUES (7, 26, '阿里巴巴', '我不喜欢钱');
-INSERT INTO `company` VALUES (9, 34, '123312', '132312132123');
+INSERT INTO `company` VALUES (1, 2, '字节跳动', '1');
+INSERT INTO `company` VALUES (2, 3, '饿了么', '1');
+INSERT INTO `company` VALUES (3, 4, '美团', '1');
+INSERT INTO `company` VALUES (4, 5, '华为', '1');
+INSERT INTO `company` VALUES (5, 6, '阿里巴巴', '1');
 
 -- ----------------------------
 -- Table structure for department
@@ -76,12 +75,13 @@ CREATE TABLE `department`  (
   `department_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '院系名称',
   PRIMARY KEY (`department_id`) USING BTREE,
   UNIQUE INDEX `name`(`department_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 151 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '院系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of department
 -- ----------------------------
 INSERT INTO `department` VALUES (2, '信息科学与技术学院');
+INSERT INTO `department` VALUES (4, '理学院');
 INSERT INTO `department` VALUES (3, '纺织学院');
 INSERT INTO `department` VALUES (1, '计算机科学与技术学院');
 
@@ -100,17 +100,24 @@ CREATE TABLE `employment`  (
   INDEX `job_id`(`job_id` ASC) USING BTREE,
   CONSTRAINT `employment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `employment_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `job` (`job_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生就业登记表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of employment
 -- ----------------------------
-INSERT INTO `employment` VALUES (7, 70127, 2, '已录用', '2025-06-15 17:20:17');
-INSERT INTO `employment` VALUES (9, 10101, 1, '已录用', '2025-06-16 03:27:06');
-INSERT INTO `employment` VALUES (11, 70127, 6, '待审核', '2025-06-16 15:00:17');
-INSERT INTO `employment` VALUES (12, 10101, 6, '待审核', '2025-06-16 15:00:47');
-INSERT INTO `employment` VALUES (13, 10101, 5, '待审核', '2025-06-16 15:00:48');
-INSERT INTO `employment` VALUES (14, 10101, 2, '不录用', '2025-06-16 15:00:49');
+INSERT INTO `employment` VALUES (16, 123123322, 9, '待审核', '2025-06-18 14:03:50');
+INSERT INTO `employment` VALUES (17, 123123322, 10, '待审核', '2025-06-18 14:03:52');
+INSERT INTO `employment` VALUES (18, 123123323, 11, '已录用', '2025-06-18 14:05:41');
+INSERT INTO `employment` VALUES (19, 123123323, 12, '待审核', '2025-06-18 14:05:42');
+INSERT INTO `employment` VALUES (20, 123123324, 13, '已录用', '2025-06-18 14:06:13');
+INSERT INTO `employment` VALUES (21, 123123325, 10, '已录用', '2025-06-18 14:06:41');
+INSERT INTO `employment` VALUES (22, 123123326, 9, '已录用', '2025-06-18 14:06:48');
+INSERT INTO `employment` VALUES (23, 123123326, 13, '已录用', '2025-06-18 14:06:50');
+INSERT INTO `employment` VALUES (24, 123123327, 11, '已录用', '2025-06-18 14:06:59');
+INSERT INTO `employment` VALUES (25, 123123327, 12, '待审核', '2025-06-18 14:07:18');
+INSERT INTO `employment` VALUES (26, 123123328, 9, '待审核', '2025-06-18 14:07:37');
+INSERT INTO `employment` VALUES (27, 123123330, 9, '待审核', '2025-06-18 14:16:09');
+INSERT INTO `employment` VALUES (28, 123123330, 13, '已录用', '2025-06-18 14:16:12');
 
 -- ----------------------------
 -- Table structure for job
@@ -131,17 +138,17 @@ CREATE TABLE `job`  (
   INDEX `company_id`(`company_id` ASC) USING BTREE,
   CONSTRAINT `job_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `job_type` (`type_id`) ON DELETE SET NULL ON UPDATE RESTRICT,
   CONSTRAINT `job_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job
 -- ----------------------------
-INSERT INTO `job` VALUES (1, '后端开发工程师', 2, 5, 1, '已通过', '上海', '9-10k', '宇宙的尽头');
-INSERT INTO `job` VALUES (2, '前端开发工程师', 2, 1, 4, '已通过', '南京', '7-8k', '谁还干前端啊');
-INSERT INTO `job` VALUES (5, '主播666', 1, 999, 1, '已通过', '杭州', '8-9k', '我管你这的那的');
-INSERT INTO `job` VALUES (6, '岗位发布测试1', 1, 5, 4, '已通过', '上海', '11-14k', 'ssssss');
-INSERT INTO `job` VALUES (7, '外包', 1, 99999, 6, '待审核', '上海', '6-7k', '外包的同学不准吃零食');
-INSERT INTO `job` VALUES (8, '测试岗位发布', 1, 5, 4, '已通过', NULL, NULL, '测试');
+INSERT INTO `job` VALUES (9, '前端开发工程师', 2, 3, 1, '已通过', '上海', '9-8K', '至少有一段实习经验');
+INSERT INTO `job` VALUES (10, '后端开发工程师', 2, 3, 2, '已通过', '南京', '', '熟悉Spring框架');
+INSERT INTO `job` VALUES (11, '运维', 2, 4, 3, '已通过', '杭州/上海', '8-9K', '熟悉zookeeper');
+INSERT INTO `job` VALUES (12, '外包OD', 2, 10, 4, '已通过', '上海/南京/杭州', '', '外派至其他公司');
+INSERT INTO `job` VALUES (13, '客服', 4, 3, 5, '已通过', '居家', '7-8k', '有双休，五险一金');
+INSERT INTO `job` VALUES (14, '测试岗位', 2, 5, 1, '待审核', '上海', '8-9K', '对接口进行测试');
 
 -- ----------------------------
 -- Table structure for job_type
@@ -152,7 +159,7 @@ CREATE TABLE `job_type`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '职业类型名称',
   PRIMARY KEY (`type_id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业类型表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 247 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '职业类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job_type
@@ -177,15 +184,22 @@ CREATE TABLE `major`  (
   PRIMARY KEY (`major_id`) USING BTREE,
   INDEX `department_id`(`department_id` ASC) USING BTREE,
   CONSTRAINT `major_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1009 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '专业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of major
 -- ----------------------------
-INSERT INTO `major` VALUES (1, '计算机科学', 1);
+INSERT INTO `major` VALUES (1, '计算机科学与技术', 1);
 INSERT INTO `major` VALUES (2, '软件工程', 1);
-INSERT INTO `major` VALUES (3, '电子信息', 2);
-INSERT INTO `major` VALUES (4, '数据科学与大数据技术', 1);
+INSERT INTO `major` VALUES (3, '信息安全', 1);
+INSERT INTO `major` VALUES (4, '大数据', 1);
+INSERT INTO `major` VALUES (5, '智能科学', 1);
+INSERT INTO `major` VALUES (6, '人工智能', 2);
+INSERT INTO `major` VALUES (7, '通信学', 2);
+INSERT INTO `major` VALUES (8, '智能纺织', 3);
+INSERT INTO `major` VALUES (9, '材料学', 3);
+INSERT INTO `major` VALUES (10, '物理学', 4);
+INSERT INTO `major` VALUES (11, '数学', 4);
 
 -- ----------------------------
 -- Table structure for student
@@ -202,14 +216,21 @@ CREATE TABLE `student`  (
   INDEX `major_id`(`major_id` ASC) USING BTREE,
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `student_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`major_id`) ON DELETE SET NULL ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 123123322 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 123123355 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '毕业生表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (10101, 32, 3, 2025, NULL);
-INSERT INTO `student` VALUES (70127, 2, 1, 2026, 'https://java-dhu.oss-cn-shanghai.aliyuncs.com/2025/06/resume/c5625dcb1c714b0296d42ba32160d9aa.pdf');
-INSERT INTO `student` VALUES (123123321, 33, 1, 2026, NULL);
+INSERT INTO `student` VALUES (123123322, 1649, 8, 2026, '');
+INSERT INTO `student` VALUES (123123323, 1650, 5, 2026, NULL);
+INSERT INTO `student` VALUES (123123324, 1651, 9, 2026, NULL);
+INSERT INTO `student` VALUES (123123325, 1652, 3, 2026, NULL);
+INSERT INTO `student` VALUES (123123326, 1653, 4, 2026, NULL);
+INSERT INTO `student` VALUES (123123327, 1654, 6, 2026, NULL);
+INSERT INTO `student` VALUES (123123328, 1655, 10, 2026, NULL);
+INSERT INTO `student` VALUES (123123329, 1656, 9, 2026, NULL);
+INSERT INTO `student` VALUES (123123330, 1657, 11, 2026, NULL);
+INSERT INTO `student` VALUES (123123331, 1658, 1, 2026, NULL);
 
 -- ----------------------------
 -- Table structure for user
@@ -228,29 +249,39 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE,
   CONSTRAINT `user_chk_1` CHECK (`gender` in (_utf8mb4'男',_utf8mb4'女'))
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1684 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (2, 'stu', '123456', 'student', '你好', '男', '22222@qq.com', '', NULL);
-INSERT INTO `user` VALUES (3, 'lil', '123456', 'admin', '小马呀', '男', '123@qq.com', '123456', NULL);
-INSERT INTO `user` VALUES (5, 'com', '123456', 'company', '相思', '男', '1', '1', NULL);
-INSERT INTO `user` VALUES (22, '泥花', '123', 'company', '圣代', '男', '123', '123', NULL);
-INSERT INTO `user` VALUES (23, '学生1', '123', 'student', '学生11', '男', '123@qq.com', '123', NULL);
-INSERT INTO `user` VALUES (26, '达拉崩吧', '1234', 'company', '五', '男', '213', '123', NULL);
-INSERT INTO `user` VALUES (28, '企业家', '123', 'company', '华尔街之狼', '男', '111', '222', NULL);
-INSERT INTO `user` VALUES (30, '企业2', '123', 'company', '企业2', '女', '2134', '123231', NULL);
-INSERT INTO `user` VALUES (31, '企业3', '123', 'company', '企业3', '男', '213', '123', NULL);
-INSERT INTO `user` VALUES (32, '学生n', '123', 'student', '学生n', '女', '1234', '123213321', NULL);
-INSERT INTO `user` VALUES (33, '好累好累的学生', '123456', 'student', '累累累', '女', '123213', '213123', NULL);
-INSERT INTO `user` VALUES (34, '企业1', '123', 'company', '123', '男', '123321', '123123', NULL);
+INSERT INTO `user` VALUES (1, 'admin', '123', 'admin', 'admin', '男', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (2, 'com1', '123', 'company', '张一鸣', '男', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (3, 'com2', '123', 'company', '胖猫', '男', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (4, 'com3', '123', 'company', '潭竹', '女', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (5, 'com4', '123', 'company', '任正非', '男', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (6, 'com5', '123', 'company', '范小勤', '男', '123@1.com', '123', NULL);
+INSERT INTO `user` VALUES (1649, 'stu1', '123', 'student', '冯桂芳', '女', 'stu1@gmail.com', '18682828879', NULL);
+INSERT INTO `user` VALUES (1650, 'stu2', '123', 'student', '罗林', '女', 'stu2@163.com', '18962839420', NULL);
+INSERT INTO `user` VALUES (1651, 'stu3', '123', 'student', '窦超', '男', 'stu3@163.com', '18780884499', NULL);
+INSERT INTO `user` VALUES (1652, 'stu4', '123', 'student', '罗强', '女', 'stu4@qq.com', '15983125711', NULL);
+INSERT INTO `user` VALUES (1653, 'stu5', '123', 'student', '王欣', '男', 'stu5@gmail.com', '15673735581', NULL);
+INSERT INTO `user` VALUES (1654, 'stu6', '123', 'student', '曹丽丽', '男', 'stu6@qq.com', '18817914215', NULL);
+INSERT INTO `user` VALUES (1655, 'stu7', '123', 'student', '骆梅', '男', 'stu7@qq.com', '13852112676', NULL);
+INSERT INTO `user` VALUES (1656, 'stu8', '123', 'student', '汪瑜', '女', 'stu8@gmail.com', '14549216556', NULL);
+INSERT INTO `user` VALUES (1657, 'stu9', '123', 'student', '曹凤英', '男', 'stu9@126.com', '13972255279', NULL);
+INSERT INTO `user` VALUES (1658, 'stu10', '123', 'student', '郑龙', '男', 'stu10@qq.com', '18571681950', NULL);
 
 -- ----------------------------
 -- View structure for company_job_summary
 -- ----------------------------
 DROP VIEW IF EXISTS `company_job_summary`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `company_job_summary` AS select `c`.`company_id` AS `company_id`,`c`.`company_name` AS `company_name`,count(`j`.`job_id`) AS `job_count`,sum(`j`.`demand_number`) AS `demand_count`,sum(ifnull(`e`.`hired_count`,0)) AS `approved_count`,sum(ifnull(`a`.`application_count`,0)) AS `application_count` from (((`company` `c` left join `job` `j` on((`c`.`company_id` = `j`.`company_id`))) left join (select `employment`.`job_id` AS `job_id`,count(0) AS `hired_count` from `employment` where (`employment`.`status` = '已录用') group by `employment`.`job_id`) `e` on((`j`.`job_id` = `e`.`job_id`))) left join (select `employment`.`job_id` AS `job_id`,count(0) AS `application_count` from `employment` group by `employment`.`job_id`) `a` on((`j`.`job_id` = `a`.`job_id`))) group by `c`.`company_id`,`c`.`company_name`;
+
+-- ----------------------------
+-- View structure for company_students
+-- ----------------------------
+DROP VIEW IF EXISTS `company_students`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `company_students` AS select `company`.`company_name` AS `company_name`,count(0) AS `student_count` from ((`employment` left join `job` on((`employment`.`job_id` = `job`.`job_id`))) left join `company` on((`company`.`company_id` = `job`.`company_id`))) group by `company`.`company_id`;
 
 -- ----------------------------
 -- View structure for department_info

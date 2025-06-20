@@ -123,5 +123,13 @@
         where user_id = #{userId}
     </select>
 
+<!--    根据学生ID查询用户ID-->
+    <select id="getUserIdsByStudentIds" resultType="java.lang.Integer">
+        select user_id from student where student_id in
+        <foreach collection="studentIds" item="studentId" open="(" close=")" separator=",">
+            #{studentId}
+        </foreach>
+    </select>
+
 
 </mapper>

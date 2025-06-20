@@ -33,4 +33,5 @@ public interface UserMapper {
 
 //    个人中心-信息修改
     void updateProfile(ProfileUpdate user);
+
 }

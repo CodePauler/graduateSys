@@ -38,4 +38,7 @@ public interface StudentMapper {
 
 //    根据用户ID查询学生信息
     StudentInfo selectStudentInfoByUserId(Integer id);
+
+//    根据学生ID列表获取对应的用户ID列表
+    List<Integer> getUserIdsByStudentIds(List<Integer> studentIds);
 }

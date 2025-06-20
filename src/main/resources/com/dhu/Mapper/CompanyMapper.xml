@@ -117,4 +117,13 @@
         WHERE company_id = #{companyId}
     </select>
 
+    <!-- 根据公司ID获取用户ID -->
+    <select id="getUserIdsByCompanyIds" resultType="java.lang.Integer">
+        select user_id from company
+        where company_id in
+        <foreach collection="companyIds" item="companyId" open="(" close=")" separator=",">
+            #{companyId}
+        </foreach>
+    </select>
+
 </mapper>

@@ -53,11 +53,12 @@ const axiosUpload = async (file) => {
         ElMessage.success('简历上传成功！');
         showUpload.value = false; // 上传成功后隐藏上传组件
         resumeUrl.value = res.data; // 保存PDF的url
+        search(); // 重新查询简历
     } else {
         ElMessage.error('简历上传失败，请重试！');
     }
 }
-onMounted(async () => {
+const search = async () => {
     try {
         const res = await queryStudentResumeApi(studentId);
         if (res) {
@@ -74,6 +75,9 @@ onMounted(async () => {
         console.error('查询简历失败:', error);
         ElMessage.info('请先上传简历');
     }
+}
+onMounted(async () => {
+    search();
 });
 </script>
 

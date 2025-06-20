@@ -34,4 +34,7 @@ public interface CompanyMapper {
 
     // 根据公司ID获取招聘统计汇总
     StatisticsCompanyJob getJobSummaryByCompanyId(Integer companyId);
+
+//    根据公司ID列表获取用户ID列表
+    List<Integer> getUserIdsByCompanyIds(List<Integer> companyIds);
 }

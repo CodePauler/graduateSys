@@ -1,5 +1,5 @@
 <template>
-    <div class="headerContent">学生管理</div>
+    <div class="headerContent">毕业生管理</div>
     <!-- 搜索栏和批量操作按钮并排 -->
     <div class="container search-bar-row">
         <SearchBar :fields="searchFields" :model="searchStudent" @search="search" @clear="clear">

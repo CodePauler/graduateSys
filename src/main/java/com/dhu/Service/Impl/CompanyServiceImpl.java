@@ -1,6 +1,7 @@
 package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.CompanyMapper;
+import com.dhu.Mapper.UserMapper;
 import com.dhu.Pojo.CompanyInfo;
 import com.dhu.Pojo.CompanyQueryParam;
 import com.dhu.Pojo.PageResult;
@@ -10,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyMapper companyMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     // 条件查询
     @Override
@@ -42,8 +46,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     // 批量删除
+    @Transactional
     @Override
     public void deleteCompany(List<Integer> ids) {
+        List<Integer> userIds = companyMapper.getUserIdsByCompanyIds(ids);
+        userMapper.deleteByIds(userIds);
         companyMapper.deleteByIds(ids);
     }
 

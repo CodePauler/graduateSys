@@ -1,12 +1,14 @@
 package com.dhu.Service.Impl;
 
 import com.dhu.Mapper.StudentMapper;
+import com.dhu.Mapper.UserMapper;
 import com.dhu.Pojo.*;
 import com.dhu.Service.StudentService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
@@ -29,11 +33,14 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.getById(studentId);
     }
 
+    @Transactional
     @Override
     public void deleteStudent(List<Integer> ids) {
         if (ids == null || ids.isEmpty()) {
             throw new IllegalArgumentException("删除学生ID列表不能为空");
         }
+        List<Integer> userIds = studentMapper.getUserIdsByStudentIds(ids);
+        userMapper.deleteByIds(userIds);
         studentMapper.deleteByIds(ids);
     }
 
