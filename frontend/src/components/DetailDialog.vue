@@ -27,8 +27,8 @@ const props = defineProps({
     modelValue: Boolean // 控制弹窗显示与否
 })
 
-// 声明组件可向父组件发送的事件 update:modelValue用于v-model双向绑定，submit用于提交表单
-const emit = defineEmits(['update:modelValue', 'submit'])
+// 声明组件可向父组件发送的事件 update:modelValue用于v-model双向绑定
+const emit = defineEmits(['update:modelValue'])
 
 // 用于控制弹窗的显示与隐藏
 const visible = computed({

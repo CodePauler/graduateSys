@@ -6,5 +6,8 @@ import lombok.Data;
 @Data
 public class StatisticsCompanyJob {
     private String companyName; // 公司名称
-    private Integer studentCount; // 岗位总数
+    private Integer jobCount; // 岗位总数
+    private Integer demandCount;
+    private Integer applicationCount;
+    private Integer approvedCount;
 }

@@ -12,7 +12,7 @@
           <el-icon color="#fff" style="margin-right: 8px;">
             <House />
           </el-icon>
-          <h2 style="color: #fff; margin: 0;">东华大学毕业生智能管理系统</h2>
+          <h2 style="color: #fff; margin: 0;">东华大学毕业生管理系统</h2>
         </div>
         <el-button type="primary" plain @click="logout">退出登录</el-button>
       </el-header>
@@ -116,7 +116,7 @@
           <router-view></router-view>
         </el-main>
       </el-container>
-      
+
     </el-container>
   </div>
 </template>
@@ -154,7 +154,7 @@ const logout = () => {
 onMounted(() => {
   // 确保在组件挂载后正确设置活动菜单
   activeMenu.value = route.path;
-  
+
   // 如果当前路径是根路径，重定向到首页
   if (route.path === '/') {
     router.replace('/home');

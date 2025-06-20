@@ -8,10 +8,9 @@
       :pagination="pagination" @page-change="handleCurrentChange" @size-change="handleSizeChange" />
   </div>
 
-  <!-- 编辑弹窗 -->
+  <!-- 详情弹窗 -->
   <div class="container">
-    <DetailDialog v-model="dialogFormVisible" :title="'公告详情'" :model="announcement" :fields="editFields"
-      @submit="saveAnnouncement" />
+    <DetailDialog v-model="dialogFormVisible" :title="'公告详情'" :model="announcement" :fields="editFields"/>
   </div>
 
   <!-- 统计饼图 2x2 -->
@@ -236,7 +235,7 @@ const globalStats = ref({}); // 全局统计数据
 const fetchStatistics = async () => {
   // 企业就业
   const companyRes = await queryCompanyStatisticsApi();
-  if (companyRes.code === 1 && Array.isArray(companyRes.data)) {
+  if (companyRes.code === 1) {
     companyOption.value = {
       title: { text: '学生去向', left: 'center' },
       tooltip: { trigger: 'item' },

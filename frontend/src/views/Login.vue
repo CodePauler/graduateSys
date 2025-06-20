@@ -51,7 +51,6 @@ const login = async () => {
           localStorage.setItem('name', res.data.name);
           localStorage.setItem('studentId', res.data.studentId);
           localStorage.setItem('companyId', res.data.companyId);
-          // 你可以根据角色跳转不同页面
           router.push('/home');
         } else {
           ElMessage.error(res.msg);
